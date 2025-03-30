@@ -78,7 +78,7 @@ const LoginPage = () => {
             label={<Typography color="white" sx={{ fontSize: "1rem", fontWeight: "bold"}}>Remember Me</Typography>}
           />
           <Link href="#" underline="hover" color="white" fontSize="1rem" fontWeight="bold">
-            Need Help?
+            I Forget your password?
           </Link>
         </Box>
 

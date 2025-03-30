@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, Link, Paper, InputAdornment, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Register } from '../../api/auth/auth';
 
 const RegisterPage = () => {
 
@@ -13,10 +14,15 @@ const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordCorrect, setShowPasswordCorrect] = useState(false);
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (password !== passwordCorrect) {
+      alert("Passwords do not match!"); // alert yerine bir natification kütüphanesi kullanılanılıcak
+      return;
+    }
 
     const userData = {
       firstname,
@@ -26,8 +32,16 @@ const RegisterPage = () => {
       passwordCorrect
     };
 
-    // form verilerinin işlenmesi
+    const fetchData = async () => {
+      try {
+        const response = await Register(userData);
+        navigate('/home');
+      } catch (error) {
+        console.error("Registration error:", error); // console.error yerine bir natification kütüphanesi kullanılanılıcak
+      }
+    };
 
+    // fetchData();
   }
 
   return (
@@ -178,6 +192,8 @@ const RegisterPage = () => {
         <Button
           variant="contained"
           fullWidth
+          onClick={handleSubmit}
+          type="submit"
           sx={{ mt: 4, mb: 1, bgcolor: '#C43D37', '&:hover': { bgcolor: '#a8322d' }, borderRadius: 3, height: 50, fontSize: '1.1rem', fontWeight: 'bold' }}
         >
           Sign Up
