@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, TextField, Button, Checkbox, FormControlLabel, Typography, Link, Paper, InputAdornment, IconButton } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 // import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   // const navigate = useNavigate();
 
@@ -17,6 +18,14 @@ const LoginPage = () => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
+  // ✅ E-mail'i hatırla kutucuğunun kontrolü
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('rememberedEmail');
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setRememberMe(true); // kutucuğu işaretli göster
+    }
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,6 +36,12 @@ const LoginPage = () => {
     }
 
     setEmailError(false);  // ✅ Geçerli e-mail
+
+    if (rememberMe) {
+    localStorage.setItem('rememberedEmail', email); // ✅ e-mail'i kaydet
+  } else {
+    localStorage.removeItem('rememberedEmail'); // ❌ kutu işaretli değilse sil
+  }
 
     // const userData = {
     //   email,
@@ -43,6 +58,8 @@ const LoginPage = () => {
     // }
     
     // // fetchData(userData);
+    
+    console.log("Login data:", { email, password }); // ✅ Giriş verilerini kontrol et
 
   }
 

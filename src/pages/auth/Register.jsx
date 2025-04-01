@@ -142,7 +142,6 @@ const RegisterPage = () => {
           helperText={emailError ? 'Please enter a valid email address.' : ''}
         />
 
-        {/* !!PROBLEM!! --> icona tıklayınca şifre görünür hale gelmiyor  */}
         <TextField
           label="Password"
           type={showPassword ? 'text' : "password"}
