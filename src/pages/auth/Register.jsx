@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, Link, Paper, InputAdornment, IconButton } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Register } from '../../api/auth/auth';
+// import { Register } from '../../api/auth/auth';
 
 const RegisterPage = () => {
 
@@ -13,33 +13,46 @@ const RegisterPage = () => {
   const [passwordCorrect, setPasswordCorrect] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordCorrect, setShowPasswordCorrect] = useState(false);
+  const [emailError, setEmailError] = useState(false);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+
+  // ✅ Email formatını kontrol eden fonksiyon
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!isValidEmail(email)) {
+      setEmailError(true); // ❌ Geçersizse hata göster
+      return;
+    }
+
+    setEmailError(false);  // ✅ Geçerli e-mail
 
     if (password !== passwordCorrect) {
       alert("Passwords do not match!"); // alert yerine bir natification kütüphanesi kullanılanılıcak
       return;
     }
 
-    const userData = {
-      firstname,
-      nickname,
-      email,
-      password,
-      passwordCorrect
-    };
+    // const userData = {
+    //   firstname,
+    //   nickname,
+    //   email,
+    //   password,
+    //   passwordCorrect
+    // };
 
-    const fetchData = async () => {
-      try {
-        const response = await Register(userData);
-        navigate('/home');
-      } catch (error) {
-        console.error("Registration error:", error); // console.error yerine bir natification kütüphanesi kullanılanılıcak
-      }
-    };
+    // const fetchData = async () => {
+    //   try {
+    //     const response = await Register(userData);
+    //     navigate('/home');
+    //   } catch (error) {
+    //     console.error("Registration error:", error); // console.error yerine bir natification kütüphanesi kullanılanılıcak
+    //   }
+    // };
 
     // fetchData();
   }
@@ -125,6 +138,8 @@ const RegisterPage = () => {
           }}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          error={emailError} // 🔴 hata kontrolü
+          helperText={emailError ? 'Please enter a valid email address.' : ''}
         />
 
         {/* !!PROBLEM!! --> icona tıklayınca şifre görünür hale gelmiyor  */}
