@@ -25,3 +25,13 @@ export const Register = async (userData) => {
         throw error;
     }
 }
+
+export const ForgetPassword = async (email) => {
+    try {
+        const response = await axios.post(`${baseURL}/forget-password`, { email });
+        return response.data;
+    } catch (error) {
+        // console.error("Forget password error:", error);
+        throw error;
+    }
+}
