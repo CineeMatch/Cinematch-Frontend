@@ -4,6 +4,7 @@ import Profile from "../pages/profile/Profile.jsx";
 import Login from "../pages/auth/Login.jsx";
 import Register from "../pages/auth/Register.jsx";
 import ChatPage from "../pages/chat/ChatPage.jsx";
+import ForgetPasswordPage from "../pages/auth/ForgetPasswordPage.jsx";
 
 
 const AppRoutes = () => {
@@ -13,6 +14,11 @@ const AppRoutes = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/chat" element={<ChatPage />} />
+
+
+
+            {/* page or modal test routes */}
+            <Route path="/forgetPassword" element={<ForgetPasswordPage />} />
         </Routes>
     )
 }

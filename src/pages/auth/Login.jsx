@@ -1,7 +1,51 @@
-import React from 'react';
-import { Box, TextField, Button, Checkbox, FormControlLabel, Typography, Link, Paper } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, TextField, Button, Checkbox, FormControlLabel, Typography, Link, Paper, InputAdornment, IconButton } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+// import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+
+  // const navigate = useNavigate();
+
+  // ✅ Email formatını kontrol eden fonksiyon
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!isValidEmail(email)) {
+      setEmailError(true); // ❌ Geçersizse hata göster
+      return;
+    }
+
+    setEmailError(false);  // ✅ Geçerli e-mail
+
+    // const userData = {
+    //   email,
+    //   password,
+    // };
+
+    // const fetchData = async (data) => {
+    //   try {
+    //     // const response = await Login(data);
+    //     navigate('/home');
+    //   } catch (error) {
+    //     console.error("Login error:", error); // console.error yerine bir natification kütüphanesi kullanılanılıcak
+    //   }
+    // }
+    
+    // // fetchData(userData);
+
+  }
+
   return (
     <Box
       sx={{
@@ -44,29 +88,47 @@ const LoginPage = () => {
             InputLabelProps={{
                 style: { color: 'gray' },
             }}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            error={emailError} // 🔴 hata kontrolü
+            helperText={emailError ? 'Please enter a valid email address.' : ''}
             />
 
             <TextField
             label="Password"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             variant="filled"
             fullWidth
             margin="normal"
             InputProps={{
-                disableUnderline: true,
-                sx: {
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                color: 'white',
-                },
+              disableUnderline: true,
+              sx: {
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              color: 'white',
+              },
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
             }}
             InputLabelProps={{
                 style: { color: 'gray' },
             }}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             />
 
         <Button
           variant="contained"
           fullWidth
+          onClick={handleSubmit}
+          type="submit"
           sx={{ mt: 4, mb: 1, bgcolor: '#C43D37', '&:hover': { bgcolor: '#a8322d' }, borderRadius: 3, height: 50, fontSize: '1.1rem', fontWeight: 'bold' }}
         >
           Sign In
@@ -77,7 +139,7 @@ const LoginPage = () => {
             control={<Checkbox sx={{ color: 'white' }} />}
             label={<Typography color="white" sx={{ fontSize: "1rem", fontWeight: "bold"}}>Remember Me</Typography>}
           />
-          <Link href="#" underline="hover" color="white" fontSize="1rem" fontWeight="bold">
+          <Link href="/forgetPassword" underline="hover" color="white" fontSize="1rem" fontWeight="bold">
             I Forget your password?
           </Link>
         </Box>
