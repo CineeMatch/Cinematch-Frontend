@@ -81,15 +81,15 @@ const ProfilePage = () => {
             <Button variant="contained" sx={{ mt: 2, backgroundColor: '#800000', width: '100%' }}>Edit Profile</Button>
             <Typography variant="h6" sx={{ mt: 3 }}>Badges {badge}</Typography>
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 1 }}>
-              {[...Array(4)].map((_, index) => (
+              {[...Array(5)].map((_, index) => (
                 <Box key={index} sx={{ width: 40, height: 40, backgroundColor: '#999', borderRadius: 1 }} />
               ))}
             </Box>
             <Box sx={{ mt: 3, textAlign: 'left', pl: 2 }}>
-              <Typography variant="body1">{friends} <span style={{ float: 'right', marginRight: '10px' }}>21</span></Typography>
-              <Typography variant="body1">{watched} <span style={{ float: 'right', marginRight: '10px' }}>18</span></Typography>
-              <Typography variant="body1">{wishlist} <span style={{ float: 'right', marginRight: '10px' }}>35</span></Typography>
-              <Typography variant="body1">{activeChallenges}<span style={{ float: 'right', marginRight: '10px' }}>7</span></Typography>
+              <Typography variant="body1">Friends<span style={{ float: 'right', marginRight: '10px' }}>{friends}</span></Typography>
+              <Typography variant="body1">Watched<span style={{ float: 'right', marginRight: '10px' }}>{watched}</span></Typography>
+              <Typography variant="body1">Wish List<span style={{ float: 'right', marginRight: '10px' }}>{wishlist}</span></Typography>
+              <Typography variant="body1">Active Challanges<span style={{ float: 'right', marginRight: '10px' }}>{activeChallenges}</span></Typography>
             </Box>
           </Box>
         </Grid>

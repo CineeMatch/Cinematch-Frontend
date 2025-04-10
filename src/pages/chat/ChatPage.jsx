@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
@@ -14,6 +14,7 @@ import {
 import SendIcon from '@mui/icons-material/Send';
 
 const ChatPage = () => {
+
   return (
     <Box
       sx={{
@@ -38,7 +39,7 @@ const ChatPage = () => {
           Messages
         </Typography>
         <List>
-          {[...Array(8)].map((_, index) => (
+          {[...Array(12)].map((_, index) => (
             <ListItem button key={index} sx={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
               <ListItemAvatar>
                 <Avatar />
@@ -68,10 +69,10 @@ const ChatPage = () => {
             alignItems: 'center',
             gap: 2,
             bgcolor: 'rgba(0,0,0,0.7)',
-            p: 1,
+            p: 2,
             borderRadius: 2,
-            mb: 2,
-            width: 'fit-content',
+            mb: 3,
+            width: '500',
           }}
         >
           <Avatar />
