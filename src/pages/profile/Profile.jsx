@@ -16,6 +16,7 @@ const ProfilePage = () => {
   const [watched, setWatched] = useState(18);
   const [wishlist, setWishlist] = useState(35);
   const [activeChallenges, setActiveChallenges] = useState(7);
+  const [favoriteMovies, setFavoriteMovies] = useState(21)
   const [posts, setPosts] = useState([
     { id: 1, content: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', tags: ['Spiderman'], category: 'Fantasy' },
     { id: 2, content: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', tags: ['Batman'], category: 'Action' },
@@ -51,12 +52,16 @@ const ProfilePage = () => {
             <Typography variant="body2" sx={{ mt: 1 }}>{description}</Typography>
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 2 }}>
               {[...Array(5)].map((_, index) => (
-                <Box key={index} sx={{ width: 50, height: 50, backgroundColor: '#999', borderRadius: 1 }} />
+                <Box key={index} sx={{ width: 50, height: 50, backgroundColor: '#999', borderRadius: 1 }}/>
               ))}
             </Box>
           </Box>
           {/* Posts Section */}
-          <Post posts={posts} nickname={nickname} />
+          <Box sx={{ mt:2 }}>
+            {posts.map((post, index) => (
+              <Post index={index} nickname={nickname} category={post.category} content={post.content} tags={post.tags}/>
+            ))}
+          </Box>
         </Grid>
 
         {/* Stats Section */}
@@ -68,6 +73,7 @@ const ProfilePage = () => {
           watched={watched}
           wishlist={wishlist}
           activeChallenges={activeChallenges}
+          favoriteMovies={favoriteMovies}
         />
       </Grid>
     </Box>

@@ -91,55 +91,55 @@ const LoginPage = () => {
         </Typography>
 
         <TextField
-            label="Email or phone number"
-            variant="filled"
-            fullWidth
-            margin="normal"
-            InputProps={{
-                disableUnderline: true,
-                sx: {
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                color: 'white',
-                },
-            }}
-            InputLabelProps={{
-                style: { color: 'gray' },
-            }}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            error={emailError} // 🔴 hata kontrolü
-            helperText={emailError ? 'Please enter a valid email address.' : ''}
-            />
+          label="Email or phone number"
+          variant="filled"
+          fullWidth
+          margin="normal"
+          InputProps={{
+            disableUnderline: true,
+            sx: {
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            color: 'white',
+            },
+          }}
+          InputLabelProps={{
+            style: { color: 'gray' },
+          }}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          error={emailError} // 🔴 hata kontrolü
+          helperText={emailError ? 'Please enter a valid email address.' : ''}
+        />
 
-            <TextField
-            label="Password"
-            type={showPassword ? 'text' : 'password'}
-            variant="filled"
-            fullWidth
-            margin="normal"
-            InputProps={{
-              disableUnderline: true,
-              sx: {
+        <TextField
+          label="Password"
+          type={showPassword ? 'text' : 'password'}
+          variant="filled"
+          fullWidth
+          margin="normal"
+          InputProps={{
+            disableUnderline: true,
+            sx: {
               backgroundColor: 'rgba(255, 255, 255, 0.1)',
               color: 'white',
-              },
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => setShowPassword(!showPassword)}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            InputLabelProps={{
-                style: { color: 'gray' },
-            }}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            />
+            },
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+          InputLabelProps={{
+              style: { color: 'gray' },
+          }}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
         <Button
           variant="contained"
