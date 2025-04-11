@@ -5,6 +5,7 @@ import Login from "../pages/auth/Login.jsx";
 import Register from "../pages/auth/Register.jsx";
 import ChatPage from "../pages/chat/ChatPage.jsx";
 import ForgetPasswordPage from "../pages/auth/ForgetPasswordPage.jsx";
+import Friends from "../pages/profile/Friends.jsx";
 
 
 const AppRoutes = () => {
@@ -14,6 +15,7 @@ const AppRoutes = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/chat" element={<ChatPage />} />
+            <Route path="/friends" element={<Friends />} />
 
 
 
