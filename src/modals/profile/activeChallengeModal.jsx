@@ -3,7 +3,7 @@ import { Box, Modal, Card, IconButton } from "@mui/material";
 import { useState } from "react";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
-import ChallangeCard from "./ChallangeCard";
+import ChallangeCard from "./ChallengeCard.jsx";
 
 export default function ActiveChallangeModal() {
   const [visible, setVisible] = useState(true);

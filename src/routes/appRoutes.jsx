@@ -1,7 +1,7 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import CoMatch from '../pages/coMatch.jsx'
-import ChallangeModal from '../modals/profile/activeChallangeModal.jsx'
+import ChallangeModal from '../modals/profile/activeChallengeModal.jsx'
 
 export default function appRoutes() {
   return (
