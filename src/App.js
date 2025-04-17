@@ -1,11 +1,9 @@
-import './App.css';
-import AppRoutes from './router/appRoutes';
+import AppRoutes from './router/appRoutes.jsx';
+
 
 function App() {
   return (
-    <div className="App">
-      <AppRoutes />
-    </div>
+    <AppRoutes />
   );
 }
 
