@@ -2,8 +2,8 @@ import {Box,Typography} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
-import MovieGrid from "../List/MovieGrid";
-import MovieModal from "../main/MovieModal";
+import MovieGrid from "../components/List/MovieGrid";
+import MovieModal from "../components/main/MovieModal";
 import { useState } from "react";
 
 

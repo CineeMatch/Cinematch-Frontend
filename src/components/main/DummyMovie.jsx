@@ -5,7 +5,7 @@ import InfoIcon from "@mui/icons-material/Info";
 
 
 export default function DummyMovie(props) {
-  const dummyImage = "/dummymoviebackground.webp";
+  const dummyImage = "/images/dummymoviebackground.webp";
   const dummyMovieName = "NeonLIGHTS";
 
   return (

@@ -1,9 +1,10 @@
 import { Box } from '@mui/material';
-import DummyMovie from "../main/DummyMovie";
-import MovieModal from "../main/MovieModal";
-import MovieCarousel from "../main/MovieCarousel";
+import DummyMovie from '../components/main/DummyMovie';
+import MovieModal from '../components/main/MovieModal';
+import MovieCarousel from "../components/main/MovieCarousel";
+import Top10Carousel from '../components/main/Top10Carousel';
+
 import { useState } from 'react';
-import Top10Carousel from '../main/Top10Carousel';
 export default function MainPage()
 {  const [openMovieModal, setOpenMovieModal] = useState(false);
     return(

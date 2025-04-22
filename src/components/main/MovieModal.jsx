@@ -21,7 +21,7 @@ const style = {
 };
 
 const dummyMovie = {
-  image: '/dummymoviemodal.png',
+  image: '/images/dummymoviemodal.png',
   name: 'SHREK',
   stars: 'Mike Myers, Eddie Murphy, Cameron Diaz',
   directors: 'Andrew Adamson, Vicky Jenson',
