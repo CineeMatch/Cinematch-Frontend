@@ -30,7 +30,7 @@ function ResponsiveAppBar() {
   const navigate = useNavigate();
 
   const pages = [
-    { title: 'Home', to: "/home" },
+    { title: 'Home', to: "/" },
     { title: 'Community', to: "/community" },
     { title: 'My List', to: "/favorites" },
     { title: 'Comatch', to: "/comatch" },
