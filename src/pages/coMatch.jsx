@@ -1,12 +1,12 @@
 import { Box } from "@mui/material";
 import React from "react";
-import UserCard from "../components/coMatch/userCard.jsx";
-import MovieCarousel from "../components/coMatch/movieCarousel.jsx";
+import UserCard from "../components/coMatch/UserCard.jsx";
+import MovieCarousel from "../components/coMatch/MovieCarouselMatch.jsx";
 import { useState } from "react";
 import { IconButton } from "@mui/material";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { AnimatePresence, motion } from "framer-motion";
-import "./coMatch.css";
+import "./CoMatch.css"; 
 
 export default function CoMatch() {
   const users = [

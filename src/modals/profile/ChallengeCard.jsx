@@ -6,6 +6,7 @@ import CancelIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 import BoltIcon from "@mui/icons-material/Bolt";
 
+
 export default function ChallangeCard() {
     const dummyCards = [
         { id: 1, title: "Lucy", image: "/images/lucy.png", player1: "Me", player2: "Sena", time: "11:20:45" },
@@ -33,6 +34,7 @@ export default function ChallangeCard() {
             boxShadow: "0 0 5px white",
           }}
         >
+          
           <img
             src={card.image}
             alt={card.title}
@@ -43,9 +45,9 @@ export default function ChallangeCard() {
             }}
           />
           <Box sx={{ height: "auto", p: 1 }}>
-            <Typography variant="h6">{card.title}</Typography>
-            <Typography
-              sx={{ display: "flex", alignItems: "center", gap: 1 }}
+            <Typography variant="h6"  sx={{ fontWeight: "bold", mb: 0.5 }}>{card.title}</Typography>
+            <Typography variant="body2"
+              sx={{  alignItems: "center", gap: 1 }}
             >
               {card.player1}
               <BoltIcon sx={{ color: "red" }} />
