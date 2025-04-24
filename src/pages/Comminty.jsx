@@ -14,7 +14,7 @@ export default function Comminty() {
         alignItems: "flex-end",
         width: "100vw",
         minHeight: "100vh",
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.5)),
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.79), rgba(0, 0, 0, 0.5)),
     url(/images/main-Photoroom.png)`,
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",

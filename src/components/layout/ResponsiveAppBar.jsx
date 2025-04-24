@@ -103,6 +103,7 @@ function ResponsiveAppBar() {
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
+              onClick={() => navigate("/")}
               variant="h6"
               noWrap
               component="a"

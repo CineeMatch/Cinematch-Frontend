@@ -15,11 +15,11 @@ import ChallengeQuestionStarterModal from '../modals/challenge/ChallengeQuestion
 export default function appRoutes() {
   return (
     <Routes>
-       <Route index element={<Layout><CoMatch /></Layout>} />
+       <Route index element={<Layout><MainPage /></Layout>} />
        <Route path="/activeChallange" element={<Layout><ChallangeModal /></Layout>} />
        <Route path="/messageCard" element={<MessageCard />} />
-       <Route path="/community" element={<Comminty />} /> 
-       <Route path="/home" element={<Layout><MainPage/></Layout>} />
+       <Route path="/community" element={<Layout><Comminty /></Layout>} /> 
+       <Route path="/comatch" element={<Layout><CoMatch/></Layout>} />
        <Route path="/favorites" element={<Layout><FavoritesPage/></Layout>} />
        <Route path="/wishlist" element={<Layout><WishlistPage/></Layout>} />
        <Route path="/watched" element={<Layout><WatchedPage/></Layout>} />

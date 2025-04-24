@@ -59,6 +59,7 @@ const [openMovieModal, setOpenMovieModal] = useState(false);
     return(
       <Box
       sx={{
+        marginTop: "60px",
         height: '91vh',
     background: 'linear-gradient(to bottom right, #0e0e0e, #2d0f0f)',
     display:"flex",

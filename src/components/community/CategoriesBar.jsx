@@ -25,9 +25,9 @@ export default function CategoriesCard({ isOpen, setIsOpen }) {
           width: isOpen ? 240 : 4,
           height: "90%",
           transition: "width 0.3s ease",
-          backgroundColor: "#000",
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
           color: "#fff",
-          overflowX: "hidden",
+          overflow: "hidden-auto",
           position: "fixed",
           bottom: 0,
           right: 0,
@@ -46,6 +46,7 @@ export default function CategoriesCard({ isOpen, setIsOpen }) {
               p: 2,
               borderBottom: "1px solid gray",
               width: "100%",
+              textAlign: "left",
             }}
           >
             Categories
@@ -53,7 +54,9 @@ export default function CategoriesCard({ isOpen, setIsOpen }) {
         )}
 
         {isOpen && (
-          <List sx={{ width: "100%" }}>
+          <List sx={{ width: "100%",
+            flexGrow: 1,
+           }}>
             {categories.map((cat, index) => (
               <ListItem
                 key={index}
