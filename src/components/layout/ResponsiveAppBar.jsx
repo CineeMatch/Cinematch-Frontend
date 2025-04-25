@@ -269,7 +269,7 @@ function ResponsiveAppBar() {
           height: "30px",
           background: "linear-gradient(to bottom, rgba(0,0,0,0.9), transparent)",
           backdropFilter: "blur(0.2px)",
-          zIndex: 1800,
+          zIndex: 1,
           pointerEvents: "none",
         }}
       />
