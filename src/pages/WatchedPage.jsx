@@ -6,9 +6,6 @@ import MovieGrid from "../components/filmList/MovieGrid.jsx";
 import MovieModal from "../components/home/MovieModal.jsx";
 import { useState } from "react";
 
-
-
-
 export default function WatchedPage(){
 const [openMovieModal, setOpenMovieModal] = useState(false);
   
