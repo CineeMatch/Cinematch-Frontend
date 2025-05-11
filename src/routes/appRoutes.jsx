@@ -17,25 +17,32 @@ import Friends from '../pages/Friends.jsx'
 import ForgetPasswordPage from '../pages/ForgetPasswordPage.jsx'
 import ChallengeQuestionModal from '../modals/challenge/ChallangeQuestionModal.jsx'
 import WatchedPage from '../pages/WatchedPage.jsx'
+import EditProfileModal from '../modals/profile/EditProfileModal.jsx'
+import ChatDeneme from '../components/ChatDeneme.jsx'
 
 export default function appRoutes() {
   return (
     <Routes>
-       <Route index element={<Layout><MainPage /></Layout>} />
-       <Route path="/activeChallange" element={<Layout><ChallangeModal /></Layout>} />
-       <Route path="/messageCard" element={<MessageCard />} />
-       <Route path="/community" element={<Layout><Community /></Layout>} /> 
-       <Route path="/comatch" element={<Layout><CoMatch/></Layout>} />
-       <Route path="/favorites" element={<Layout><FavoritesPage/></Layout>} />
-       <Route path="/wishlist" element={<Layout><WishlistPage/></Layout>} />
-       <Route path="/watched" element={<Layout><WatchedPage/></Layout>} />
-       <Route path="/modal" element={<ChallengeQuestionModal/>}/>
-       <Route path="/modalQ" element={<ChallengeQuestionStarterModal/>}/>
-       <Route path="/login" element={<LoginPage />} />
+        <Route index element={<Layout><MainPage /></Layout>} />
+        <Route path="/activeChallange" element={<Layout><ChallangeModal /></Layout>} />
+        <Route path="/messageCard" element={<MessageCard />} />
+        <Route path="/community" element={<Layout><Community /></Layout>} /> 
+        <Route path="/comatch" element={<Layout><CoMatch/></Layout>} />
+        <Route path="/favorites" element={<Layout><FavoritesPage/></Layout>} />
+        <Route path="/wishlist" element={<Layout><WishlistPage/></Layout>} />
+        <Route path="/watched" element={<Layout><WatchedPage/></Layout>} />
+        <Route path="/modal" element={<ChallengeQuestionModal/>}/>
+        <Route path="/modalQ" element={<ChallengeQuestionStarterModal/>}/>
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/friends" element={<Friends />} />
+
+        {/* deneme */}
+        <Route path="/EditProfileModal" element={<EditProfileModal/>} />
+        <Route path="/chatdeneme" element={<ChatDeneme />} />
+
 
         {/* page or modal test routes */}
         <Route path="/forgetPassword" element={<ForgetPasswordPage />} />
