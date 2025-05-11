@@ -1,7 +1,12 @@
 import React from 'react'
 import { Box, Button,  Grid, Typography } from '@mui/material';
 
-const Stat = ({ level, lastActivity, badge, friends, watched, wishlist, activeChallenges }) => {
+const Stat = ({ level, lastActivity, badge, friends, watched, wishlist, activeChallenges, setIsShowEditProfileModal }) => {
+
+  const handleEditProfile = () => {
+    setIsShowEditProfileModal(true);
+  }
+
   return (
     <Grid item xs={12} md={4}>
           <Box sx={{ p: 3, backgroundColor: 'rgba(128,0,0,0.7)', borderRadius: 2, height: '100%', textAlign: 'center' }}>
@@ -9,7 +14,7 @@ const Stat = ({ level, lastActivity, badge, friends, watched, wishlist, activeCh
               LEVEL <Box sx={{ backgroundColor: 'white', color: 'black', borderRadius: '50%', width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', ml: 1 }}>{level}</Box>
             </Typography>
             <Typography variant="subtitle2" sx={{ mt: 1 }}>LAST ACTIVITY: {lastActivity}</Typography>
-            <Button variant="contained" sx={{ mt: 2, backgroundColor: '#800000', width: '100%' }}>Edit Profile</Button>
+            <Button variant="contained" sx={{ mt: 2, backgroundColor: '#800000', width: '100%' }} onClick={handleEditProfile}>Edit Profile</Button>
             <Typography variant="h6" sx={{ mt: 3 }}>Badges {badge}</Typography>
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 1 }}>
               {[...Array(5)].map((_, index) => (
