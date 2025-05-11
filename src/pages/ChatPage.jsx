@@ -1,19 +1,53 @@
-import React, { useState } from 'react';
-import {
-  Box,
-  Typography,
-  Avatar,
-  TextField,
-  IconButton,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Paper
-} from '@mui/material';
+import { Box, Typography, Avatar, TextField, IconButton } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
+import SentMessage from '../components/chat/SentMessage.jsx';
+import RecivedMessage from '../components/chat/RecivedMessage.jsx';
+import ChatList from '../components/chat/ChatList.jsx';
+import { useSocket } from '../components/hooks/useSocket.js';
+import { useEffect, useState } from 'react';
 
 const ChatPage = () => {
+
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]); // Tüm gelen/giden mesajlar
+  const [selectedUser, setSelectedUser] = useState(null); // Tıklanan kişi
+  const { socket, isConnected } = useSocket();
+
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleMessage = (msg) => {
+      setMessages((prev) => [...prev, { ...msg, isOwn: false }]);
+    };
+
+    socket.on("receiveMessage", handleMessage);
+
+    return () => {
+      socket.off("receiveMessage", handleMessage);
+    };
+  }, [socket]);
+
+  const sendMessage = (text) => {
+    if (!selectedUser || !text) return;
+
+    console.log("Mesaj gönderildi:", text);
+
+    const msg = {
+      from: "Abdullah",
+      to: selectedUser.name,
+      text,
+      isOwn: true
+    };
+
+    socket.emit("sendMessage", msg);
+    setMessages((prev) => [...prev, msg]);
+    setMessage("");
+  };
+
+  // ✅ return kısmı artık en sonda, hook'lardan sonra geliyor
+  if (!isConnected || !socket) {
+    return <div>Bağlanıyor...</div>;
+  }
 
   return (
     <Box
@@ -27,28 +61,8 @@ const ChatPage = () => {
       }}
     >
       {/* SOL PANEL */}
-      <Box
-        sx={{
-          width: 300,
-          bgcolor: 'rgba(0,0,0,0.85)',
-          overflowY: 'auto',
-          p: 2,
-        }}
-      >
-        <Typography variant="h6" fontWeight="bold" gutterBottom>
-          Messages
-        </Typography>
-        <List>
-          {[...Array(12)].map((_, index) => (
-            <ListItem button key={index} sx={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-              <ListItemAvatar>
-                <Avatar />
-              </ListItemAvatar>
-              <ListItemText primary="Dreath" primaryTypographyProps={{ color: 'white' }} />
-            </ListItem>
-          ))}
-        </List>
-      </Box>
+      <ChatList onSelectUser={setSelectedUser} selectedUser={selectedUser} />
+
 
       {/* SAĞ PANEL */}
       <Box
@@ -76,43 +90,19 @@ const ChatPage = () => {
           }}
         >
           <Avatar />
-          <Typography variant="h6" fontWeight="bold">Dreath</Typography>
+          <Typography variant="h6" fontWeight="bold">{ selectedUser.name }</Typography>
         </Box>
         </Box>
 
         {/* MESAJLAR */}
         <Box sx={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 2 }}>
-          {/* Gelen mesaj */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Avatar />
-            <Paper sx={{ bgcolor: 'rgba(196, 61, 55, 0.8)', px: 2, py: 1, borderRadius: 4 }}>
-              <Typography color="white" fontWeight="bold">Message</Typography>
-            </Paper>
-          </Box>
-
-          {/* Gelen mesaj */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Avatar />
-            <Paper sx={{ bgcolor: 'rgba(196, 61, 55, 0.8)', px: 2, py: 1, borderRadius: 4 }}>
-              <Typography color="white" fontWeight="bold">Message</Typography>
-            </Paper>
-          </Box>
-
-          {/* Giden mesaj */}
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 1 }}>
-            <Paper sx={{ bgcolor: 'rgba(196, 61, 55, 0.8)', px: 2, py: 1, borderRadius: 4 }}>
-              <Typography color="white" fontWeight="bold">Message</Typography>
-            </Paper>
-            <Avatar />
-          </Box>
-
-          {/* Giden mesaj */}
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 1 }}>
-            <Paper sx={{ bgcolor: 'rgba(196, 61, 55, 0.8)', px: 2, py: 1, borderRadius: 4 }}>
-              <Typography color="white" fontWeight="bold">Message</Typography>
-            </Paper>
-            <Avatar />
-          </Box>
+          {messages.map((msg, i) =>
+            msg.isOwn ? (
+              <SentMessage key={i} message={msg.text} />
+            ) : (
+              <RecivedMessage key={i} message={msg.text} />
+            )
+          )}
         </Box>
 
         {/* MESAJ GİRİŞİ */}
@@ -134,8 +124,15 @@ const ChatPage = () => {
               disableUnderline: true,
               sx: { color: 'white', pl: 2 },
             }}
+            onChange={(e) => setMessage(e.target.value)}
+            value={message}
           />
-          <IconButton>
+          <IconButton onClick={() => {
+            sendMessage(message);
+            setMessage("");
+            console.log("button calisiyor:", message);
+            }
+          }>
             <SendIcon sx={{ color: 'white' }} />
           </IconButton>
         </Box>
