@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Avatar, Box, Grid, Typography } from '@mui/material';
 import Post from '../components/Profile/Post.jsx';
 import Stat from '../components/Profile/Stat.jsx';
+import EditProfileModal from '../modals/profile/EditProfileModal.jsx';
 
 const ProfilePage = () => {
 
@@ -22,6 +23,7 @@ const ProfilePage = () => {
     { id: 2, content: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', tags: ['Batman'], category: 'Action' },
     { id: 3, content: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', tags: ['Superman'], category: 'Adventure' },
   ]);
+  const [IsShowEditProfileModal, setIsShowEditProfileModal] = useState(false);
 
   const handleEditProfile = () => {
     // Logic to edit profile
@@ -74,8 +76,13 @@ const ProfilePage = () => {
           wishlist={wishlist}
           activeChallenges={activeChallenges}
           favoriteMovies={favoriteMovies}
+          setIsShowEditProfileModal={setIsShowEditProfileModal}
         />
       </Grid>
+
+      { IsShowEditProfileModal && (
+        <EditProfileModal setIsShowEditProfileModal={setIsShowEditProfileModal} avatar={avatar} nickname={nickname} name={name} description={description}/>
+      )}
     </Box>
   );
 };
