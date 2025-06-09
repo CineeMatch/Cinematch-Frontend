@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, Link, Paper, InputAdornment, IconButton } from '@mui/material';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-// import { Register } from '../../api/auth/auth';
+import { register } from '../api/auth/auth';
 
 const RegisterPage = () => {
 
@@ -15,7 +15,7 @@ const RegisterPage = () => {
   const [showPasswordCorrect, setShowPasswordCorrect] = useState(false);
   const [emailError, setEmailError] = useState(false);
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // ✅ Email formatını kontrol eden fonksiyon
   const isValidEmail = (email) => {
@@ -37,24 +37,25 @@ const RegisterPage = () => {
       return;
     }
 
-    // const userData = {
-    //   firstname,
-    //   nickname,
-    //   email,
-    //   password,
-    //   passwordCorrect
-    // };
+    const userData = {
+      firstname,
+      nickname,
+      email,
+      password,
+      passwordCorrect
+    };
 
-    // const fetchData = async () => {
-    //   try {
-    //     const response = await Register(userData);
-    //     navigate('/home');
-    //   } catch (error) {
-    //     console.error("Registration error:", error); // console.error yerine bir natification kütüphanesi kullanılanılıcak
-    //   }
-    // };
+    const fetchData = async (data) => {
+      try {
+        const response = await register(data);
+        console.log("Registration successful:", response);
+        navigate('/home');
+      } catch (error) {
+        console.error("Registration error:", error); // console.error yerine bir natification kütüphanesi kullanılanılıcak
+      }
+    };
 
-    // fetchData();
+    fetchData(userData);
   }
 
   return (

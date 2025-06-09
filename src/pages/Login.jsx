@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, TextField, Button, Checkbox, FormControlLabel, Typography, Link, Paper, InputAdornment, IconButton } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { login } from '../api/auth/auth';
 
 const LoginPage = () => {
 
@@ -11,7 +12,7 @@ const LoginPage = () => {
   const [emailError, setEmailError] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // ✅ Email formatını kontrol eden fonksiyon
   const isValidEmail = (email) => {
@@ -43,21 +44,21 @@ const LoginPage = () => {
     localStorage.removeItem('rememberedEmail'); // ❌ kutu işaretli değilse sil
   }
 
-    // const userData = {
-    //   email,
-    //   password,
-    // };
+    const userData = {
+      email,
+      password,
+    };
 
-    // const fetchData = async (data) => {
-    //   try {
-    //     // const response = await Login(data);
-    //     navigate('/home');
-    //   } catch (error) {
-    //     console.error("Login error:", error); // console.error yerine bir natification kütüphanesi kullanılanılıcak
-    //   }
-    // }
+    const fetchData = async (data) => {
+      try {
+        const response = await login(data);
+        navigate('/');
+      } catch (error) {
+        console.error("Login error:", error); // console.error yerine bir natification kütüphanesi kullanılanılıcak
+      }
+    }
     
-    // // fetchData(userData);
+    fetchData(userData);
     
     console.log("Login data:", { email, password }); // ✅ Giriş verilerini kontrol et
 
