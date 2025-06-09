@@ -17,7 +17,7 @@ const ProfilePage = () => {
   const [watched, setWatched] = useState(18);
   const [wishlist, setWishlist] = useState(35);
   const [activeChallenges, setActiveChallenges] = useState(7);
-  const [favoriteMovies, setFavoriteMovies] = useState(21)
+  const [favorites, setFavorites] = useState(21)
   const [posts, setPosts] = useState([
     { id: 1, content: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', tags: ['Spiderman'], category: 'Fantasy' },
     { id: 2, content: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', tags: ['Batman'], category: 'Action' },
@@ -75,7 +75,7 @@ const ProfilePage = () => {
           watched={watched}
           wishlist={wishlist}
           activeChallenges={activeChallenges}
-          favoriteMovies={favoriteMovies}
+          favorites={favorites}
           setIsShowEditProfileModal={setIsShowEditProfileModal}
         />
       </Grid>

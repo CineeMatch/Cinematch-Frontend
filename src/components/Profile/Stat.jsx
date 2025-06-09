@@ -1,10 +1,33 @@
 import React from 'react'
 import { Box, Button,  Grid, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
-const Stat = ({ level, lastActivity, badge, friends, watched, wishlist, activeChallenges, setIsShowEditProfileModal }) => {
+const Stat = ({ level, lastActivity, badge, friends, favorites, watched, wishlist, activeChallenges, setIsShowEditProfileModal }) => {
+
+  const navigate = useNavigate();
 
   const handleEditProfile = () => {
     setIsShowEditProfileModal(true);
+  }
+
+  const navigateToFriends = () => {
+    navigate('/friends');
+  }
+
+  const navigateToFavorites = () => {
+    navigate('/favorites');
+  }
+
+  const navigateToWatched = () => {
+    navigate('/watched');
+  }
+
+  const navigateToWishlist = () => {
+    navigate('/wishlist');
+  }
+
+  const navigateToActiveChallenges = () => {
+    navigate('/activeChallange');
   }
 
   return (
@@ -22,10 +45,11 @@ const Stat = ({ level, lastActivity, badge, friends, watched, wishlist, activeCh
               ))}
             </Box>
             <Box sx={{ mt: 3, textAlign: 'left', pl: 2 }}>
-              <Typography variant="body1">Friends<span style={{ float: 'right', marginRight: '10px' }}>{friends}</span></Typography>
-              <Typography variant="body1">Watched<span style={{ float: 'right', marginRight: '10px' }}>{watched}</span></Typography>
-              <Typography variant="body1">Wish List<span style={{ float: 'right', marginRight: '10px' }}>{wishlist}</span></Typography>
-              <Typography variant="body1">Active Challanges<span style={{ float: 'right', marginRight: '10px' }}>{activeChallenges}</span></Typography>
+              <Typography onClick={navigateToFriends} variant="body1" sx={{ cursor: 'pointer' }}>Friends<span style={{ float: 'right', marginRight: '10px' }}>{friends}</span></Typography>
+              <Typography onClick={navigateToFavorites} variant="body1" sx={{ cursor: 'pointer' }}>Favorites<span style={{ float: 'right', marginRight: '10px' }}>{favorites}</span></Typography>
+              <Typography onClick={navigateToWatched} variant="body1" sx={{ cursor: 'pointer' }}>Watched<span style={{ float: 'right', marginRight: '10px' }}>{watched}</span></Typography>
+              <Typography onClick={navigateToWishlist} variant="body1" sx={{ cursor: 'pointer' }}>Wishlist<span style={{ float: 'right', marginRight: '10px' }}>{wishlist}</span></Typography>
+              <Typography onClick={navigateToActiveChallenges} variant="body1" sx={{ cursor: 'pointer' }}>Active Challenges<span style={{ float: 'right', marginRight: '10px' }}>{activeChallenges}</span></Typography>
             </Box>
           </Box>
         </Grid>
