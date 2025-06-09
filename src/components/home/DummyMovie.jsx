@@ -1,13 +1,27 @@
 import React from "react";
+import { useEffect } from "react";
+import { getRandomMovie } from "../../api/movie/movie";
 import { Box, Button, Typography, IconButton } from "@mui/material";
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import InfoIcon from "@mui/icons-material/Info";
 
 
 export default function DummyMovie(props) {
-  const dummyImage = "/images/dummymoviebackground.webp";
-  const dummyMovieName = "NeonLIGHTS";
-
+  const [randomMovie, setRandomMovie] = React.useState(null);
+ 
+  useEffect(() => {
+    fetchRandomMovie();
+  }, []);
+  const fetchRandomMovie = async () => {
+    try {
+      const randomMovie = await getRandomMovie();
+      setRandomMovie(randomMovie[0]);
+      props.onRandomMovieChange?.(randomMovie);
+    } catch (error) {
+      setRandomMovie(null);
+      props.onRandomMovieChange?.(null);
+    }
+  };
   return (
     <Box
       sx={{
@@ -16,7 +30,7 @@ export default function DummyMovie(props) {
         height: "500px",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        backgroundImage: `url(${dummyImage})`,
+        backgroundImage: `url(${randomMovie?.background_url})`,
         display: "flex",
         alignItems: "center",
         justifyContent: "flex-start",
@@ -25,7 +39,7 @@ export default function DummyMovie(props) {
     >
       <Box sx={{ color: "white", maxWidth: "40%" }}>
         <Typography variant="h2" fontWeight="bold">
-          {dummyMovieName}
+          {randomMovie?.title}
         </Typography>
         <Box sx={{ display: "flex", gap: 1 }}>
           <Button variant="solid" sx={{ backgroundColor: "white" }}>

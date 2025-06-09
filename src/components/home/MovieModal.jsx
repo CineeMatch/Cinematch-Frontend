@@ -34,7 +34,9 @@ const dummyMovie = {
 };
 export default function MovieModal(props) {
   const [openChildFriendsModal,setOpenChildOpenFriendsModal]=React.useState(false);
-
+  const movie= props.movie;
+  const hour=movie.duration/60;
+  const min=movie.duration%60;
 
   return (
     <div>
@@ -45,7 +47,7 @@ export default function MovieModal(props) {
             sx={{
               width: '100%',
               height: '100%',
-              backgroundImage: `url(${dummyMovie.image})`,
+              backgroundImage: `url(${movie.background_url})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               position: 'relative',
@@ -98,8 +100,8 @@ export default function MovieModal(props) {
                     padding: '4px 8px',
                     borderRadius: '4px',
                   }}
-                >
-                  You can watch it on {dummyMovie.platform}
+                >{"platformu boş geliyormuş"}
+                  You can watch it on
                 </Button>
 
                 <Box sx={{ display: 'flex', gap: 1, ml: 1 }}>
@@ -127,15 +129,15 @@ export default function MovieModal(props) {
             >
               {/* Year - Duration - Age */}
               <Box sx={{ display: "flex", justifyContent: "space-between", width: "165px" }}>
-                <Typography sx={{ color: "rgba(255,255,255,0.7)", fontSize: "12px" }}>{dummyMovie.year}</Typography>
-                <Typography sx={{ color: "rgba(255,255,255,0.7)", fontSize: "12px" }}>{dummyMovie.duration}</Typography>
-                <Typography sx={{ color: "rgba(255,255,255,0.7)", fontSize: "12px" }}>{dummyMovie.age}</Typography>
+                <Typography sx={{ color: "rgba(255,255,255,0.7)", fontSize: "12px" }}>{movie.release_year}</Typography>
+                <Typography sx={{ color: "rgba(255,255,255,0.7)", fontSize: "12px" }}>{`${hour}h ${min}m`}</Typography>
+                <Typography sx={{ color: "rgba(255,255,255,0.7)", fontSize: "12px" }}>{movie.age_rating}</Typography>
               </Box>
 
               {/* Description + Details */}
               <Box sx={{ display: "flex", flexDirection: "row", paddingTop: 1 }}>
                 <Box sx={{ width: "390px", paddingRight: "10px" }}>
-                  <Typography sx={{fontSize:"15px",color:"rgba(255,255,255,0.9)"}}>{dummyMovie.description}</Typography>
+                  <Typography sx={{fontSize:"15px",color:"rgba(255,255,255,0.9)"}}>{movie.description}</Typography>
                 </Box>
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
                   <Typography sx={{  fontStyle: 'italic',fontSize:"15px",color:"rgba(255,255,255,0.9)" }}><strong>Genres:</strong> {dummyMovie.genres}</Typography>

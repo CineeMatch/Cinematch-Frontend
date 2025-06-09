@@ -2,14 +2,28 @@ import React, { useRef } from 'react';
 import { Box, Typography, IconButton } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { getTop10Movies } from '../../api/movie/movie';
 
-const topMovies = Array.from({ length: 10 }, (_, i) => ({
-  id: i + 1,
-  title: `Movie ${i + 1}`,
-  image: '/images/prestige.png', // Kendi posterlerinle değiştir
-}));
+import { useEffect } from 'react';
 
 export default function Top10Carousel(props) {
+  const [topMovies, setTopMovies] = React.useState([]);
+
+  useEffect(() => {
+    fetchTopMovies();
+  }, []);
+  const fetchTopMovies = async () => {
+    try {
+      const movies = await getTop10Movies();
+      console.log("Top 10 Movies:", movies);
+      setTopMovies(movies);
+      props.onTopMoviesChange?.(movies);
+    } catch (error) {
+      setTopMovies(null);
+      props.onTopMoviesChange?.(null);
+    }
+  };
+
   const scrollRef = useRef(null);
     const scroll = (direction) => {
       if (scrollRef.current) {
@@ -71,7 +85,7 @@ export default function Top10Carousel(props) {
             {/* Poster */}
             <Box
               component="img"
-              src={movie.image}
+              src={movie.poster_url}
               alt={movie.title}
               sx={{
                 width: '100%',

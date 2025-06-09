@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import React from "react";
-import UserCard from "../components/coMatch/UserCard.jsx";
+import UserCard from "../components/coMatch/userCard.jsx";
 import MovieCarousel from "../components/coMatch/MovieCarouselMatch.jsx";
 import { useState } from "react";
 import { IconButton } from "@mui/material";
