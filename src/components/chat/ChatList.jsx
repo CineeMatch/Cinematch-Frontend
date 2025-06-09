@@ -1,6 +1,26 @@
 import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { getCurrentUserFriendsList } from '../../api/profile/friends'
 
 const ChatList = ({ onSelectUser, selectedUser }) => {
+
+  const [friends, setFriends] = useState([])
+
+  useEffect(() => {
+  
+      const fetchFriends = async () => {
+        try {
+          const response = await getCurrentUserFriendsList();
+          console.log("2.",response);
+          setFriends(response);
+        } catch (error) {
+          console.error('Error fetching friends:', error);
+        }
+      };
+      fetchFriends();
+    }
+    , []);
+
   
   const userData = [
     {
@@ -68,7 +88,7 @@ const ChatList = ({ onSelectUser, selectedUser }) => {
           Messages
         </Typography>
         <List>
-          {userData.map((user, index) => {
+          {friends.map((user, index) => {
 
             const isSelected = selectedUser?.name === user.name;
 

@@ -49,6 +49,8 @@ const ChatPage = () => {
     return <div>Bağlanıyor...</div>;
   }
 
+  console.log(selectedUser.id)
+
   return (
     <Box
       sx={{
