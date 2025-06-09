@@ -10,7 +10,7 @@ const ChatPage = () => {
 
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]); // Tüm gelen/giden mesajlar
-  const [selectedUser, setSelectedUser] = useState(null); // Tıklanan kişi
+  const [selectedUser, setSelectedUser] = useState("Abdullah"); // Tıklanan kişi
   const { socket, isConnected } = useSocket();
 
   useEffect(() => {
