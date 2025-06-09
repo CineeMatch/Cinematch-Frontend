@@ -6,7 +6,8 @@ import { register } from '../api/auth/auth';
 
 const RegisterPage = () => {
 
-  const [firstname, setFirstname] = useState('');
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -38,7 +39,8 @@ const RegisterPage = () => {
     }
 
     const userData = {
-      firstname,
+      name,
+      surname,
       nickname,
       email,
       password,
@@ -49,7 +51,7 @@ const RegisterPage = () => {
       try {
         const response = await register(data);
         console.log("Registration successful:", response);
-        navigate('/home');
+        navigate('/');
       } catch (error) {
         console.error("Registration error:", error); // console.error yerine bir natification kütüphanesi kullanılanılıcak
       }
@@ -85,7 +87,7 @@ const RegisterPage = () => {
         </Typography>
 
         <TextField
-          label="Firstname"
+          label="name"
           variant="filled"
           fullWidth
           margin="normal"
@@ -99,8 +101,27 @@ const RegisterPage = () => {
           InputLabelProps={{
             style: { color: 'gray' },
           }}
-          value={firstname}
-          onChange={(e) => setFirstname(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+
+          <TextField
+            label="surname"
+            variant="filled"
+            fullWidth
+            margin="normal"
+            InputProps={{
+              disableUnderline: true,
+              sx: {
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                color: 'white',
+              },
+            }}
+            InputLabelProps={{
+              style: { color: 'gray' },
+            }}
+            value={surname}
+            onChange={(e) => setSurname(e.target.value)}
         />
 
         <TextField
