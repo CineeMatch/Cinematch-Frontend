@@ -64,7 +64,8 @@ const EditProfileModal = ({ setIsShowEditProfileModal, avatar, nickname, name, d
                     },
                     '& .MuiInputLabel-root.Mui-focused': {
                     color: '#f44336' // label rengi focus olduğunda
-                    }
+                    },
+                    input: { color: 'white' }, fieldset: { borderColor: 'gray' }
                 }}
             />
             <TextField
@@ -88,7 +89,8 @@ const EditProfileModal = ({ setIsShowEditProfileModal, avatar, nickname, name, d
                     },
                     '& .MuiInputLabel-root.Mui-focused': {
                     color: '#f44336' // label rengi focus olduğunda
-                    }
+                    },
+                    input: { color: 'white' }, fieldset: { borderColor: 'gray' }
                 }}
             />
             <TextField
@@ -114,10 +116,11 @@ const EditProfileModal = ({ setIsShowEditProfileModal, avatar, nickname, name, d
                     },
                     '& .MuiInputLabel-root.Mui-focused': {
                     color: '#f44336' // label rengi focus olduğunda
-                    }
+                    },
+                    input: { color: 'white' }, fieldset: { borderColor: 'gray' }
                 }}
             />
-            <Button variant="contained" color="primary" fullWidth onClick={handleSave} sx={{backgroundColor: '#b71c1c', '&:hover': {backgroundColor: '#c62828' }}}>
+            <Button variant="contained" color="primary" fullWidth onClick={handleSave} sx={{backgroundColor: '#b71c1c', '&:hover': {backgroundColor: '#c62828' }, fontWeight: 'bold'}}>
                 Save Changes
             </Button>
         </Box>
