@@ -11,7 +11,6 @@ const ChatList = ({ onSelectUser, selectedUser }) => {
       const fetchFriends = async () => {
         try {
           const response = await getCurrentUserFriendsList();
-          console.log("2.",response);
           setFriends(response);
         } catch (error) {
           console.error('Error fetching friends:', error);
@@ -20,60 +19,6 @@ const ChatList = ({ onSelectUser, selectedUser }) => {
       fetchFriends();
     }
     , []);
-
-  
-  const userData = [
-    {
-      id: 1,
-      name: 'Dreath',
-      avatar: '/images/avatar.png',
-    },
-    {
-      id: 2,
-      name: 'John Doe',
-      avatar: '/images/avatar.png',
-    },
-    {
-      id: 3,
-      name: 'Jane Smith',
-      avatar: '/images/avatar.png',
-    },
-    {
-      id: 4,
-      name: 'Alice Johnson',
-      avatar: '/images/avatar.png',
-    },
-    {
-      id: 5,
-      name: 'Bob Brown',
-      avatar: '/images/avatar.png',
-    },
-    {
-      id: 6,
-      name: 'Charlie Davis',
-      avatar: '/images/avatar.png',
-    },
-    {
-      id: 7,
-      name: 'David Wilson',
-      avatar: '/images/avatar.png',
-    },
-    {
-      id: 8,
-      name: 'Eva Green',
-      avatar: '/images/avatar.png',
-    },
-    {
-      id: 9,
-      name: 'Frank White',
-      avatar: '/images/avatar.png',
-    },
-    {
-      id: 10,
-      name: 'Grace Lee',
-      avatar: '/images/avatar.png',
-    },
-  ]
 
   return (
     <Box
