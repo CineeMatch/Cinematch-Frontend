@@ -16,7 +16,6 @@ const Friends = () => {
     const fetchFriends = async () => {
       try {
         const response = await getCurrentUserFriendsList();
-        console.log("2.",response);
         setFriends(response);
       } catch (error) {
         console.error('Error fetching friends:', error);
