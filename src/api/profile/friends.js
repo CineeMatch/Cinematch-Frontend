@@ -9,7 +9,6 @@ export const getCurrentUserFriendsList = async () => {
                 Authorization: `Bearer ${token}`,
             },
         }).then((response) => {
-            console.log("1111.", response.data);
             return response;
         });
         return response.data;
