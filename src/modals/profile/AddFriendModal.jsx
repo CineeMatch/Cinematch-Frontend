@@ -80,7 +80,8 @@ const AddFriendModal = ({ setIsShowAddFriendModal }) => {
             },
             '& .MuiInputLabel-root.Mui-focused': {
             color: '#f44336' // label rengi focus olduğunda
-            }
+            },
+            input: { color: 'white' }, fieldset: { borderColor: 'gray' }
         }}
         />
       </DialogContent>
