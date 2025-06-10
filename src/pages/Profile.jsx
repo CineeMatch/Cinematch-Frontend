@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Avatar, Box, Grid, Typography } from '@mui/material';
 import Post from '../components/Profile/Post.jsx';
 import Stat from '../components/Profile/Stat.jsx';
 import EditProfileModal from '../modals/profile/EditProfileModal.jsx';
+import { getActiveUser } from '../api/profile/user.js';
+
 
 const ProfilePage = () => {
 
@@ -24,6 +26,33 @@ const ProfilePage = () => {
     { id: 3, content: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', tags: ['Superman'], category: 'Adventure' },
   ]);
   const [IsShowEditProfileModal, setIsShowEditProfileModal] = useState(false);
+
+  useEffect(() => {
+  
+      const fetchActiveUser = async () => {
+        try {
+          const response = await getActiveUser();
+          setNickname(response.nickname);
+          setAvatar(response.avatar);
+          setName(response.name);
+          setDescription(response.description);
+          setLevel(response.level);
+          setLastActivity(response.lastActivity);
+          setBadge(response.badge);
+          // setFriends(response.friends);
+          // setWatched(response.watched);
+          // setWishlist(response.wishlist);
+          // setActiveChallenges(response.activeChallenges);
+          // setFavorites(response.favorites);
+          console.log("2.",response);
+          
+        } catch (error) {
+          console.error('Error fetching friends:', error);
+        }
+      };
+      fetchActiveUser();
+    }
+    , []);
 
   const handleEditProfile = () => {
     // Logic to edit profile
