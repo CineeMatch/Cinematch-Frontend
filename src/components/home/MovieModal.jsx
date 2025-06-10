@@ -35,7 +35,9 @@ const dummyMovie = {
 export default function MovieModal(props) {
   const [openChildFriendsModal,setOpenChildOpenFriendsModal]=React.useState(false);
   const movie= props.movie;
-  const hour=movie.duration/60;
+  if (!movie) return null;
+  console.log("movie",movie);
+  const hour=parseInt(movie.duration/60);
   const min=movie.duration%60;
 
   return (
@@ -85,11 +87,11 @@ export default function MovieModal(props) {
                 fontWeight="bold"
                 sx={{ textShadow: '2px 2px 6px rgba(0,0,0,0.8)' }}
               >
-                {dummyMovie.name}
+                {movie.title}
               </Typography>
 
-              <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
-                <Button
+             <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+                {movie?.platforms?.[0] && (<Button
                   variant="contained"
                   sx={{
                     backgroundColor: 'white',
@@ -100,9 +102,8 @@ export default function MovieModal(props) {
                     padding: '4px 8px',
                     borderRadius: '4px',
                   }}
-                >{"platformu boş geliyormuş"}
-                  You can watch it on
-                </Button>
+                >
+                You can watch it on {movie.platforms[0]}       </Button>)}
 
                 <Box sx={{ display: 'flex', gap: 1, ml: 1 }}>
                   <AddCircleIcon sx={{ color: 'white' }} />
@@ -140,9 +141,9 @@ export default function MovieModal(props) {
                   <Typography sx={{fontSize:"15px",color:"rgba(255,255,255,0.9)"}}>{movie.description}</Typography>
                 </Box>
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <Typography sx={{  fontStyle: 'italic',fontSize:"15px",color:"rgba(255,255,255,0.9)" }}><strong>Genres:</strong> {dummyMovie.genres}</Typography>
-                  <Typography sx={{ mt: 1 ,fontSize:"15px",color:"rgba(255,255,255,0.9)"}}><strong>Stars:</strong> {dummyMovie.stars}</Typography>
-                  <Typography sx={{ mt: 1 ,fontSize:"15px",color:"rgba(255,255,255,0.9)"}}><strong>Directors:</strong> {dummyMovie.directors}</Typography>
+                  <Typography sx={{  fontStyle: 'italic',fontSize:"15px",color:"rgba(255,255,255,0.9)" }}><strong>Genres:</strong> {movie.categories}</Typography>
+                  <Typography sx={{ mt: 1 ,fontSize:"15px",color:"rgba(255,255,255,0.9)"}}><strong>Stars:</strong> {movie.actor}</Typography>
+                  <Typography sx={{ mt: 1 ,fontSize:"15px",color:"rgba(255,255,255,0.9)"}}><strong>Directors:</strong> {movie.director}</Typography>
                 </Box>
               </Box>
             </Box>

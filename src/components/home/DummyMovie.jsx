@@ -22,6 +22,10 @@ export default function DummyMovie(props) {
       props.onRandomMovieChange?.(null);
     }
   };
+  const handleClickOnInfo = () => {
+    props.openMovieModal?.(true);
+    props.movie?.(randomMovie);
+  }
   return (
     <Box
       sx={{
@@ -42,17 +46,17 @@ export default function DummyMovie(props) {
           {randomMovie?.title}
         </Typography>
         <Box sx={{ display: "flex", gap: 1 }}>
-          <Button variant="solid" sx={{ backgroundColor: "white" }}>
+          {randomMovie?.platforms?.[0] && <Button variant="solid" sx={{ backgroundColor: "white" }}>
             <Typography variant="h6" sx={{ fontSize: "14px", color: "black" }}>
-              You can watch on smthng
+              You can watch on {randomMovie.platforms[0]}
             </Typography>
-          </Button>
+          </Button>}
           <IconButton >
             <AddCircleRoundedIcon sx={{ fontSize: "40px", color: "white" }} />
           </IconButton>
           <IconButton
           >
-            <InfoIcon onClick={props.onClickInfoButton} sx={{ fontSize: "40px", color: "white" }} />
+            <InfoIcon onClick={handleClickOnInfo} sx={{ fontSize: "40px", color: "white" }} />
           </IconButton>
         </Box>
       </Box>

@@ -17,6 +17,8 @@ export const getMovie = async (movieId) => {
     toast.error("Film bulunamadı.");
   }
 };
+
+
 export const searchMovie = async (title) => {
   try {
     const token = localStorage.getItem("authToken");
@@ -42,13 +44,23 @@ export const getTop10Movies = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response.data.movies);
-    return response.data.movies;
+    console.log("TTop 10 movies:", response.data);
+   const data = response.data.movies.map(movie => {
+  return {
+    ...movie,
+    categories: movie.categories.map(category => category.name).join(", "),
+    platforms: movie.platforms?.map(platform => platform.name).join(", ") || []
+  };
+});
+    console.log("ttop 10 movies:", data);
+    return data;
   } catch (error) {
     console.error("Failed to get movie:", error);
     toast.error("Filmler bulunamadı.");
   }
 };
+
+
 
 export const getRandomMovie = async () => {
   try {
@@ -58,8 +70,15 @@ export const getRandomMovie = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("response", response.data);
-    return response.data;
+   const data = response.data.map(movie => {
+  return {
+    ...movie,
+    categories: movie.categories.map(category => category.name).join(", "),
+    platforms: movie.platforms?.map(platform => platform.name).join(", ") || []
+  };
+});
+console.log("data", data);
+    return data;
   } catch (error) {
     console.error("Failed to get movie:", error);
     toast.error("Film bulunamadı.");
@@ -73,7 +92,16 @@ export const get10RandomMovie = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data;
+    console.log("response", response.data);
+const data = response.data.map(movie => {
+  return {
+    ...movie,
+    categories: movie.categories.map(category => category.name).join(", "),
+    platforms: movie.platforms?.map(platform => platform.name).join(", ") || []
+  };
+});
+console.log("data", data);
+    return data;
   } catch (error) {
     console.error("Failed to get movie:", error);
     toast.error("Filmler bulunamadı.");

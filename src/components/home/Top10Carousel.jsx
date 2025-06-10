@@ -8,6 +8,8 @@ import { useEffect } from 'react';
 
 export default function Top10Carousel(props) {
   const [topMovies, setTopMovies] = React.useState([]);
+  const [selecetedMovie, setSelectedMovie] = React.useState(null);
+  const [openMovieModal, setOpenMovieModal] = React.useState(false);
 
   useEffect(() => {
     fetchTopMovies();
@@ -22,6 +24,12 @@ export default function Top10Carousel(props) {
       setTopMovies(null);
       props.onTopMoviesChange?.(null);
     }
+  };
+  const handleMovieClick = (movie) => {
+    setSelectedMovie(movie);
+    setOpenMovieModal(true);
+    props.openMovieModal?.(true);
+    props.movie?.(movie);
   };
 
   const scrollRef = useRef(null);
@@ -42,7 +50,8 @@ export default function Top10Carousel(props) {
         paddingY: 1,
       }}
     >
-      <Typography sx={{ color: 'white', fontSize: 16, mb: 1 }}>Top 10</Typography>
+           <Typography sx={{ color: "white", marginLeft: "30px", fontSize: "20px", textAlign: "start" }}>
+     Top 10</Typography>
 
       <Box
         ref={scrollRef}
@@ -57,7 +66,7 @@ export default function Top10Carousel(props) {
         {topMovies.map((movie, index) => (
           <Box
             key={movie.id}
-            onClick={props.onClick}
+            onClick={() => handleMovieClick(movie)}
             sx={{
               position: 'relative',
               minWidth: 150,
