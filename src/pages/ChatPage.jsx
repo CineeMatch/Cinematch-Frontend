@@ -5,6 +5,7 @@ import RecivedMessage from '../components/chat/RecivedMessage.jsx';
 import ChatList from '../components/chat/ChatList.jsx';
 import { useSocket } from '../components/hooks/useSocket.js';
 import { useEffect, useState } from 'react';
+import { getActiveUser } from '../api/profile/user.js'; // Aktif kullanıcı bilgilerini almak için API çağrısı
 
 const ChatPage = () => {
 
@@ -12,37 +13,65 @@ const ChatPage = () => {
   const [messages, setMessages] = useState([]); // Tüm gelen/giden mesajlar
   const [selectedUser, setSelectedUser] = useState("Abdullah"); // Tıklanan kişi
   const { socket, isConnected } = useSocket();
+  const [activeUserId, setActiveUserId] = useState();
 
   useEffect(() => {
-    if (!socket) return;
+    
+    const fetchActiveUser = async () => {
+      try {
+        const response = await getActiveUser();
+        setActiveUserId(response.id);
+      } catch (error) {
+        console.error('Error fetching friends:', error);
+      }
+    };
+    fetchActiveUser();
+  }
+  , [activeUserId]);
 
+  useEffect(() => {
+    if (!socket || !selectedUser || !activeUserId) return;
+  
+    const chatRoom = [activeUserId, selectedUser.id].sort().join("_");
+    socket.emit('joinChat', { user1: activeUserId, user2: selectedUser.id });
+  
+    console.log("Join edilen oda:", chatRoom);
+  }, [socket, selectedUser, activeUserId]);
+
+  useEffect(() => {
+    if (!socket || !activeUserId) return;
+  
     const handleMessage = (msg) => {
+      if (msg.from === activeUserId) return; // kendi mesajınsa ekleme!
       setMessages((prev) => [...prev, { ...msg, isOwn: false }]);
     };
-
+  
     socket.on("receiveMessage", handleMessage);
-
+  
     return () => {
       socket.off("receiveMessage", handleMessage);
     };
-  }, [socket]);
+  }, [socket, activeUserId]);
+  
 
   const sendMessage = (text) => {
     if (!selectedUser || !text) return;
 
-    console.log("Mesaj gönderildi:", text);
-
+    console.log(selectedUser.id, "id'si ile mesaj gönderiliyor:", text);
+    console.log("Aktif kullanıcı id'si:", activeUserId);
+  
     const msg = {
-      from: "Abdullah",
-      to: selectedUser.name,
+      from: activeUserId,          // kullanıcı id’si
+      to: selectedUser.id,          // karşı tarafın id’si
       text,
       isOwn: true
     };
-
+  
     socket.emit("sendMessage", msg);
     setMessages((prev) => [...prev, msg]);
     setMessage("");
   };
+  
 
   // ✅ return kısmı artık en sonda, hook'lardan sonra geliyor
   if (!isConnected || !socket) {
@@ -132,7 +161,6 @@ const ChatPage = () => {
           <IconButton onClick={() => {
             sendMessage(message);
             setMessage("");
-            console.log("button calisiyor:", message);
             }
           }>
             <SendIcon sx={{ color: 'white' }} />
