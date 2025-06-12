@@ -146,3 +146,20 @@ console.log("data", data);
     toast.error("Filmler bulunamadı.");
   }
 }
+
+export const  searchMovies = async(title)=>{
+  try {
+     const token = localStorage.getItem("authToken");
+    const response = await axios.post(`${baseURL}/movie/search`,{title:title}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("response", response.data);
+  return response.data
+}
+   catch (error) {
+        console.error("Failed to get movie:", error);
+    toast.error("Filmler bulunamadı.");
+  }
+}

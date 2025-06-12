@@ -30,6 +30,7 @@ export default function MovieGrid({ movies, newSelectedMovies, setSelectedMovies
   };
 
   return (
+    
     <Grid container spacing={2} sx={{ padding: "10px" }}>
       {movies?.map((movie, index) => (
         <Grid item key={index} xs={2.5} sm={2} md={1.75} lg={1.2} xl={1}>
