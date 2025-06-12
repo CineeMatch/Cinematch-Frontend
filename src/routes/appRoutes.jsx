@@ -19,6 +19,7 @@ import ChallengeQuestionModal from '../modals/challenge/ChallangeQuestionModal.j
 import WatchedPage from '../pages/WatchedPage.jsx'
 import EditProfileModal from '../modals/profile/EditProfileModal.jsx'
 import ChatDeneme from '../components/ChatDeneme.jsx'
+import Users from '../pages/Users.jsx'
 
 export default function appRoutes() {
   return (
@@ -38,6 +39,7 @@ export default function appRoutes() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/friends" element={<Friends />} />
+        <Route path="/users" element={<Users />} />
 
         {/* deneme */}
         <Route path="/EditProfileModal" element={<EditProfileModal/>} />
