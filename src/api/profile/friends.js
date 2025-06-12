@@ -21,7 +21,7 @@ export const getCurrentUserFriendsList = async () => {
 export const addFriendByNickname = async (nickname) => {
     try {
         const token = localStorage.getItem('authToken');
-        const response = await axios.post(`${baseURL}/friend/create`, { nickname }, {
+        const response = await axios.post(`${baseURL}/friend/createforNickname`, { nickname }, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -29,6 +29,21 @@ export const addFriendByNickname = async (nickname) => {
         return response.data;
     } catch (error) {
         console.error('Error adding friend:', error);
+        throw error;
+    }
+}
+
+export const deleteFriendById = async (id) => {
+    try {
+        const token = localStorage.getItem('authToken');
+        const response = await axios.delete(`${baseURL}/friend/delete/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting friend:', error);
         throw error;
     }
 }
