@@ -18,6 +18,8 @@ useEffect(() => {
   fetch20Movies();
 }, []);
 
+
+
 const fetch20Movies = async () => {
   try {
     const response = await getRandomMovies(20);
@@ -56,17 +58,26 @@ const fetch20Movies = async () => {
         variant="h6"
         sx={{ padding:"20px 0px 10px 0px", color: 'white', alignContent: 'center' }}
       >
-        Sevdiğiniz en az 5 film seçin ve izleme geçmişinizi oluşturun...
+        Sevdiğiniz 5 filmi seçiniz...
       </Typography>
      <Autocomplete
         multiple
         id="custom-grid-autocomplete"
+          key={selectedMovies.map(m => m.id).join(',')} 
         options={movies}
         getOptionLabel={(movie) => movie.title}
+          isOptionEqualToValue={(option, value) => option.id === value.id} // 🔥 🔥 🔥
         value={selectedMovies}
-        onChange={(event, newValue) => setValue(newValue)}
+        onChange={(event, newValue) => {setSelectedMovies(newValue); console.log(selectedMovies)}}
         open={false} 
         disablePortal
+        slotProps={{
+    popupIndicator: {
+      sx: {
+        display: 'none',
+      },
+    },
+  }}
         sx={{ width: "95%", padding: "0px 20px 20px 20px", color: 'white' }}
         renderTags={(selected, getTagProps) =>
           selected.map((option, index) => (
@@ -94,15 +105,18 @@ const fetch20Movies = async () => {
   }}
   InputLabelProps={{
     sx: {
-      color: 'white', // label rengi
+      color: 'white', 
     },
   }} />
         )}
       />
 
 
-        <MovieGrid movies={movies} selectedMovies={setSelectedMovies} />
-
+<MovieGrid
+  movies={movies}
+  newSelectedMovies={selectedMovies}
+  setSelectedMovies={setSelectedMovies}
+/>
       </Box>
       
       </Box>
