@@ -1,7 +1,10 @@
 import { Box, TextField, Typography, Autocomplete, Chip } from "@mui/material";
 import { useEffect, useState } from "react";
-import MovieGrid from "../components/filmList/MovieGrid.jsx";
-import { getRandomMovies, getMoviesBySearch, searchMovie, searchMovies } from "../api/movie/movie.js";
+import MovieGrid from "../components/newUserMovieGrid/MovieGrid.jsx";
+import { getRandomMovies,  searchMovies } from "../api/movie/movie.js";
+import { Button } from "@mui/material"; 
+import { useNavigate } from 'react-router-dom';
+import { addMovieToFavoritesForNewUser } from "../api/movieType/movieType.js";
 
 export default function NewUserWatchedPage() {
   const [movies, setMovies] = useState([]); // Başlangıç 20 film
@@ -17,6 +20,8 @@ export default function NewUserWatchedPage() {
     const response = await getRandomMovies(20);
     setMovies(response);
   };
+    const navigate = useNavigate();
+
 
   // Arama metni değiştikçe API’den yeni sonuçları getir
   useEffect(() => {
@@ -40,6 +45,7 @@ export default function NewUserWatchedPage() {
     }
   };
 
+
   // Chip'lerin options içinden silinmemesi için options'a ekle
   const mergedOptions = [...searchResults, ...selectedMovies];
   const uniqueOptions = Array.from(
@@ -50,7 +56,7 @@ export default function NewUserWatchedPage() {
     <Box
       sx={{
         marginTop: "60px",
-        height: "91vh",
+   
         background: "linear-gradient(to bottom right, #0e0e0e, #2d0f0f)",
         display: "flex",
         justifyContent: "center",
@@ -84,7 +90,7 @@ export default function NewUserWatchedPage() {
           value={selectedMovies}
           inputValue={searchText}
           onInputChange={(e, newValue) => setSearchText(newValue)} // input metnini güncelle
-          onChange={(event, newValue) => setSelectedMovies(newValue)} // Chip'lerden seç/sil
+          onChange={(event, newValue) =>{ setSelectedMovies(newValue);} }// Chip'lerden seç/sil
           getOptionLabel={(movie) => movie.title}
           isOptionEqualToValue={(option, value) => option.id === value.id}
           renderTags={(selected, getTagProps) =>
@@ -126,6 +132,28 @@ export default function NewUserWatchedPage() {
           newSelectedMovies={selectedMovies}
           setSelectedMovies={setSelectedMovies}
         />
+        <Button
+  variant="contained"
+  color="primary"
+  disabled={selectedMovies.length !== 5}
+  onClick={async () => {await Promise.all(
+      selectedMovies.map(m => addMovieToFavoritesForNewUser(m.id)));
+      navigate('/');
+
+    }
+  }
+  sx={{
+    marginTop: "5px",
+    marginLeft: "20px",
+    marginBottom:"10px",
+    backgroundColor: selectedMovies.length === 5 ? "rgb(119, 36, 36)" : "gray",
+    '&:hover': {
+      backgroundColor: selectedMovies.length === 5 ? "rgb(54, 16, 16)" : "gray",
+    },
+  }}
+>
+  Devam Et
+</Button>
       </Box>
     </Box>
   );

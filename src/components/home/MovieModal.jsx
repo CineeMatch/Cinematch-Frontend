@@ -20,22 +20,12 @@ const style = {
   border: 'none',
 };
 
-const dummyMovie = {
-  image: '/images/dummymoviemodal.png',
-  name: 'SHREK',
-  stars: 'Mike Myers, Eddie Murphy, Cameron Diaz',
-  directors: 'Andrew Adamson, Vicky Jenson',
-  description: 'A mean lord exiles fairytale creatures to the swamp of a grumpy ogre, who must go on a quest and rescue a princess for the lord in order to get his land back.',
-  genres: 'Animation, Adventure, Comedy, Family, Fantasy, Romance',
-  duration: '1h 30m',
-  year: '2001',
-  platform: 'Netflix',
-  age: '+7',
-};
+
 export default function MovieModal(props) {
   const [openChildFriendsModal,setOpenChildOpenFriendsModal]=React.useState(false);
   const movie= props.movie;
   if (!movie) return null;
+  console.log("açıldık")
   console.log("movie",movie);
   const hour=parseInt(movie.duration/60);
   const min=movie.duration%60;

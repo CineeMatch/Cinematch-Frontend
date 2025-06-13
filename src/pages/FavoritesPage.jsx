@@ -4,13 +4,26 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import MovieGrid from "../components/filmList/MovieGrid.jsx";
 import MovieModal from "../components/home/MovieModal";
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import { getFavoriteMovies } from "../api/movieType/movieType.js";
 
 
 
 
 export default function FavoritesPage(){
 const [openMovieModal, setOpenMovieModal] = useState(false);
+const [movies,setMovies]=useState([]);
+const [movie,setMovie]=useState(null);
+   useEffect(() => {
+      fetchFavoriteMovies(); 
+    }, []);
+  
+    const fetchFavoriteMovies = async () => {
+      const response = await getFavoriteMovies();
+      console.log("response:" ,response);
+      setMovies(response);
+    };
+
   
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -98,11 +111,14 @@ const [openMovieModal, setOpenMovieModal] = useState(false);
           </Search>
         </Box>
         
-        <MovieGrid onClickOpenMovieModal={()=>{setOpenMovieModal(true)
-        console.log("clicked");}}/>
+        <MovieGrid 
+        movies={movies}
+        onClickOpenMovieModal={setOpenMovieModal}
+        movie={setMovie}
+        />
         
       </Box>
-      <MovieModal open={openMovieModal} onClose={()=>{setOpenMovieModal(false);
+      <MovieModal open={openMovieModal} movie={movie} onClose={()=>{setOpenMovieModal(false);
           console.log("close")
         }}/>
       
