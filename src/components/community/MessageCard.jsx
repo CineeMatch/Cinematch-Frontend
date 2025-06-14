@@ -38,14 +38,6 @@ export default function MessageCard({ isSidebarOpen }) {
     },
   ]);
 
-  const movieList = [
-    { id: 1, name: "Inception" },
-    { id: 2, name: "Interstellar" },
-    { id: 3, name: "Lucy" },
-    { id: 4, name: "Gift" },
-    { id: 5, name: "Wonder" },
-    { id: 6, name: "Wanted" },
-  ];
 
   const handleNewPost = (newPost) => {
     setPosts((prev) => [
@@ -76,7 +68,7 @@ export default function MessageCard({ isSidebarOpen }) {
         marginTop: 10,
       }}
     >
-      <CreatePostCard nickname="Sena AKAT" movies={movieList} onSend={handleNewPost} />
+      <CreatePostCard onSend={handleNewPost} />
       <Divider
         sx={{
           bgcolor: "rgba(236, 227, 227, 0.89)",
@@ -95,3 +87,4 @@ export default function MessageCard({ isSidebarOpen }) {
     </Card>
   );
 }
+

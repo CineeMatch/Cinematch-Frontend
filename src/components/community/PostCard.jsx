@@ -173,3 +173,4 @@ function PostCard({ nickname, text, selectedMovie }) {
 }
 
 export default PostCard;
+

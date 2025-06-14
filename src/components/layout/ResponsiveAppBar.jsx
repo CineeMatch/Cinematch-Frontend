@@ -49,7 +49,13 @@ function ResponsiveAppBar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (setting) => {
+    if (setting === "Profile") {
+      navigate("/profile");
+    }
+    if (setting === "Logout") {
+      navigate("/login");
+    }
     setAnchorElUser(null);
   };
 
@@ -126,6 +132,8 @@ function ResponsiveAppBar() {
                 <MenuIcon />
               </IconButton>
               <Menu
+                disableScrollLock
+                keepMounted
                 id="menu-appbar"
                 anchorEl={anchorElNav}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
@@ -211,7 +219,7 @@ function ResponsiveAppBar() {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))}

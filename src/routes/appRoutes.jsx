@@ -11,11 +11,20 @@ import Layout from '../components/layout/Layout.jsx'
 import MessageCard from '../components/community/MessageCard.jsx'
 import ChallengeQuestionModal from '../modals/challenge/ChallangeQuestionModal.jsx'
 import ChallengeQuestionStarterModal from '../modals/challenge/ChallengeQuestionStarterModal.jsx'
+import RegisterPage from '../pages/Register.jsx'
+import ProfilePage from '../pages/Profile.jsx'
+import ChatPage from '../pages/ChatPage.jsx'
+import Friends from '../pages/Friends.jsx'
+import ForgetPasswordPage from '../pages/ForgetPasswordPage.jsx'
+import LoginPage from '../pages/Login.jsx'
+import Users from '../pages/Users.jsx'
+
 
 export default function appRoutes() {
   return (
     <Routes>
-       <Route index element={<Layout><MainPage /></Layout>} />
+       <Route index element={<LoginPage />} />
+       <Route path="/home" element={<Layout><MainPage /></Layout>} />
        <Route path="/activeChallange" element={<Layout><ChallangeModal /></Layout>} />
        <Route path="/messageCard" element={<MessageCard />} />
        <Route path="/community" element={<Layout><Comminty /></Layout>} /> 
@@ -25,6 +34,14 @@ export default function appRoutes() {
        <Route path="/watched" element={<Layout><WatchedPage/></Layout>} />
        <Route path="/modal" element={<ChallengeQuestionModal/>}/>
        <Route path="/modalQ" element={<ChallengeQuestionStarterModal/>}/>
+       <Route path="/register" element={<RegisterPage />} />
+        <Route path="/profile" element={<Layout><ProfilePage /></Layout>} />
+        <Route path="/chat" element={<Layout><ChatPage /></Layout>} />
+        <Route path="/friends" element={<Layout><Friends /></Layout>} />
+        <Route path="/users" element={<Users />} />
+
+        {/* page or modal test routes */}
+        <Route path="/forgetPassword" element={<ForgetPasswordPage />} />
     </Routes>
   )
 }

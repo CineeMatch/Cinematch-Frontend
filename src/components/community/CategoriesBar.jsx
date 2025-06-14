@@ -3,19 +3,24 @@ import { Box, List, ListItem, ListItemText, Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { useEffect, useState } from "react";
+import { getAllCategories } from "../../api/categories/category.js";
 
 export default function CategoriesCard({ isOpen, setIsOpen }) {
-  const categories = [
-    "Action",
-    "Animation",
-    "Comedy",
-    "Drama",
-    "Documentary",
-    "Fantasy",
-    "Horror",
-    "Sci-Fi",
-    "Thriller",
-  ];
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await getAllCategories();
+        setCategories(data);
+      } catch (err) {
+        console.error("Kategori alınamadı", err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   return (
     <>
@@ -27,11 +32,16 @@ export default function CategoriesCard({ isOpen, setIsOpen }) {
           transition: "width 0.3s ease",
           backgroundColor: "rgba(0, 0, 0, 0.8)",
           color: "#fff",
-          overflow: "hidden-auto",
+          overflowY: "auto",
+          scrollbarWidth: "none", // Firefox
+          msOverflowStyle: "none", // IE 10+
+          "&::-webkit-scrollbar": {
+            display: "none", // Chrome, Safari
+          },
           position: "fixed",
           bottom: 0,
           right: 0,
-          borderLeft: "3px solid #d4c295",
+          borderLeft: "5px solid #d4c295",
           zIndex: 1200,
           display: "flex",
           flexDirection: "column",
@@ -39,6 +49,8 @@ export default function CategoriesCard({ isOpen, setIsOpen }) {
         }}
       >
         {isOpen && (
+        <>
+          {/* Sabit Başlık */}
           <Typography
             variant="h6"
             sx={{
@@ -47,34 +59,45 @@ export default function CategoriesCard({ isOpen, setIsOpen }) {
               borderBottom: "1px solid gray",
               width: "100%",
               textAlign: "left",
+              flexShrink: 0,
             }}
           >
-            Categories
+            CATEGORİES
           </Typography>
-        )}
 
-        {isOpen && (
-          <List sx={{ width: "100%",
-            flexGrow: 1,
-           }}>
-            {categories.map((cat, index) => (
-              <ListItem
-                key={index}
-                sx={{
-                  borderBottom: "1px solid gray",
-                  "&:hover": {
-                    backgroundColor: "rgba(255, 255, 255, 0.1)",
-                    cursor: "pointer",
-                  },
-                }}
-              >
-                <ListItemText primary={cat} sx={{ pl: 1 }} />
-              </ListItem>
-            ))}
-          </List>
-        )}
-      </Box>
-
+          {/* Scrollable Liste */}
+          <Box
+            sx={{
+              overflowY: "auto",
+              flexGrow: 1,
+              width: "100%",
+              scrollbarWidth: "none", // Firefox
+              msOverflowStyle: "none", // IE
+              "&::-webkit-scrollbar": {
+                display: "none", // Chrome/Safari
+              },
+            }}
+          >
+            <List>
+              {categories.map((cat) => (
+                <ListItem
+                  key={cat.id}
+                  sx={{
+                    borderBottom: "1px solid gray",
+                    "&:hover": {
+                      backgroundColor: "rgba(255, 255, 255, 0.1)",
+                      cursor: "pointer",
+                    },
+                  }}
+                >
+                  <ListItemText primary={cat.name} sx={{ pl: 1 }} />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+        </>
+      )}
+    </Box>
       {/* Toggle Button - sidebar ile aynı hizada ve boyda */}
       <Box
         sx={{
@@ -85,7 +108,6 @@ export default function CategoriesCard({ isOpen, setIsOpen }) {
           width: 32,
           transition: "width 0.3s ease",
           backgroundColor: "#000",
-          border: "1px solid #d4c295",
           borderRight: "none",
           borderRadius: "6px 0 0 6px",
           zIndex: 1301,
