@@ -52,7 +52,7 @@ const LoginPage = () => {
     const fetchData = async (data) => {
       try {
         const response = await login(data);
-        navigate('/');
+        navigate('/home');
       } catch (error) {
         console.error("Login error:", error); // console.error yerine bir natification kütüphanesi kullanılanılıcak
       }
@@ -80,7 +80,7 @@ const LoginPage = () => {
         elevation={8}
         sx={{
         height: 500,
-          width: 350,
+          width: 360,
           p: 4,
           bgcolor: 'rgba(0, 0, 0, 0.9)',
           color: 'white',
@@ -158,7 +158,7 @@ const LoginPage = () => {
             label={<Typography color="white" sx={{ fontSize: "1rem", fontWeight: "bold"}}>Remember Me</Typography>}
           />
           <Link href="/forgetPassword" underline="hover" color="white" fontSize="1rem" fontWeight="bold">
-            I Forget your password?
+            You Forget your password?
           </Link>
         </Box>
 
