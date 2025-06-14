@@ -13,6 +13,7 @@ export default function MainPage()
   const [recommendedMovies, setRecommendedMovies] = useState(null);
   const [friendsMovies, setFriendsMovies] = useState(null);
   const [movie, setMovie] = useState({});
+  
  useEffect(() => {
     fetchRandom10Movies();
     fetchFriendsMovies();

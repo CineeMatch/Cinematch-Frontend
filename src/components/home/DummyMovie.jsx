@@ -8,6 +8,22 @@ import InfoIcon from "@mui/icons-material/Info";
 
 export default function DummyMovie(props) {
   const [randomMovie, setRandomMovie] = React.useState(null);
+  const platforms=[
+    {name:"Netflix",url:"https://www.netflix.com/tr/"},
+    {name:"Disney Plus",url:"https://www.disneyplus.com/tr"},
+    {name:"Amazon Prime Video",url:"https://www.primevideo.com/tr"},
+    {name:"blutv",url:"https://www.max.com/tr"},
+    {name:"TV+",url:"https://tvplus.com.tr"},
+    {name:'TOD TV',url:"https://www.todtv.com.tr"},
+    {name:"MUBI",url:"https://tvplus.com.tr"},
+    {name:"Sun Nxt",url:"https://www.sunnxt.com"},
+    {name:"DocAlliance Films",url:"https://dafilms.com"},
+    {name:"Cultpix",url:"https://www.cultpix.com"}
+  ]
+const moviePlatforms = typeof randomMovie?.platforms === 'string'
+  ? randomMovie.platforms.split(',').map(p => p.trim())
+  : [];const platformURL = platforms.find(p => p.name === moviePlatforms[0])?.url;
+
  
   useEffect(() => {
     fetchRandomMovie();
@@ -46,9 +62,10 @@ export default function DummyMovie(props) {
           {randomMovie?.title}
         </Typography>
         <Box sx={{ display: "flex", gap: 1 }}>
-          {randomMovie?.platforms?.[0] && <Button variant="solid" sx={{ backgroundColor: "white" }}>
+          {randomMovie?.platforms?.[0] && <Button variant="solid" sx={{ backgroundColor: "white" }}
+           onClick={()=>{window.open(platformURL, "_blank");console.log("platforlmurl:",platformURL)}}>
             <Typography variant="h6" sx={{ fontSize: "14px", color: "black" }}>
-              You can watch on {randomMovie.platforms[0]}
+              You can watch on {moviePlatforms[0]}
             </Typography>
           </Button>}
           <IconButton >

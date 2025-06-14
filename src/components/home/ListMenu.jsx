@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import IconButton from '@mui/material/IconButton';
 
 export default function ListMenu() {
@@ -27,7 +27,7 @@ export default function ListMenu() {
         aria-expanded={open ? 'true' : undefined}
         sx={{ color: 'white' }}
       >
-        <ThumbUpIcon />
+        <AddCircleIcon />
       </IconButton>
 
       {/* Menu */}
@@ -46,7 +46,9 @@ export default function ListMenu() {
         }}
       >
         <MenuItem onClick={handleClose}>Favorite</MenuItem>
-        <MenuItem onClick={handleClose}>WishList</MenuItem>
+        <MenuItem onClick={handleClose}>
+        <AddCircleIcon></AddCircleIcon>
+        WishList</MenuItem>
         <MenuItem onClick={handleClose}>Watched</MenuItem>
       </Menu>
     </div>
