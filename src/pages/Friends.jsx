@@ -8,6 +8,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { deleteFriendById, getCurrentUserFriendsList } from '../api/profile/friends';
 import AddFriendModal from '../modals/profile/AddFriendModal';
+import { useNavigate } from 'react-router-dom';
 
 const Friends = () => {
 
@@ -15,6 +16,8 @@ const Friends = () => {
   const [friends, setFriends] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [IsShowAddFriendModal, setIsShowAddFriendModal] = useState(false);
+
+  const navigate = useNavigate();
 
   const fetchFriends = async () => {
     try {
@@ -78,14 +81,24 @@ const Friends = () => {
           <Typography variant="h6">
             YOUR FRIENDS <strong>{friends.length}</strong> / 500
           </Typography>
-          <Button
-            variant="contained"
-            sx={{ bgcolor: '#e11f0d', color: 'white', fontWeight: "bold" }}
-            startIcon={<PersonAddIcon />}
-            onClick={() => setIsShowAddFriendModal(true)}
-          >
-            Add a Friend
-          </Button>
+          <Box display="flex" gap={1}>
+            <Button
+              variant="contained"
+              sx={{ bgcolor: '#e11f0f', color: 'white', fontWeight: "bold" }}
+              startIcon={<PersonAddIcon />}
+              onClick={() => navigate('/users')}
+            >
+              Search For Users
+            </Button>
+            <Button
+              variant="contained"
+              sx={{ bgcolor: '#e11f0d', color: 'white', fontWeight: "bold" }}
+              startIcon={<PersonAddIcon />}
+              onClick={() => setIsShowAddFriendModal(true)}
+            >
+              Add a Friend
+            </Button>
+          </Box>
         </Box>
 
         <TextField
@@ -158,7 +171,7 @@ const Friends = () => {
         <Grid container spacing={2}>
           {filteredFriends.map((friend, index) => (
             <Grid item xs={type ? 12 : 6} md={type ? 12 : 4} key={index}>
-              <Card sx={{ backgroundColor: 'rgba(255,255,255,0.05)', color: 'white', px: type ? 1 : 0 }}>
+              <Card sx={{ backgroundColor: 'rgba(255,255,255,0.05)', color: 'white', px: type ? 1 : 0 }} onClick={() => navigate(`/profile/${friend.id}`)}>
                 <CardContent sx={{ p: type ? 1 : 2, mt: 1 }}>
                   <Box display="flex" justifyContent="space-between" alignItems="center">
                     <Box display="flex" alignItems="center">
