@@ -6,6 +6,7 @@ import {
   TextField,
   Button,
 } from '@mui/material';
+import { uploadUserAvatar } from '../../api/profile/user';
 
 const modalStyle = {
   position: 'absolute',
@@ -13,119 +14,184 @@ const modalStyle = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 450,
-  background: 'rgba(59, 7, 7, 0.9)', // koyu kırmızımsı şeffaf zemin
+  background: 'rgba(59, 7, 7, 0.9)',
   color: '#fff',
   border: '2px solid rgba(255, 0, 0, 0.5)',
   borderRadius: '12px',
   boxShadow: '0 0 20px rgba(255, 0, 0, 0.7)',
-  backdropFilter: 'blur(8px)', // arka planı yumuşatır
+  backdropFilter: 'blur(8px)',
   p: 4,
 };
 
-const EditProfileModal = ({ setIsShowEditProfileModal, avatar, nickname, name, description }) => {
-    
-    const [newAvatar, setNewAvatar] = useState(avatar);
-    const [newName, setNewName] = useState(name);
-    const [newNickname, setNewNickname] = useState(nickname);
-    const [newDescription, setNewDescription] = useState(description);
+const EditProfileModal = ({
+  setIsShowEditProfileModal,
+  avatar,
+  nickname,
+  name,
+  description,
+  onAvatarUpdate,
+}) => {
+  const [selectedAvatar, setSelectedAvatar] = useState(null);
+  const [newName, setNewName] = useState(name);
+  const [newNickname, setNewNickname] = useState(nickname);
+  const [newDescription, setNewDescription] = useState(description);
 
-    const handleSave = () => {
-        const updatedData = {newAvatar, newName, newNickname, newDescription };
-        console.log('Updated Data:', updatedData);
-        handleClose();
-    };
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
 
-    const handleClose = () => {
-        setIsShowEditProfileModal(false);
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      try {
+        const base64Image = await convertToBase64(file);
+        setSelectedAvatar(base64Image);
+      } catch (error) {
+        console.error("Error converting image to Base64:", error);
+      }
     }
+  };
 
-    return (
-        <Modal open={true} onClose={handleClose}>
-        <Box sx={modalStyle}>
-            <Typography variant="h6" mb={2} fontWeight="bold">Edit Profile</Typography>
-            <TextField
-                label="Name"
-                variant="outlined"
-                value={newName}
-                onChange={(e) => setNewName(e.target.value)}
-                fullWidth
-                sx={{
-                    mb: 2,
-                    '& .MuiOutlinedInput-root': {
-                    '& fieldset': {
-                        borderColor: 'rgba(255, 0, 0, 0.5)', // normal border rengi
-                    },
-                    '&:hover fieldset': {
-                        borderColor: 'red', // hover durumunda border
-                    },
-                    '&.Mui-focused fieldset': {
-                        borderColor: '#f44336', // focus (yazarken) border rengi
-                    },
-                    },
-                    '& .MuiInputLabel-root.Mui-focused': {
-                    color: '#f44336' // label rengi focus olduğunda
-                    },
-                    input: { color: 'white' }, fieldset: { borderColor: 'gray' }
-                }}
-            />
-            <TextField
-                fullWidth
-                label="nickname"
-                variant="outlined"
-                value={newNickname}
-                onChange={(e) => setNewNickname(e.target.value)}
-                sx={{
-                    mb: 2,
-                    '& .MuiOutlinedInput-root': {
-                    '& fieldset': {
-                        borderColor: 'rgba(255, 0, 0, 0.5)', // normal border rengi
-                    },
-                    '&:hover fieldset': {
-                        borderColor: 'red', // hover durumunda border
-                    },
-                    '&.Mui-focused fieldset': {
-                        borderColor: '#f44336', // focus (yazarken) border rengi
-                    },
-                    },
-                    '& .MuiInputLabel-root.Mui-focused': {
-                    color: '#f44336' // label rengi focus olduğunda
-                    },
-                    input: { color: 'white' }, fieldset: { borderColor: 'gray' }
-                }}
-            />
-            <TextField
-                fullWidth
-                label="Description"
-                variant="outlined"
-                multiline
-                rows={3}
-                value={newDescription}
-                onChange={(e) => setNewDescription(e.target.value)}
-                sx={{
-                    mb: 2,
-                    '& .MuiOutlinedInput-root': {
-                    '& fieldset': {
-                        borderColor: 'rgba(255, 0, 0, 0.5)', // normal border rengi
-                    },
-                    '&:hover fieldset': {
-                        borderColor: 'red', // hover durumunda border
-                    },
-                    '&.Mui-focused fieldset': {
-                        borderColor: '#f44336', // focus (yazarken) border rengi
-                    },
-                    },
-                    '& .MuiInputLabel-root.Mui-focused': {
-                    color: '#f44336' // label rengi focus olduğunda
-                    },
-                    input: { color: 'white' }, fieldset: { borderColor: 'gray' }
-                }}
-            />
-            <Button variant="contained" color="primary" fullWidth onClick={handleSave} sx={{backgroundColor: '#b71c1c', '&:hover': {backgroundColor: '#c62828' }, fontWeight: 'bold'}}>
-                Save Changes
-            </Button>
+  const handleSave = async () => {
+    try {
+      let uploadedAvatarUrl = avatar;
+
+      if (selectedAvatar) {
+        let imageData = {
+          url: selectedAvatar
+        }
+        const response = await uploadUserAvatar(imageData);
+        uploadedAvatarUrl = response.avatarUrl; // güncellencek
+        onAvatarUpdate(uploadedAvatarUrl);
+      }
+
+      const updatedData = {
+        avatar: uploadedAvatarUrl,
+        name: newName,
+        nickname: newNickname,
+        description: newDescription,
+      };
+
+      console.log('Updated Data:', updatedData);
+
+      handleClose();
+    } catch (error) {
+      console.error('Error uploading avatar:', error);
+    }
+  };
+
+  const handleClose = () => {
+    setIsShowEditProfileModal(false);
+  };
+
+  return (
+    <Modal open={true} onClose={handleClose}>
+      <Box sx={modalStyle}>
+        <Typography variant="h6" mb={2} fontWeight="bold">
+          Edit Profile
+        </Typography>
+
+        <TextField
+          label="Name"
+          variant="outlined"
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+          fullWidth
+          sx={textFieldStyles}
+        />
+
+        <TextField
+          fullWidth
+          label="nickname"
+          variant="outlined"
+          value={newNickname}
+          onChange={(e) => setNewNickname(e.target.value)}
+          sx={textFieldStyles}
+        />
+
+        {/* Avatar Yükleme */}
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="body2" mb={1} sx={{ color: 'white' }}>
+            Upload Avatar
+          </Typography>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleAvatarChange}
+            style={inputStyle}
+          />
         </Box>
-        </Modal>
-    );
-}
+
+        {/* Önizleme */}
+        {avatar && (
+          <Box mt={1} mb={2} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <img
+              src={avatar}
+              alt="Avatar Preview"
+              style={{
+                maxWidth: '100px',
+                maxHeight: '100px',
+                borderRadius: '50%',
+                objectFit: 'cover',
+              }}
+            />
+          </Box>
+        )}
+
+        <TextField
+          fullWidth
+          label="Description"
+          variant="outlined"
+          multiline
+          rows={3}
+          value={newDescription}
+          onChange={(e) => setNewDescription(e.target.value)}
+          sx={textFieldStyles}
+        />
+
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          onClick={handleSave}
+          sx={{
+            backgroundColor: '#b71c1c',
+            '&:hover': { backgroundColor: '#c62828' },
+            fontWeight: 'bold',
+          }}
+        >
+          Save Changes
+        </Button>
+      </Box>
+    </Modal>
+  );
+};
+
+// Stil objeleri
+const textFieldStyles = {
+  mb: 2,
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': { borderColor: 'rgba(255, 0, 0, 0.5)' },
+    '&:hover fieldset': { borderColor: 'red' },
+    '&.Mui-focused fieldset': { borderColor: '#f44336' },
+  },
+  '& .MuiInputLabel-root.Mui-focused': { color: '#f44336' },
+  input: { color: 'white' },
+  fieldset: { borderColor: 'gray' },
+};
+
+const inputStyle = {
+  color: 'white',
+  backgroundColor: 'transparent',
+  border: '1px solid rgba(255, 0, 0, 0.5)',
+  padding: '8px',
+  borderRadius: '4px',
+  width: '100%',
+};
 
 export default EditProfileModal;

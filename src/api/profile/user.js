@@ -1,6 +1,21 @@
 import axios from 'axios';
 import { baseURL } from '../constants';
 
+export const getAllUsers = async () => {
+    try {
+        const token = localStorage.getItem('authToken');
+        const response = await axios.get(`${baseURL}/users`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching all users:', error);
+        throw error;
+    }
+}
+
 export const getActiveUser = async (userId) => {
     try {
         const token = localStorage.getItem('authToken');
@@ -16,17 +31,33 @@ export const getActiveUser = async (userId) => {
     }
 }
 
-export const getAllUsers = async () => {
+export const getUserById = async (userId) => {
     try {
         const token = localStorage.getItem('authToken');
-        const response = await axios.get(`${baseURL}/users`, {
+        const response = await axios.get(`${baseURL}/user/${userId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         });
         return response.data;
     } catch (error) {
-        console.error('Error fetching all users:', error);
+        console.error(`Error fetching user with ID ${userId}:`, error);
         throw error;
     }
 }
+
+export const uploadUserAvatar = async (base64Image) => {
+    try {
+        console.log("base64Image:", base64Image);
+        const token = localStorage.getItem('authToken');
+        const response = await axios.post(`${baseURL}/user/upload/avatar`, base64Image, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error uploading user avatar:', error);
+        throw error;
+    }
+};
