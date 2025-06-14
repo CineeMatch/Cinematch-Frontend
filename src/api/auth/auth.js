@@ -36,3 +36,13 @@ export const forgetPassword = async (email) => {
         throw error;
     }
 }
+
+export const createNewPassword = async (data) => {
+    try {
+        const response = await axios.post(`${baseURL}/new-password`, data);
+        return response.data;
+    } catch (error) {
+        // console.error("Create new password error:", error);
+        throw error;
+    }
+}
