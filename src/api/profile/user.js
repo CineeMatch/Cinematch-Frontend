@@ -46,11 +46,11 @@ export const getUserById = async (userId) => {
     }
 }
 
-export const uploadUserAvatar = async (base64Image) => {
+export const uploadUserAvatar = async (imageData) => {
     try {
-        console.log("base64Image:", base64Image);
+        console.log("base64Image:", imageData);
         const token = localStorage.getItem('authToken');
-        const response = await axios.post(`${baseURL}/user/upload/avatar`, base64Image, {
+        const response = await axios.post(`${baseURL}/user/upload/avatar`, imageData, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
