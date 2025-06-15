@@ -1,10 +1,23 @@
 import React from "react";
 import { Box, Divider } from "@mui/material";
-import { Avatar, Button, Modal, TextField, Typography } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Modal,
+  TextField,
+  Typography,
+  Menu,
+  MenuItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import IconButton from "@mui/material/IconButton";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useState, useRef, useEffect } from "react";
 import {
   getCommentLikesByCommentId,
@@ -12,12 +25,15 @@ import {
   deleteCommentLike,
   getUserCommentLikeOnComment,
 } from "../../api/like/commentLike.js";
-import { createComment } from "../../api/comment.js/comment.js";
+import { deleteComment, createComment } from "../../api/comment/comment.js";
 
 function CommentModal({ open, handleClose, post, comments, setComments }) {
   const [newComment, setNewComment] = useState("");
   const bottomRef = useRef(null);
   const [likeInfo, setLikeInfo] = useState({});
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [selectedCommentId, setSelectedCommentId] = useState(null);
 
   useEffect(() => {
     if (bottomRef.current) {
@@ -25,20 +41,43 @@ function CommentModal({ open, handleClose, post, comments, setComments }) {
     }
   }, [comments]);
 
-const handleAddComment = async () => {
-  if (newComment.trim()) {
-    try {
-      const addedComment = await createComment(
-        post.id,newComment
-      );
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-      setComments((prev) => [...prev, addedComment]);
-      setNewComment("");
-    } catch (err) {
-      console.error("Comment uplod failed:", err);
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDeleteClick = () => {
+    setConfirmDialogOpen(true);
+    setAnchorEl(null);
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      await deleteComment(selectedCommentId);
+       setComments((prevComments) =>
+      prevComments.filter((comment) => comment.id !== selectedCommentId)
+    );
+      setConfirmDialogOpen(false);
+    } catch (error) {
+      console.error("Delete Error", error.message);
     }
-  }
-};
+  };
+
+  const handleAddComment = async () => {
+    if (newComment.trim()) {
+      try {
+        const addedComment = await createComment(post.id, newComment);
+
+        setComments((prev) => [...prev, addedComment]);
+        setNewComment("");
+      } catch (err) {
+        console.error("Comment uplod failed:", err);
+      }
+    }
+  };
   useEffect(() => {
     const fetchLikes = async () => {
       const updatedLikes = {};
@@ -51,8 +90,8 @@ const handleAddComment = async () => {
           ]);
 
           const res = await getCommentLikesByCommentId(comment.id);
-        console.log("Gelen like verisi:", res);
-        
+          console.log("Gelen like verisi:", res);
+
           updatedLikes[comment.id] = {
             count: likeData.likeCount,
             liked: userLike.liked, // örn: { liked: true }
@@ -181,50 +220,94 @@ const handleAddComment = async () => {
               }}
             >
               {/* Avatar */}
-              <Avatar
-                sx={{ width: 24, height: 24, bgcolor: "#555", mt: "2px" }}
-              >
-                <PersonIcon sx={{ fontSize: 16 }} />
-              </Avatar>
-
-              {/* Metin ve Beğeni ikonu */}
-              <Box
-                sx={{ display: "flex", flexDirection: "column", width: "100%" }}
-              >
-                <Typography
-                  variant="body2"
-                  sx={{ color: "white", fontWeight: "bold", textAlign: "left" }}
+              <Box sx={{ display: "flex", gap: 1, flex: 1 }}>
+                <Avatar
+                  sx={{ width: 24, height: 24, bgcolor: "#555", mt: "2px" }}
                 >
-                  {comment.User?.nickname || "Anonim"}
-                </Typography>
+                  <PersonIcon sx={{ fontSize: 16 }} />
+                </Avatar>
 
-                <Typography
-                  variant="body2"
-                  sx={{ color: "white", textAlign: "left", mb: 1 }}
+                {/* Metin ve Beğeni ikonu */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "100%",
+                  }}
                 >
-                  {comment.commentText}
-                </Typography>
-
-                {/* Beğeni ikonu - en altta, sola hizalı */}
-
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                  <IconButton
-                    onClick={() => toggleLike(comment.id)}
-                    size="small"
-                    sx={{ p: 0 }}
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: "white",
+                      fontWeight: "bold",
+                      textAlign: "left",
+                    }}
                   >
-                    {likeInfo[comment.id]?.liked ? (
-                      <FavoriteIcon sx={{ color: "red", fontSize: 18 }} />
-                    ) : (
-                      <FavoriteBorderIcon
-                        sx={{ color: "white", fontSize: 18 }}
-                      />
-                    )}
-                  </IconButton>
-                  <Typography variant="caption" sx={{ color: "gray" }}>
-                    {likeInfo[comment.id]?.count || 0}
+                    {comment.User?.nickname || "Anonim"}
                   </Typography>
+
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "white", textAlign: "left", mb: 1 }}
+                  >
+                    {comment.commentText}
+                  </Typography>
+
+                  {/* Beğeni ikonu - en altta, sola hizalı */}
+
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <IconButton
+                      onClick={() => toggleLike(comment.id)}
+                      size="small"
+                      sx={{ p: 0 }}
+                    >
+                      {likeInfo[comment.id]?.liked ? (
+                        <FavoriteIcon sx={{ color: "red", fontSize: 18 }} />
+                      ) : (
+                        <FavoriteBorderIcon
+                          sx={{ color: "white", fontSize: 18 }}
+                        />
+                      )}
+                    </IconButton>
+                    <Typography variant="caption" sx={{ color: "gray" }}>
+                      {likeInfo[comment.id]?.count || 0}
+                    </Typography>
+                  </Box>
                 </Box>
+              </Box>
+              <Box>
+                <IconButton
+                  onClick={(e) => {
+                    handleMenuOpen(e);
+                    setSelectedCommentId(comment.id);
+                  }}
+                  sx={{ color: "white" }}
+                >
+                  <MoreHorizIcon />
+                </IconButton>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleMenuClose}
+                >
+                  <MenuItem onClick={handleDeleteClick}>Delete</MenuItem>
+                </Menu>
+
+                <Dialog
+                  open={confirmDialogOpen}
+                  onClose={() => setConfirmDialogOpen(false)}
+                >
+                  <DialogTitle>Silmek istediğine emin misin?</DialogTitle>
+                  <DialogContent>Bu işlem geri alınamaz.</DialogContent>
+                  <DialogActions>
+                    <Button onClick={() => setConfirmDialogOpen(false)}>
+                      Vazgeç
+                    </Button>
+                    <Button color="error" onClick={handleDeleteConfirm}>
+                      Delete
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </Box>
             </Box>
           ))}

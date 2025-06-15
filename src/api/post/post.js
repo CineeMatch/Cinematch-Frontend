@@ -42,3 +42,18 @@ export const getPostByCategoryId = async (categoryId) => {
   });
   return response.data;
 }
+
+export const deletePost = async (postId) => {
+  try{
+    const token = localStorage.getItem("authToken");
+    const response = await axios.delete(`${baseURL}/post/delete/${postId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("While Post is deleted, create error ", error);
+    throw new Error("While Post is deleted, create error ");
+  }
+};
