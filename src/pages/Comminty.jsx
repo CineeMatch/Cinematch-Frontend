@@ -6,6 +6,7 @@ import { useState } from 'react'
 
 export default function Comminty() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null); 
 
   return (
     <Box sx={{ 
@@ -21,8 +22,8 @@ export default function Comminty() {
         backgroundPosition: "center",
         gap: 2,
     }}>
-        <MeesageCard isSidebarOpen={isSidebarOpen}/>
-        <CategoriesBar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
+        <MeesageCard isSidebarOpen={isSidebarOpen} selectedCategoryId={selectedCategoryId}/>
+        <CategoriesBar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} onCategorySelect={setSelectedCategoryId}/>
     </Box>
   )
 }

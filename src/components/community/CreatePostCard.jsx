@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Card, Avatar, Typography, MenuItem, Button } from "@mui/material";
+import { Box, Card, Avatar, Typography, Button } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import PersonIcon from "@mui/icons-material/Person";
@@ -10,31 +10,34 @@ import { getAllMovies } from "../../api/movie/movie.js";
 
 function CreatePostCard({ onSend }) {
   const [movies, setMovies] = useState([]);
-  const [nickname, setNickname] = useState("Kullanıcı");
+  const [nickname, setNickname] = useState("User");
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [text, setText] = useState("");
 
   const handleSend = async () => {
-    if (!text.trim() || !selectedMovie)
-      return alert("Lütfen film seçin ve metin yazın.");
+  if (!text.trim() || !selectedMovie)
+    return alert("Please fill in all fields.");
 
-    try {
-      const newPost = await createPost({
-        movie_id: selectedMovie?.id,
-        contentText: text,
-      });
+  try {
+    const newPost = await createPost({
+      movie_id: selectedMovie.id,
+      contentText: text,
+    });
 
-      console.log("Posted:", newPost);
-      const movie = movies.find((m) => m.id === Number(selectedMovie));
-      onSend?.({ ...newPost, movieName: movie?.title });
+    // movieName ve nickname'i manuel olarak ekliyoruz
+    onSend?.({
+      ...newPost,
+      movieName: selectedMovie.title,
+      nickname: nickname,
+    });
 
-      setText("");
-      setSelectedMovie("");
-    } catch (err) {
-      console.error("Posted Error:", err.message);
-      alert("Posted is faild: " + err.message);
-    }
-  };
+    setText("");
+    setSelectedMovie(null);
+  } catch (err) {
+    console.error("Posted Error:", err.message);
+    alert( " Send is faild" + err.message);
+  }
+};
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -42,7 +45,7 @@ function CreatePostCard({ onSend }) {
         const user = await getActiveUser();
         setNickname(user.nickname);
       } catch (error) {
-        console.error("Kullanıcı bilgisi alınamadı:", error);
+        console.error("User information didn't get:", error);
       }
     };
 

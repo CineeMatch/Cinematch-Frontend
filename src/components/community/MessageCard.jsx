@@ -3,48 +3,35 @@ import { Card } from "@mui/material";
 import PostCard from "./PostCard.jsx";
 import CreatePostCard from "./CreatePostCard.jsx";
 import Divider from "@mui/material/Divider";
+import { useEffect } from "react";
+import { getAllPosts } from "../../api/post/post.js";
+import { getPostByCategoryId } from "../../api/post/post.js";
 
-export default function MessageCard({ isSidebarOpen }) {
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      nickname: "Sena AKAT",
-      text: "Bu film gerçekten çok etkileyiciydi. Özellikle son sahnesi...",
-      selectedMovie: "Inception",
-    },
-    {
-      id: 2,
-      nickname: "Ali KAYA",
-      text: "Senaryosu biraz karışıktı ama oyunculuk harikaydı.",
-      selectedMovie: "Lucy",
-    },
-    {
-      id: 3,
-      nickname: "Zeynep DEMİR",
-      text: "Bu filmi izlerken çok duygulandım, herkese tavsiye ederim.",
-      selectedMovie: "Gift",
-    },
-    {
-      id: 4,
-      nickname: "Burak YILMAZ",
-      text: "Görsel efektler muazzamdı ama hikaye zayıftı bence.",
-      selectedMovie: "Wonder",
-    },
-    {
-      id: 5,
-      nickname: "Ayşe KAPLAN",
-      text: "Filmin başı sıkıcıydı ama sonlara doğru çok heyecanlıydı.",
-      selectedMovie: "Wanted",
-    },
-  ]);
+export default function MessageCard({ isSidebarOpen,selectedCategoryId }) {
+  const [posts, setPosts] = useState([]);
 
-
-  const handleNewPost = (newPost) => {
-    setPosts((prev) => [
-      { ...newPost, id: prev.length + 1, nickname: "Sena AKAT" },
-      ...prev,
-    ]);
+   const handleNewPost = (newPost) => {
+    setPosts((prev) => [newPost, ...prev]);
   };
+
+
+useEffect(() => {
+  const fetchPosts = async () => {
+    try {
+      if (selectedCategoryId) {
+        const data = await getPostByCategoryId(selectedCategoryId);
+        setPosts(data);
+      } else {
+        const data = await getAllPosts();
+        setPosts(data);
+      }
+    } catch (err) {
+      console.error("Postlar alınamadı:", err.message);
+    }
+  };
+  fetchPosts();
+}, [selectedCategoryId]);
+
 
   return (
     <Card
@@ -79,9 +66,10 @@ export default function MessageCard({ isSidebarOpen }) {
       {posts.map((item) => (
         <PostCard
           key={item.id}
+          id={item.id}
           nickname={item.nickname}
-          text={item.text}
-          selectedMovie={item.selectedMovie}
+          text={item.contentText}
+          selectedMovie={item.movieName}
         />
       ))}
     </Card>

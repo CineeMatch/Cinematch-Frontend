@@ -6,7 +6,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useEffect, useState } from "react";
 import { getAllCategories } from "../../api/categories/category.js";
 
-export default function CategoriesCard({ isOpen, setIsOpen }) {
+export default function CategoriesCard({ isOpen, setIsOpen, onCategorySelect  }) {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -82,6 +82,7 @@ export default function CategoriesCard({ isOpen, setIsOpen }) {
               {categories.map((cat) => (
                 <ListItem
                   key={cat.id}
+                  onClick={() => onCategorySelect(cat.id)} 
                   sx={{
                     borderBottom: "1px solid gray",
                     "&:hover": {

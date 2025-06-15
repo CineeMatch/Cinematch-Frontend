@@ -54,7 +54,7 @@ function ResponsiveAppBar() {
       navigate("/profile");
     }
     if (setting === "Logout") {
-      navigate("/login");
+      navigate("/");
     }
     setAnchorElUser(null);
   };

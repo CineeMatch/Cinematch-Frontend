@@ -5,11 +5,19 @@ import PersonIcon from "@mui/icons-material/Person";
 import IconButton from "@mui/material/IconButton";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { useState,useRef,useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
+import {
+  getCommentLikesByCommentId,
+  createCommentLike,
+  deleteCommentLike,
+  getUserCommentLikeOnComment,
+} from "../../api/like/commentLike.js";
+import { createComment } from "../../api/comment.js/comment.js";
 
 function CommentModal({ open, handleClose, post, comments, setComments }) {
   const [newComment, setNewComment] = useState("");
   const bottomRef = useRef(null);
+  const [likeInfo, setLikeInfo] = useState({});
 
   useEffect(() => {
     if (bottomRef.current) {
@@ -17,24 +25,69 @@ function CommentModal({ open, handleClose, post, comments, setComments }) {
     }
   }, [comments]);
 
-  const handleAddComment = () => {
-    if (newComment.trim()) {
-      const newItem = {
-        user: "Sena AKAT",
-        text: newComment,
-        liked: false, 
-      };
-      setComments((prev) => [...prev, newItem]);
-      setNewComment(""); 
-    }
-  };
+const handleAddComment = async () => {
+  if (newComment.trim()) {
+    try {
+      const addedComment = await createComment(
+        post.id,newComment
+      );
 
-  const toggleLike = (index) => {
-    setComments((prev) =>
-      prev.map((comment, i) =>
-        i === index ? { ...comment, liked: !comment.liked } : comment
-      )
-    );
+      setComments((prev) => [...prev, addedComment]);
+      setNewComment("");
+    } catch (err) {
+      console.error("Comment uplod failed:", err);
+    }
+  }
+};
+  useEffect(() => {
+    const fetchLikes = async () => {
+      const updatedLikes = {};
+
+      for (const comment of comments) {
+        try {
+          const [likeData, userLike] = await Promise.all([
+            getCommentLikesByCommentId(comment.id),
+            getUserCommentLikeOnComment(comment.id),
+          ]);
+
+          const res = await getCommentLikesByCommentId(comment.id);
+        console.log("Gelen like verisi:", res);
+        
+          updatedLikes[comment.id] = {
+            count: likeData.likeCount,
+            liked: userLike.liked, // örn: { liked: true }
+          };
+        } catch (err) {
+          console.error("Beğeni verisi alınamadı", err);
+        }
+      }
+
+      setLikeInfo(updatedLikes);
+    };
+
+    if (open) fetchLikes();
+  }, [comments, open]);
+
+  const toggleLike = async (commentId) => {
+    const isLiked = likeInfo[commentId]?.liked;
+
+    try {
+      if (isLiked) {
+        await deleteCommentLike(commentId);
+      } else {
+        await createCommentLike(commentId);
+      }
+
+      setLikeInfo((prev) => ({
+        ...prev,
+        [commentId]: {
+          count: prev[commentId].count + (isLiked ? -1 : 1),
+          liked: !isLiked,
+        },
+      }));
+    } catch (err) {
+      console.error("Beğeni işlemi başarısız", err);
+    }
   };
 
   return (
@@ -58,7 +111,7 @@ function CommentModal({ open, handleClose, post, comments, setComments }) {
           <Avatar sx={{ bgcolor: "#555" }}>
             <PersonIcon />
           </Avatar>
-          <Typography variant="h6">{post.nickname}</Typography>
+          <Typography variant="h6"> {post.nickname || "Anonim"}</Typography>
         </Box>
         <Typography>{post.text}</Typography>
 
@@ -116,7 +169,7 @@ function CommentModal({ open, handleClose, post, comments, setComments }) {
           </Typography>
           {comments.map((comment, i) => (
             <Box
-              key={i}
+              key={comment.id}
               sx={{
                 display: "flex",
                 alignItems: "flex-start",
@@ -142,28 +195,36 @@ function CommentModal({ open, handleClose, post, comments, setComments }) {
                   variant="body2"
                   sx={{ color: "white", fontWeight: "bold", textAlign: "left" }}
                 >
-                  {comment.user}
+                  {comment.User?.nickname || "Anonim"}
                 </Typography>
 
                 <Typography
                   variant="body2"
                   sx={{ color: "white", textAlign: "left", mb: 1 }}
                 >
-                  {comment.text}
+                  {comment.commentText}
                 </Typography>
 
                 {/* Beğeni ikonu - en altta, sola hizalı */}
-                <IconButton
-                  onClick={() => toggleLike(i)}
-                  size="small"
-                  sx={{ alignSelf: "flex-start", p: 0 }}
-                >
-                  {comment.liked ? (
-                    <FavoriteIcon sx={{ color: "red", fontSize: 18 }} />
-                  ) : (
-                    <FavoriteBorderIcon sx={{ color: "white", fontSize: 18 }} />
-                  )}
-                </IconButton>
+
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <IconButton
+                    onClick={() => toggleLike(comment.id)}
+                    size="small"
+                    sx={{ p: 0 }}
+                  >
+                    {likeInfo[comment.id]?.liked ? (
+                      <FavoriteIcon sx={{ color: "red", fontSize: 18 }} />
+                    ) : (
+                      <FavoriteBorderIcon
+                        sx={{ color: "white", fontSize: 18 }}
+                      />
+                    )}
+                  </IconButton>
+                  <Typography variant="caption" sx={{ color: "gray" }}>
+                    {likeInfo[comment.id]?.count || 0}
+                  </Typography>
+                </Box>
               </Box>
             </Box>
           ))}
@@ -197,4 +258,3 @@ function CommentModal({ open, handleClose, post, comments, setComments }) {
 }
 
 export default CommentModal;
-
