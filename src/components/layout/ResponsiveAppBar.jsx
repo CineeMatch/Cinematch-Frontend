@@ -49,7 +49,13 @@ function ResponsiveAppBar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (setting) => {
+    if (setting === "Profile") {
+      navigate("/profile");
+    }
+    if (setting === "Logout") {
+      navigate("/");
+    }
     setAnchorElUser(null);
   };
 
@@ -99,7 +105,7 @@ function ResponsiveAppBar() {
 
   return (
     <>
-      <AppBar position="fixed" sx={{ backgroundColor: "rgb(0,0,0)",zIndex: 1200  }}>
+      <AppBar position="fixed" sx={{ backgroundColor: "rgb(0,0,0)",zIndex: 1200 }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
@@ -126,6 +132,8 @@ function ResponsiveAppBar() {
                 <MenuIcon />
               </IconButton>
               <Menu
+                disableScrollLock
+                keepMounted
                 id="menu-appbar"
                 anchorEl={anchorElNav}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
@@ -211,7 +219,7 @@ function ResponsiveAppBar() {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))}
@@ -269,7 +277,7 @@ function ResponsiveAppBar() {
           height: "30px",
           background: "linear-gradient(to bottom, rgba(0,0,0,0.9), transparent)",
           backdropFilter: "blur(0.2px)",
-          zIndex: 1800,
+          zIndex: 1,
           pointerEvents: "none",
         }}
       />

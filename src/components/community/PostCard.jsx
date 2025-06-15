@@ -7,33 +7,64 @@ import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useState } from "react";
 import CommentModal from "../../modals/community/CommentModal";
+import { getCommentsByPostId } from "../../api/comment.js/comment";
+import { getLikesByPost, createLike, removeLike } from "../../api/like/like.js";
+import { useEffect } from "react";
 
-function PostCard({ nickname, text, selectedMovie }) {
+function PostCard({ id, nickname, text, selectedMovie }) {
   const [openModal, setOpenModal] = useState(false);
 
   const [liked, setLiked] = useState(false);
-
-  const [comments, setComments] = useState([
-    { user: "Sena", text: "Bu filmi çok sevdim!" },
-    { user: "Ali", text: "Oyunculuk harikaydı." },
-    { user: "Zeynep", text: "Müzikleri çok etkileyiciydi.", liked: true },
-    { user: "Zeynep", text: "Müzikleri çok etkileyiciydi.", liked: true },
-    { user: "Zeynep", text: "Müzikleri çok etkileyiciydi.", liked: true },
-    { user: "Zeynep", text: "Müzikleri çok etkileyiciydi.",liked: true },
-    { user: "Zeynep", text: "Müzikleri çok etkileyiciydi.", liked: false},
-    { user: "Zeynep", text: "Müzikleri çok etkileyiciydi.", liked: true },
-    { user: "Zeynep", text: "Müzikleri çok etkileyiciydi.", liked: true },
-    { user: "Zeynep", text: "Müzikleri çok etkileyiciydi.", liked: false },
-    { user: "Zeynep", text: "Müzikleri çok etkileyiciydi.", liked: false },
-    { user: "Zeynep", text: "Müzikleri çok etkileyiciydi.", liked: false },
-    { user: "Zeynep", text: "Müzikleri çok etkileyiciydi.", liked: true },
-  ]);
+  const [likeCount, setLikeCount] = useState(0);
+  const [comments, setComments] = useState([]);
 
   const firstComment = comments[0];
 
-  const toggleLike = () => {
-    setLiked((prev) => !prev);
+  const handleLikeClick = async () => {
+    try {
+      if (liked) {
+        await removeLike(id);
+        setLiked(false);
+        setLikeCount((prev) => prev - 1);
+      } else {
+        await createLike(id);
+        setLiked(true);
+        setLikeCount((prev) => prev + 1);
+      }
+    } catch (error) {
+      console.error(
+        "Like operation failed",
+        error.response?.data?.message || error.message
+      );
+    }
   };
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const data = await getCommentsByPostId(id);
+        console.log("💬 Gelen yorumlar:", data);
+        setComments(data);
+      } catch (error) {
+        console.error("Comment didn't fetch:", error.message);
+      }
+    };
+
+    fetchComments();
+  }, [id]);
+
+  useEffect(() => {
+    const fetchLikes = async () => {
+      try {
+        const data = await getLikesByPost(id);
+        setLikeCount(data.likeCount);
+      } catch (error) {
+        console.error("Like information is not get", error);
+      }
+    };
+
+    fetchLikes();
+  }, [id]);
 
   return (
     <Card
@@ -106,13 +137,14 @@ function PostCard({ nickname, text, selectedMovie }) {
           mt: 1,
         }}
       >
-        <IconButton onClick={toggleLike} size="small">
+        <IconButton onClick={handleLikeClick} size="small">
           {liked ? (
             <FavoriteIcon sx={{ color: "red" }} />
           ) : (
             <FavoriteBorderIcon sx={{ color: "white" }} />
           )}
         </IconButton>
+        <Typography sx={{ color: "white", mt: 0.5 }}>{likeCount}</Typography>
         <IconButton
           sx={{ color: "rgba(24, 123, 221, 1)" }}
           size="small"
@@ -125,6 +157,7 @@ function PostCard({ nickname, text, selectedMovie }) {
           open={openModal}
           handleClose={() => setOpenModal(false)}
           post={{
+            id,
             nickname,
             text,
             selectedMovie,
@@ -158,12 +191,12 @@ function PostCard({ nickname, text, selectedMovie }) {
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Typography
               variant="body2"
-              sx={{ color: "white", fontWeight: "bold" , textAlign: "left"}}
+              sx={{ color: "white", fontWeight: "bold", textAlign: "left" }}
             >
-              {firstComment.user}
+              {firstComment.User?.nickname || "Anonim"}
             </Typography>
             <Typography variant="body2" sx={{ color: "white" }}>
-              {firstComment.text}
+              {firstComment.commentText}
             </Typography>
           </Box>
         </Box>

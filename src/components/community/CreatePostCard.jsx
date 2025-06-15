@@ -1,35 +1,67 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Card,
-  Avatar,
-  Typography,
-  MenuItem,
-  Select,
-  Button,
-} from "@mui/material";
+import { Box, Card, Avatar, Typography, Button } from "@mui/material";
+import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import PersonIcon from "@mui/icons-material/Person";
+import { useEffect } from "react";
+import { createPost } from "../../api/post/post.js";
+import { getActiveUser } from "../../api/profile/user.js";
+import { getAllMovies } from "../../api/movie/movie.js";
 
-function CreatePostCard({ nickname = "Kullanıcı", movies = [], onSend }) {
-  const [selectedMovie, setSelectedMovie] = useState("");
+function CreatePostCard({ onSend }) {
+  const [movies, setMovies] = useState([]);
+  const [nickname, setNickname] = useState("User");
+  const [selectedMovie, setSelectedMovie] = useState(null);
   const [text, setText] = useState("");
 
-  const handleSend = () => {
-    if (!text.trim() || !selectedMovie)
-      return alert("Lütfen film seçin ve metin yazın.");
+  const handleSend = async () => {
+  if (!text.trim() || !selectedMovie)
+    return alert("Please fill in all fields.");
 
-    const newPost = {
-      text,
-      selectedMovie,
+  try {
+    const newPost = await createPost({
+      movie_id: selectedMovie.id,
+      contentText: text,
+    });
+
+    // movieName ve nickname'i manuel olarak ekliyoruz
+    onSend?.({
+      ...newPost,
+      movieName: selectedMovie.title,
+      nickname: nickname,
+    });
+
+    setText("");
+    setSelectedMovie(null);
+  } catch (err) {
+    console.error("Posted Error:", err.message);
+    alert( " Send is faild" + err.message);
+  }
+};
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await getActiveUser();
+        setNickname(user.nickname);
+      } catch (error) {
+        console.error("User information didn't get:", error);
+      }
     };
 
-    onSend?.(newPost); // Eğer onSend varsa çağır
+    fetchUser();
+  }, []);
 
-    // Formu temizle
-    setText("");
-    setSelectedMovie("");
-  };
+  useEffect(() => {
+    const fetchTopMovies = async () => {
+      const allMovies = await getAllMovies();
+      if (allMovies && Array.isArray(allMovies)) {
+        setMovies(allMovies);
+      }
+    };
+
+    fetchTopMovies();
+  }, []);
 
   return (
     <Card
@@ -42,6 +74,7 @@ function CreatePostCard({ nickname = "Kullanıcı", movies = [], onSend }) {
         flexDirection: "column",
         gap: 2,
         position: "relative",
+        overflow: "visible",
       }}
     >
       {/* Üst kısım */}
@@ -97,30 +130,60 @@ function CreatePostCard({ nickname = "Kullanıcı", movies = [], onSend }) {
           <Typography variant="body2" sx={{ color: "white", fontSize: 18 }}>
             Film:
           </Typography>
-          <Select
+          <Autocomplete
+            options={movies}
+            getOptionLabel={(option) => option.title || ""}
             value={selectedMovie}
-            onChange={(e) => setSelectedMovie(e.target.value)}
-            displayEmpty
-            size="small"
+            disablePortal
+            onChange={(event, value) => setSelectedMovie(value)}
+            filterOptions={(options, { inputValue }) =>
+              options
+                .filter((option) =>
+                  option.title?.toLowerCase().startsWith(inputValue.toLowerCase())
+                )
+                .slice(0, 10)
+            }
+            PopperProps={{
+              placement: "bottom-start", // ✅ Her zaman aşağı açılsın
+            }}
+            renderOption={(props, option) => (
+              <li
+                {...props}
+                style={{
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  maxWidth: "100%",
+                }}
+                title={option.title}
+              >
+                {option.title}
+              </li>
+            )}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                placeholder="Film Seçiniz"
+                variant="outlined"
+                sx={{
+                  minWidth: 200,
+                  input: { color: "white" },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: "rgba(255,255,255,0.3)" },
+                    "&:hover fieldset": { borderColor: "white" },
+                    "&.Mui-focused fieldset": { borderColor: "white" },
+                  },
+                }}
+              />
+            )}
             sx={{
-              color: "white",
+              width: 250,
               backgroundColor: "rgba(255, 255, 255, 0.1)",
               borderRadius: 1,
-              fontSize: 18,
-              border: "1px solid rgba(255,255,255,0.3)",
-              minWidth: 200,
-              ".MuiSvgIcon-root": { color: "white" },
+              color: "white",
+              "& .MuiSvgIcon-root": { color: "white" },
             }}
-          >
-            <MenuItem value="" disabled>
-              Film Seçiniz:
-            </MenuItem>
-            {movies.map((movie) => (
-              <MenuItem key={movie.id} value={movie.name}>
-                {movie.name}
-              </MenuItem>
-            ))}
-          </Select>
+          />
         </Box>
 
         {/* Gönder butonu */}

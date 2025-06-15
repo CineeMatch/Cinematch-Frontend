@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Avatar from "@mui/material/Avatar";
 
-export default function UserCard({ user }) {
+export default function userCard({ user }) {
   // const ppUrl = process.env.PUBLIC_URL + "/images/image.png";
   // const name = "John Doe";
   // const nickname = "johndoe";

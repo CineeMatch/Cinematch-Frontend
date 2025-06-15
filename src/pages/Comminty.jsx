@@ -4,8 +4,9 @@ import MeesageCard from '../components/community/MessageCard.jsx'
 import CategoriesBar from '../components/community/CategoriesBar.jsx'
 import { useState } from 'react'
 
-export default function Community() {
+export default function Comminty() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null); 
 
   return (
     <Box sx={{ 
@@ -21,8 +22,9 @@ export default function Community() {
         backgroundPosition: "center",
         gap: 2,
     }}>
-        <MeesageCard isSidebarOpen={isSidebarOpen}/>
-        <CategoriesBar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
+        <MeesageCard isSidebarOpen={isSidebarOpen} selectedCategoryId={selectedCategoryId}/>
+        <CategoriesBar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} onCategorySelect={setSelectedCategoryId}/>
     </Box>
   )
 }
+

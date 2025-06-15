@@ -26,6 +26,7 @@ export default function appRoutes() {
   return (
     <Routes>
         <Route index element={<LoginPage />} />
+        <Route path="/home" element={<MainPage />} />
         <Route path="/activeChallange" element={<Layout><ChallangeModal /></Layout>} />
         <Route path="/messageCard" element={<MessageCard />} />
         <Route path="/community" element={<Layout><Community /></Layout>} /> 
@@ -35,7 +36,6 @@ export default function appRoutes() {
         <Route path="/watched" element={<Layout><WatchedPage/></Layout>} />
         <Route path="/modal" element={<ChallengeQuestionModal/>}/>
         <Route path="/modalQ" element={<ChallengeQuestionStarterModal/>}/>
-        <Route path="/home" element={<MainPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/profile/:userId?" element={<ProfilePage />} />
         <Route path="/chat" element={<ChatPage />} />
