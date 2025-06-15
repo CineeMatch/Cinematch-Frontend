@@ -20,11 +20,12 @@ import WatchedPage from '../pages/WatchedPage.jsx'
 import EditProfileModal from '../modals/profile/EditProfileModal.jsx'
 import ChatDeneme from '../components/ChatDeneme.jsx'
 import Users from '../pages/Users.jsx'
+import NewPasswordPage from '../pages/NewPasswordPage.jsx'
 
 export default function appRoutes() {
   return (
     <Routes>
-        <Route index element={<Layout><MainPage /></Layout>} />
+        <Route index element={<LoginPage />} />
         <Route path="/activeChallange" element={<Layout><ChallangeModal /></Layout>} />
         <Route path="/messageCard" element={<MessageCard />} />
         <Route path="/community" element={<Layout><Community /></Layout>} /> 
@@ -34,17 +35,17 @@ export default function appRoutes() {
         <Route path="/watched" element={<Layout><WatchedPage/></Layout>} />
         <Route path="/modal" element={<ChallengeQuestionModal/>}/>
         <Route path="/modalQ" element={<ChallengeQuestionStarterModal/>}/>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/home" element={<MainPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile/:userId?" element={<ProfilePage />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/friends" element={<Friends />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/newPassword" element={<NewPasswordPage />} />
+        <Route path="/EditProfileModal" element={<EditProfileModal/>} />
 
         {/* deneme */}
-        <Route path="/EditProfileModal" element={<EditProfileModal/>} />
         <Route path="/chatdeneme" element={<ChatDeneme />} />
-
 
         {/* page or modal test routes */}
         <Route path="/forgetPassword" element={<ForgetPasswordPage />} />
