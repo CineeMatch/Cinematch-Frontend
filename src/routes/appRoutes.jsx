@@ -10,7 +10,7 @@ import ChallengeQuestionStarterModal from '../modals/challenge/ChallengeQuestion
 import ChallangeModal from '../modals/profile/ActiveChallengeModal.jsx'
 import LoginPage from '../pages/Login.jsx'
 import RegisterPage from '../pages/Register.jsx'
-import ChallengeQuestionModal from '../modals/challenge/ChallangeQuestionModal.jsx'
+import ChallengeQuestionModal from '../modals/challenge/ChallengeQuestionModal.jsx'
 import WatchedPage from '../pages/WatchedPage.jsx'
 import NewUserWatchedPage from '../pages/NewUserWatchedPage.jsx'
 

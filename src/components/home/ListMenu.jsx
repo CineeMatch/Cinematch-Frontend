@@ -3,10 +3,37 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import IconButton from '@mui/material/IconButton';
+import { useEffect, useState } from 'react';
+import { addtoFavoriteMovies, addtoWatchedMovies, addtoWishlistMovies, getMyListMovie, removefromFavorites, removefromMylist } from '../../api/movieType/movieType';
 
-export default function ListMenu() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+export default function ListMenu(props) {
+  const movie = props.movie;
+  const statusOfMovie=props.statusOfMovie;
+
+  const unSelectedItem = {
+    color: "black",
+    backgroundColor: "white"
+  };
+
+  const selectedItem = {
+    color: "white",
+    backgroundColor: "black"
+  };
+
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  
+
+  const handleMenuItemClick = async (typeKey) => {
+    if(typeKey==="favorite")
+      statusOfMovie?.favoriteMovies ?  await removefromFavorites(movie.id):await addtoFavoriteMovies(movie.id);
+    if(typeKey==="watched")
+      statusOfMovie?.watchedMovies ? await removefromMylist(movie.id): await addtoWatchedMovies(movie.id);
+    if(typeKey==="wishlist")
+      statusOfMovie?.wishlistMovies ? await removefromMylist(movie.id):  await addtoWishlistMovies(movie.id);
+    props.setClicked(prev => !prev);
+    handleClose();
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -18,7 +45,7 @@ export default function ListMenu() {
 
   return (
     <div>
-      {/* Thumb Icon as clickable menu trigger */}
+      {/* Menü Açma Butonu */}
       <IconButton
         id="positioned-button"
         onClick={handleClick}
@@ -30,7 +57,7 @@ export default function ListMenu() {
         <AddCircleIcon />
       </IconButton>
 
-      {/* Menu */}
+      {/* Menü */}
       <Menu
         id="positioned-menu"
         anchorEl={anchorEl}
@@ -45,11 +72,26 @@ export default function ListMenu() {
           horizontal: 'left',
         }}
       >
-        <MenuItem onClick={handleClose}>Favorite</MenuItem>
-        <MenuItem onClick={handleClose}>
-        <AddCircleIcon></AddCircleIcon>
-        WishList</MenuItem>
-        <MenuItem onClick={handleClose}>Watched</MenuItem>
+        <MenuItem
+          sx={statusOfMovie?.favoriteMovies ? selectedItem : unSelectedItem}
+          onClick={() => handleMenuItemClick("favorite")}
+        >
+          Favorite
+        </MenuItem>
+
+        <MenuItem
+          sx={statusOfMovie?.wishlistMovies ? selectedItem : unSelectedItem}
+          onClick={() => handleMenuItemClick("wishlist")}
+        >
+          WishList
+        </MenuItem>
+
+        <MenuItem
+          sx={statusOfMovie?.watchedMovies ? selectedItem : unSelectedItem}
+          onClick={() => handleMenuItemClick("watched")}
+        >
+          Watched
+        </MenuItem>
       </Menu>
     </div>
   );

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
@@ -7,6 +6,8 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
 import ChildModal from './ChildModal';
 import ListMenu from './ListMenu';
+import { useEffect, useState } from 'react';
+import { addtoFavoriteMovies, getMyListMovie, removefromFavorites } from '../../api/movieType/movieType';
 
 const style = {
   position: 'absolute',
@@ -23,8 +24,35 @@ const style = {
 
 export default function MovieModal(props) {
 
-  const [openChildFriendsModal,setOpenChildOpenFriendsModal]=React.useState(false);
+  const [openChildFriendsModal,setOpenChildOpenFriendsModal]=useState(false);
+  const [clicked,setClicked]=useState(false);
+  const [statusOfMovie, setStatusOfMovie] = useState({
+    favoriteMovies:false,
+    watchedMovies:false,
+    wishlistMovies:false
+  });
+
   const movie= props.movie;
+      const [thumbsColor,setThumbsColor]=useState("white");
+
+  const fetchMovieTypes = async () => {
+    try {
+      const movieType=await getMyListMovie(movie.id);
+      setStatusOfMovie(movieType);
+      const color=statusOfMovie.favoriteMovies?"red":"white";
+      setThumbsColor(color);
+      props.movieType=statusOfMovie;
+      console.log(movieType);
+    } catch (error) {
+      console.log(movie);
+      console.log("Problem in fetching movieType");
+    }
+  };
+ useEffect(() => {
+  if (movie?.id) {
+    fetchMovieTypes();
+  }
+}, [movie?.id, clicked]);
   if (!movie) return null;
   console.log("açıldık")
   console.log("movie",movie);
@@ -42,7 +70,7 @@ const platforms=[
     {name:"DocAlliance Films",url:"https://dafilms.com"},
     {name:"Cultpix",url:"https://www.cultpix.com"}
   ]
-  console.log("typeof movie.platforms:", typeof movie.platforms);
+
 
 const moviePlatforms = typeof movie.platforms === 'string'
   ? movie.platforms.split(',').map(p => p.trim())
@@ -50,9 +78,13 @@ const moviePlatforms = typeof movie.platforms === 'string'
 console.log("movie.platforms:", movie.platforms);
 console.log("platformURL:", platformURL);
 
+ 
+ 
+
+ 
   return (
     <div>
-      <ChildModal open={openChildFriendsModal} onClose={()=>setOpenChildOpenFriendsModal(false)}/>
+      <ChildModal movie={movie} open={openChildFriendsModal} onClose={()=>setOpenChildOpenFriendsModal(false)}/>
           <Modal open={props.open} onClose={props.onClose}>
         <Box sx={style}>
           <Box
@@ -119,9 +151,12 @@ console.log("platformURL:", platformURL);
                 You can watch it on {moviePlatforms[0]}       </Button>)}
 
                 <Box sx={{ display: 'flex', gap: 1, ml: 1 }}>
-                  <ListMenu/>
+                  <ListMenu movie={movie} statusOfMovie={statusOfMovie} setClicked={setClicked}/>
 
-                  <ThumbUpIcon sx={{ color: 'white', padding:"8px"}} />
+                  <ThumbUpIcon onClick={async()=>{ statusOfMovie?.favoriteMovies ?  await removefromFavorites(movie.id):await addtoFavoriteMovies(movie.id);
+                  setClicked(prev => !prev);
+                  statusOfMovie?.favoriteMovies?setThumbsColor("white"):setThumbsColor("red");
+                  }}sx={{ color: thumbsColor, padding:"8px"}} />
                   <OfflineBoltIcon sx={{ color: 'white' , padding:"8px"}} onClick={()=>setOpenChildOpenFriendsModal(true)}/>
                 </Box>
               </Box>

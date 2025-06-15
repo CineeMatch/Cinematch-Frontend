@@ -10,10 +10,12 @@ export default function FavoritesPage() {
   const [movies, setMovies] = useState([]);
   const [movie, setMovie] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [refresh,setRefresh]=useState(false);
+  
 
   useEffect(() => {
     fetchFavoriteMovies();
-  }, []);
+  }, [refresh]);
 
   const fetchFavoriteMovies = async () => {
     const response = await getFavoriteMovies();
@@ -79,6 +81,7 @@ export default function FavoritesPage() {
         movie={movie}
         onClose={() => {
           setOpenMovieModal(false);
+           setRefresh(prev => !prev);
           console.log("close");
         }}
       />
