@@ -10,14 +10,16 @@ import { getActiveUser } from '../api/profile/user.js';
 import { getChatMessages } from '../api/chat/chat.js';
 
 const ChatPage = () => {
+  const { socket } = useSocket();
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [selectedUser, setSelectedUser] = useState('');
-  const { socket, isConnected } = useSocket();
-  const [activeUserId, setActiveUserId] = useState();
-  const messageContainerRef = useRef(null);
   const [offset, setOffset] = useState(0);
+  const messageContainerRef = useRef(null);
   const messageLimit = 20;
+  const [activeUserId, setActiveUserId] = useState();
+  const [activeUserAvatar, setActiveUserAvatar] = useState();
+  const [selectedUserAvatar, setSelectedUserAvatar] = useState();
 
   const scrollToBottom = () => {
     const container = messageContainerRef.current;
@@ -60,10 +62,12 @@ const ChatPage = () => {
     }
   };
 
+  // Aktif kullanıcıyı al
   useEffect(() => {
     const fetchActiveUser = async () => {
       try {
         const response = await getActiveUser();
+        setActiveUserAvatar(response.profile_image_url);
         setActiveUserId(response.id);
       } catch (error) {
         console.error('Error fetching active user:', error);
@@ -72,12 +76,14 @@ const ChatPage = () => {
     fetchActiveUser();
   }, []);
 
+  // Socket bağlantısı kontrolü
   useEffect(() => {
     if (!socket || !selectedUser || !activeUserId) return;
     // const chatRoom = [activeUserId, selectedUser.id].sort().join('_');
     socket.emit('joinChat', { user1: activeUserId, user2: selectedUser.id });
   }, [socket, selectedUser, activeUserId]);
 
+  // Yeni mesaj geldiğinde güncelle
   useEffect(() => {
     if (!socket || !activeUserId) return;
 
@@ -90,6 +96,7 @@ const ChatPage = () => {
     return () => socket.off('receiveMessage', handleMessage);
   }, [socket, activeUserId]);
 
+  // Seçilen kullanıcı değiştiğinde mesajları al
   useEffect(() => {
     if (!selectedUser || !activeUserId) return;
 
@@ -109,9 +116,11 @@ const ChatPage = () => {
       }
     };
 
+    setSelectedUserAvatar(selectedUser.profile_image_url);
     fetchMessages();
   }, [selectedUser, activeUserId]);
 
+  // Seçilen kullanıcı değiştiğinde avatar'ı güncelle
   useEffect(() => {
     const container = messageContainerRef.current;
     if (container) {
@@ -165,7 +174,7 @@ const ChatPage = () => {
                 width: '500'
               }}
             >
-              <Avatar />
+              <Avatar src={selectedUser.profile_image_url} />
               <Typography variant="h6" fontWeight="bold">
                 {selectedUser.name}
               </Typography>
@@ -185,9 +194,9 @@ const ChatPage = () => {
           >
             {messages.map((msg, i) =>
               msg.isOwn ? (
-                <SentMessage key={i} message={msg.text || msg.content} />
+                <SentMessage key={i} message={msg.text || msg.content} avatar_url={activeUserAvatar}/>
               ) : (
-                <ReceivedMessage key={i} message={msg.text || msg.content} />
+                <ReceivedMessage key={i} message={msg.text || msg.content} avatar_url={selectedUserAvatar} />
               )
             )}
           </Box>
