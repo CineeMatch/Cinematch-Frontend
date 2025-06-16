@@ -36,7 +36,6 @@ const Friends = () => {
     const deleteFriend = async (id) => {
       try {
         await deleteFriendById(id);
-        console.log(`Friend with ID ${id} deleted`);
         fetchFriends(); // Silinince güncelle
       } catch (error) {
         console.error('Error deleting friend:', error);
