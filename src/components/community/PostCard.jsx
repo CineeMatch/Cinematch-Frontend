@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Card, Avatar, Typography } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -43,7 +42,6 @@ function PostCard({ id, nickname, text, selectedMovie }) {
     const fetchComments = async () => {
       try {
         const data = await getCommentsByPostId(id);
-        console.log("💬 Gelen yorumlar:", data);
         setComments(data);
       } catch (error) {
         console.error("Comment didn't fetch:", error.message);
