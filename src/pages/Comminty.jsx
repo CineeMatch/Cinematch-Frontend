@@ -1,6 +1,6 @@
 import { Box } from '@mui/material'
 import React from 'react'
-import MeesageCard from '../components/community/MessageCard.jsx'
+import MessageCard from '../components/community/MessageCard.jsx'
 import CategoriesBar from '../components/community/CategoriesBar.jsx'
 import { useState } from 'react'
 
@@ -22,7 +22,7 @@ export default function Comminty() {
         backgroundPosition: "center",
         gap: 2,
     }}>
-        <MeesageCard isSidebarOpen={isSidebarOpen} selectedCategoryId={selectedCategoryId}/>
+        <MessageCard isSidebarOpen={isSidebarOpen} selectedCategoryId={selectedCategoryId}/>
         <CategoriesBar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} onCategorySelect={setSelectedCategoryId}/>
     </Box>
   )

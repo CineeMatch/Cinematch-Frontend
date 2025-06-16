@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react'
-import { Box, Typography, TextField, Avatar, Grid, Card, CardContent, Stack,
+import { Box, Typography, TextField, Avatar, Grid, Card, CardContent,
   InputAdornment, FormControl, InputLabel, Select, MenuItem, 
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { getAllUsers } from '../api/profile/user.js';
+import { getAllUsers } from '../api/profile/user';
+import { useNavigate } from 'react-router-dom';
 
 const Users = () => {
 
   const [type, setType] = useState(0);
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+
+  const navigate = useNavigate();
 
   const fetchFriends = async () => {
     try {
@@ -134,7 +137,7 @@ const Users = () => {
         <Grid container spacing={2}>
           {filteredUsers.map((user, index) => (
             <Grid item xs={type ? 12 : 6} md={type ? 12 : 4} key={index}>
-              <Card sx={{ backgroundColor: 'rgba(255,255,255,0.05)', color: 'white', px: type ? 1 : 0 }}>
+              <Card sx={{ backgroundColor: 'rgba(255,255,255,0.05)', color: 'white', px: type ? 1 : 0 } } onClick={() => navigate(`/profile/${user.id}`)}>
                 <CardContent sx={{ p: type ? 1 : 2, mt: 1 }}>
                   <Box display="flex" justifyContent="space-between" alignItems="center">
                     <Box display="flex" alignItems="center">

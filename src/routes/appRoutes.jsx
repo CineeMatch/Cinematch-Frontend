@@ -18,7 +18,7 @@ import Friends from '../pages/Friends.jsx'
 import ForgetPasswordPage from '../pages/ForgetPasswordPage.jsx'
 import LoginPage from '../pages/Login.jsx'
 import Users from '../pages/Users.jsx'
-
+import NewPasswordPage from '../pages/NewPasswordPage.jsx'
 
 export default function appRoutes() {
   return (
@@ -35,11 +35,11 @@ export default function appRoutes() {
        <Route path="/modal" element={<ChallengeQuestionModal/>}/>
        <Route path="/modalQ" element={<ChallengeQuestionStarterModal/>}/>
        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/profile" element={<Layout><ProfilePage /></Layout>} />
-        <Route path="/chat" element={<Layout><ChatPage /></Layout>} />
-        <Route path="/friends" element={<Layout><Friends /></Layout>} />
-        <Route path="/users" element={<Users />} />
-
+       <Route path="/chat" element={<Layout><ChatPage /></Layout>} />
+       <Route path="/friends" element={<Layout><Friends /></Layout>} />
+       <Route path="/users" element={<Users />} />
+       <Route path="/profile/:userId?" element={<ProfilePage />} />
+       <Route path="/newPassword" element={<NewPasswordPage />} />
         {/* page or modal test routes */}
         <Route path="/forgetPassword" element={<ForgetPasswordPage />} />
     </Routes>

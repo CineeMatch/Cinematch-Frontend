@@ -4,12 +4,35 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Avatar from "@mui/material/Avatar";
+import { addFriendByNickname } from "../../api/profile/friends";
+import { toast } from "react-toastify";
+import { useState } from "react";
 
-export default function userCard({ user }) {
-  // const ppUrl = process.env.PUBLIC_URL + "/images/image.png";
-  // const name = "John Doe";
-  // const nickname = "johndoe";
-  // const level = "Level 5";
+export default function UserCard({ user }) {
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  const handleAddFriend = async () => {
+    try {
+      const response = await addFriendByNickname(user.nickname);
+      console.log("Friend added:", response.message);
+      toast.success("Friend added successfully!");
+      setIsDisabled(true);
+    } catch (error) {
+      const message = error?.response?.data?.message;
+
+      if (
+        message === "Friendship already exists." ||
+        message === "Friend request already sent" ||
+        message === "Already friends"
+      ) {
+        toast.info("You have already sent a request to this user.");
+        setIsDisabled(true);
+      } else {
+        console.error("Error adding friend:", message);
+        toast.error("Failed to add friend. Please try again.");
+      }
+    }
+  };
 
   return (
     <Card
@@ -28,7 +51,7 @@ export default function userCard({ user }) {
     >
       <Box sx={{ position: "relative" }}>
         <Avatar
-          src={`/images/${user.profilePic}`}
+          src={user.profile_image_url}
           alt={user.name}
           sx={{
             width: 300,
@@ -52,19 +75,19 @@ export default function userCard({ user }) {
           }}
         >
           <Typography variant="h6" fontWeight="bold" color="white">
-          {user.name}
+            {user.name}
           </Typography>
           <Typography variant="body2" color="gray">
-          {user.username}
+            {user.nickname}
           </Typography>
 
           <Box
             sx={{
               display: "flex",
-              alignItems: "center", 
-              justifyContent: "flex-start", 
+              alignItems: "center",
+              justifyContent: "flex-start",
               gap: 7,
-              width: "100%", 
+              width: "100%",
             }}
           >
             <Typography
@@ -87,9 +110,10 @@ export default function userCard({ user }) {
                 alignSelf: "flex-start",
               }}
             >
-              {user.level}
+              Level : {user.level}
             </Typography>
             <Button
+              onClick={!isDisabled ? handleAddFriend : undefined}
               variant="contained"
               color="primary"
               startIcon={<PersonAddIcon />} // Butona ikon ekleme
@@ -99,12 +123,16 @@ export default function userCard({ user }) {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: "rgb(74, 133, 140)", // Buton rengi
+                backgroundColor: isDisabled ? "gray" : "rgb(74, 133, 140)", // Buton rengi
+                pointerEvents: isDisabled ? "none" : "auto",
                 color: "white",
-                "&:hover": { backgroundColor: "rgb(23, 40, 43)" }, // Hover efekti
+                cursor: isDisabled ? "default" : "pointer",
+                "&:hover": {
+                  backgroundColor: isDisabled ? "gray" : "rgb(23, 40, 43)",
+                },
               }}
             >
-              Add Friend
+              {isDisabled ? "Request Sent" : "Add Friend"}
             </Button>
           </Box>
         </Box>

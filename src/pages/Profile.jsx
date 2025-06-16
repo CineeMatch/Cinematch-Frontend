@@ -1,63 +1,76 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+// src/pages/ProfilePage.jsx
 import { useEffect, useState } from 'react';
 import { Avatar, Box, Grid, Typography } from '@mui/material';
+import { useParams } from 'react-router-dom';
 import Post from '../components/Profile/Post.jsx';
 import Stat from '../components/Profile/Stat.jsx';
 import EditProfileModal from '../modals/profile/EditProfileModal.jsx';
-import { getActiveUser } from '../api/profile/user.js';
-
+import { getActiveUser, getUserById } from '../api/profile/user.js';
+import { getPostsByUserId } from '../api/profile/post.js';
 
 const ProfilePage = () => {
-
-  const [avatar, setAvatar] = useState('/images/avatar.png');
-  const [nickname, setNickname] = useState('Dreath');
-  const [name, setName] = useState('Abdullah Can');
-  const [description, setDescription] = useState('Lorem Ipsum is simply dummy text of the printing and typesetting industry.');
-  const [level, setLevel] = useState(13);
-  const [lastActivity, setLastActivity] = useState('14.03.2025');
-  const [badge, setBadge] = useState(17);
-  const [friends, setFriends] = useState(21);
-  const [watched, setWatched] = useState(18);
-  const [wishlist, setWishlist] = useState(35);
-  const [activeChallenges, setActiveChallenges] = useState(7);
-  const [favorites, setFavorites] = useState(21)
-  const [posts, setPosts] = useState([
-    { id: 1, content: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', tags: ['Spiderman'], category: 'Fantasy' },
-    { id: 2, content: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', tags: ['Batman'], category: 'Action' },
-    { id: 3, content: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', tags: ['Superman'], category: 'Adventure' },
-  ]);
+  const { userId } = useParams(); // URL'deki userId
+  const [activeUserId, setActiveUserId] = useState("");
+  const [profileData, setProfileData] = useState({});
+  const [avatar, setAvatar] = useState('/images/default-avatar.png'); 
+  const [isOwnProfile, setIsOwnProfile] = useState(false);
   const [IsShowEditProfileModal, setIsShowEditProfileModal] = useState(false);
 
-  useEffect(() => {
-  
-      const fetchActiveUser = async () => {
-        try {
-          const response = await getActiveUser();
-          setNickname(response.nickname);
-          setAvatar(response.avatar);
-          setName(response.name);
-          setDescription(response.description);
-          setLevel(response.level);
-          setLastActivity(response.lastActivity);
-          setBadge(response.badge);
-          // setFriends(response.friends);
-          // setWatched(response.watched);
-          // setWishlist(response.wishlist);
-          // setActiveChallenges(response.activeChallenges);
-          // setFavorites(response.favorites);
-          console.log("2.",response);
-          
-        } catch (error) {
-          console.error('Error fetching friends:', error);
-        }
-      };
-      fetchActiveUser();
-    }
-    , []);
+  const fetchUserData = async () => {
+    try {
+      const activeUser = await getActiveUser();
+      setActiveUserId(activeUser.id);
 
-  const handleEditProfile = () => {
-    // Logic to edit profile
-    console.log('Edit Profile Clicked');
-  }
+      const isMe = !userId || userId === String(activeUser.id);
+      setIsOwnProfile(isMe);
+
+      const profileToLoad = isMe ? activeUser : await getUserById(userId);
+      setProfileData(profileToLoad);
+    } catch (error) {
+      console.error('Profil verisi alınamadı:', error);
+    }
+  };
+
+  const fetchPosts = async (id) => {
+    try {
+      const posts = await getPostsByUserId(id);
+      setProfileData((prevData) => ({
+        ...prevData,
+        posts: posts || [],
+      }));
+    } catch (error) {
+      console.error('Posts alınamadı:', error);
+    }
+  };
+  
+  const handleAvatarUpdate = (newAvatarUrl) => {
+    setProfileData((prev) => ({
+      ...prev,
+      profile_image_url: newAvatarUrl, 
+    }));
+    setAvatar(newAvatarUrl); 
+  };
+  
+  
+  useEffect(() => {
+    fetchUserData();
+  }, [userId]);
+
+  useEffect(() => {
+    if (activeUserId) {
+      fetchPosts(userId || activeUserId);
+    }
+  }, [activeUserId]);
+
+  useEffect(() => {
+    if (profileData.profile_image_url) {
+      setAvatar(profileData.profile_image_url);
+    }
+  }, [profileData.profile_image_url]);
+
+
+  if (!profileData) return <div>Loading...</div>;
 
   return (
     <Box
@@ -77,10 +90,10 @@ const ProfilePage = () => {
         {/* Profile Info */}
         <Grid item xs={12} md={8}>
           <Box sx={{ textAlign: 'center', p: 2, borderRadius: 2 }}>
-            <Avatar sx={{ width: 100, height: 100, mx: 'auto', mb: 2 }} />
-            <Typography variant="h5">{nickname}</Typography>
-            <Typography variant="subtitle1">{name}</Typography>
-            <Typography variant="body2" sx={{ mt: 1 }}>{description}</Typography>
+            <Avatar src={avatar} sx={{ width: 100, height: 100, mx: 'auto', mb: 2 }} />
+            <Typography variant="h5">{profileData.nickname}</Typography>
+            <Typography variant="subtitle1">{profileData.name}</Typography>
+            <Typography variant="body2" sx={{ mt: 1 }}>{profileData.description}</Typography>
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 2 }}>
               {[...Array(5)].map((_, index) => (
                 <Box key={index} sx={{ width: 50, height: 50, backgroundColor: '#999', borderRadius: 1 }}/>
@@ -88,29 +101,46 @@ const ProfilePage = () => {
             </Box>
           </Box>
           {/* Posts Section */}
-          <Box sx={{ mt:2 }}>
-            {posts.map((post, index) => (
-              <Post index={index} nickname={nickname} category={post.category} content={post.content} tags={post.tags}/>
+          { profileData.posts && profileData.posts.length > 0 && (
+          <Box sx={{ mt: 2 }}>
+            {profileData.posts.map((post, index) => (
+              <Post
+                key={post.id}
+                index={index}
+                nickname={profileData.nickname}
+                category={post.category}
+                content={post.contentText}
+                tags={post.tags}
+              />
             ))}
           </Box>
+          )}
         </Grid>
 
         {/* Stats Section */}
         <Stat
-          level={level}
-          lastActivity={lastActivity}
-          badge={badge}
-          friends={friends}
-          watched={watched}
-          wishlist={wishlist}
-          activeChallenges={activeChallenges}
-          favorites={favorites}
+          level={profileData.level}
+          lastActivity={profileData.lastActivity}
+          badge={profileData.badge}
+          friends={profileData.friends}
+          watched={profileData.watched}
+          wishlist={profileData.wishlist}
+          activeChallenges={profileData.activeChallenges}
+          favorites={profileData.favorites}
           setIsShowEditProfileModal={setIsShowEditProfileModal}
+          isOwnProfile={isOwnProfile}
         />
       </Grid>
 
-      { IsShowEditProfileModal && (
-        <EditProfileModal setIsShowEditProfileModal={setIsShowEditProfileModal} avatar={avatar} nickname={nickname} name={name} description={description}/>
+      {IsShowEditProfileModal && (
+        <EditProfileModal
+          setIsShowEditProfileModal={setIsShowEditProfileModal}
+          avatar={profileData.avatar}
+          nickname={profileData.nickname}
+          name={profileData.name}
+          description={profileData.description}
+          onAvatarUpdate={handleAvatarUpdate}
+        />
       )}
     </Box>
   );
