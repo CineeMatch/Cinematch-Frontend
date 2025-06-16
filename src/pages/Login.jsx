@@ -53,6 +53,7 @@ const LoginPage = () => {
       try {
         const response = await login(data);
         navigate('/home');
+        console.log("Login successful:", response); // ✅ Giriş başarılıysa konsola yazdır
       } catch (error) {
         console.error("Login error:", error); // console.error yerine bir natification kütüphanesi kullanılanılıcak
       }
