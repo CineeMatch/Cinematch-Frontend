@@ -1,7 +1,7 @@
-import React from 'react'
 import { Box, Button,  Grid, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+
 
 const Stat = ({ level, lastActivity, badge, friends, favorites, watched, wishlist, activeChallenges, setIsShowEditProfileModal, isOwnProfile }) => {
 
