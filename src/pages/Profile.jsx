@@ -3,11 +3,12 @@
 import { useEffect, useState } from 'react';
 import { Avatar, Box, Grid, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import Post from '../components/Profile/Post.jsx';
 import Stat from '../components/Profile/Stat.jsx';
 import EditProfileModal from '../modals/profile/EditProfileModal.jsx';
 import { getActiveUser, getUserById } from '../api/profile/user.js';
 import { getPostsByUserId } from '../api/profile/post.js';
+import { getUserMovieTypesCounts } from '../api/profile/movieType.js';
+import PostCard from '../components/community/PostCard.jsx';
 
 const ProfilePage = () => {
   const { userId } = useParams(); // URL'deki userId
@@ -16,6 +17,21 @@ const ProfilePage = () => {
   const [avatar, setAvatar] = useState('/images/default-avatar.png'); 
   const [isOwnProfile, setIsOwnProfile] = useState(false);
   const [IsShowEditProfileModal, setIsShowEditProfileModal] = useState(false);
+  const [favoritesCount, setFavoritesCount] = useState(0);
+  const [watchedCount, setWatchedCount] = useState(0);
+  const [wishlistCount, setWishlistCount] = useState(0);
+
+  const fetchUserMovieTypesCounts = async (userId) => {
+    try {
+      const movieTypesCounts = await getUserMovieTypesCounts(userId);
+      console.log("Movie Types Counts:", movieTypesCounts);
+      setFavoritesCount(movieTypesCounts.favoriteCount);
+      setWatchedCount(movieTypesCounts.watchedCount);
+      setWishlistCount(movieTypesCounts.wishlistCount);
+    } catch (error) {
+      console.error('Movie types counts alınamadı:', error);
+    }
+  };
 
   const fetchUserData = async () => {
     try {
@@ -69,6 +85,12 @@ const ProfilePage = () => {
     }
   }, [profileData.profile_image_url]);
 
+  useEffect(() => {
+    if (activeUserId || userId) {
+      fetchUserMovieTypesCounts(userId || activeUserId);
+    }
+  }, [activeUserId, userId]);
+
 
   if (!profileData) return <div>Loading...</div>;
 
@@ -103,33 +125,37 @@ const ProfilePage = () => {
           {/* Posts Section */}
           { profileData.posts && profileData.posts.length > 0 && (
           <Box sx={{ mt: 2 }}>
-            {profileData.posts.map((post, index) => (
-              <Post
+            {profileData.posts.map((post) => (
+              <Box key={post.id} sx={{ mb: 2 }}>
+              <PostCard
                 key={post.id}
-                index={index}
+                id={post.id}
                 nickname={profileData.nickname}
-                category={post.category}
-                content={post.contentText}
-                tags={post.tags}
-              />
+                text={post.contentText}
+                selectedMovie={post.Movie.title}
+                />
+              </Box>
             ))}
           </Box>
           )}
         </Grid>
 
         {/* Stats Section */}
-        <Stat
-          level={profileData.level}
-          lastActivity={profileData.lastActivity}
-          badge={profileData.badge}
-          friends={profileData.friends}
-          watched={profileData.watched}
-          wishlist={profileData.wishlist}
-          activeChallenges={profileData.activeChallenges}
-          favorites={profileData.favorites}
-          setIsShowEditProfileModal={setIsShowEditProfileModal}
-          isOwnProfile={isOwnProfile}
-        />
+        {watchedCount === undefined || wishlistCount === undefined || favoritesCount === undefined
+        ? <Typography>Loading stats...</Typography>
+        : <Stat
+            level={profileData.level}
+            lastActivity={profileData.lastActivity}
+            badge={profileData.badge}
+            friends={profileData.friends}
+            watched={watchedCount}
+            wishlist={wishlistCount}
+            activeChallenges={profileData.activeChallenges}
+            favorites={favoritesCount}
+            setIsShowEditProfileModal={setIsShowEditProfileModal}
+            isOwnProfile={isOwnProfile}
+          />
+      }
       </Grid>
 
       {IsShowEditProfileModal && (
