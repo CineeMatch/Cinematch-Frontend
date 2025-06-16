@@ -1,7 +1,6 @@
 import axios from "axios";
 import { baseURL } from "../constants.js";
 
-
 export const createPost = async ({ movie_id, contentText }) => {
   const token = localStorage.getItem('authToken');
 
