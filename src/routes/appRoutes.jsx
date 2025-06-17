@@ -38,7 +38,7 @@ export default function appRoutes() {
        <Route path="/chat" element={<Layout><ChatPage /></Layout>} />
        <Route path="/friends" element={<Layout><Friends /></Layout>} />
        <Route path="/users" element={<Users />} />
-       <Route path="/profile/:userId?" element={<ProfilePage />} />
+       <Route path="/profile/:userId?" element={<Layout><ProfilePage /></Layout>} />
        <Route path="/newPassword" element={<NewPasswordPage />} />
         {/* page or modal test routes */}
         <Route path="/forgetPassword" element={<ForgetPasswordPage />} />
