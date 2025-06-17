@@ -16,6 +16,7 @@ export const addMovieToFavoritesForNewUser = async (movieId) => {
       {
         movie_id: movieId,
         favoriteMovies: true,
+        watchedMovies:true
       },
       {
         headers: {
@@ -133,16 +134,19 @@ export const getMyListMovie = async (movie_id) => {
   }
 };
 
-export const f=async(movieId)=>{
-  try {
-     const token = localStorage.getItem("authToken");
-
-    const response = await axios.get(`${baseURL}/movieType/${movieId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    console.log(response.data);
-    return response.data;
-  } catch (error) {
-    console.log("getMovieTypeByIdError",error);
-  }
+export const getUserMovieTypesCounts = async (userId) => {
+    try {
+        const token = localStorage.getItem('authToken');
+        const response = await axios.get(`${baseURL}/movieType/${userId}/counts`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Error fetching movie types for user with ID ${userId}:`, error.message);
+        throw error;
+    }
 }
+
+

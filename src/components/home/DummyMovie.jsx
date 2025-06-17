@@ -1,13 +1,13 @@
-import React from "react";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { getRandomMovie } from "../../api/movie/movie";
 import { Box, Button, Typography, IconButton } from "@mui/material";
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import InfoIcon from "@mui/icons-material/Info";
-
+import ListMenu from "./ListMenu";
+import { getMyListMovie } from "../../api/movieType/movieType";
 
 export default function DummyMovie(props) {
-  const [randomMovie, setRandomMovie] = React.useState(null);
+  const [randomMovie, setRandomMovie] = useState(null);
   const platforms=[
     {name:"Netflix",url:"https://www.netflix.com/tr/"},
     {name:"Disney Plus",url:"https://www.disneyplus.com/tr"},
@@ -23,11 +23,22 @@ export default function DummyMovie(props) {
 const moviePlatforms = typeof randomMovie?.platforms === 'string'
   ? randomMovie.platforms.split(',').map(p => p.trim())
   : [];const platformURL = platforms.find(p => p.name === moviePlatforms[0])?.url;
+  const [statusOfMovie, setStatusOfMovie] = useState({
+    favoriteMovies:false,
+    watchedMovies:false,
+    wishlistMovies:false
+  });
+  const [clicked,setClicked]=useState(false);
 
  
   useEffect(() => {
     fetchRandomMovie();
   }, []);
+   useEffect(() => {
+  if (randomMovie?.id) {
+    fetchMovieTypes();
+  }
+}, [randomMovie?.id, clicked]);
   const fetchRandomMovie = async () => {
     try {
       const randomMovie = await getRandomMovie();
@@ -42,6 +53,19 @@ const moviePlatforms = typeof randomMovie?.platforms === 'string'
     props.openMovieModal?.(true);
     props.movie?.(randomMovie);
   }
+  
+    const fetchMovieTypes = async () => {
+      try {
+        const movieType=await getMyListMovie(randomMovie.id);
+        setStatusOfMovie(movieType);
+        const color=statusOfMovie.favoriteMovies?"red":"white";
+        props.movieType=statusOfMovie;
+        console.log(movieType);
+      } catch (error) {
+        console.log(randomMovie);
+        console.log("Problem in fetching movieType");
+      }
+    };
   return (
     <Box
       sx={{
@@ -68,9 +92,7 @@ const moviePlatforms = typeof randomMovie?.platforms === 'string'
               You can watch on {moviePlatforms[0]}
             </Typography>
           </Button>}
-          <IconButton >
-            <AddCircleRoundedIcon sx={{ fontSize: "40px", color: "white" }} />
-          </IconButton>
+                  <ListMenu movie={randomMovie} statusOfMovie={statusOfMovie} setClicked={setClicked}/>
           <IconButton
           >
             <InfoIcon onClick={handleClickOnInfo} sx={{ fontSize: "40px", color: "white" }} />

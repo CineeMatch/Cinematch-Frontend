@@ -5,7 +5,7 @@ import DummyMovie from '../components/home/DummyMovie';
 import Top10Carousel from '../components/home/Top10Carousel';
 
 import { useState,useEffect } from 'react';
-import { get10RandomMovie } from '../api/movie/movie';
+import { get10RandomMovie,getFriendsWatched, getRandomMovies } from '../api/movie/movie';
 export default function MainPage()
 {  const [openMovieModal, setOpenMovieModal] = useState(false);
   const [randomMovie, setRandomMovie] = useState(null);
@@ -29,8 +29,15 @@ export default function MainPage()
   };
   const fetchFriendsMovies = async () => {
     try {
-      const movies = await get10RandomMovie();
-      console.log("Random Movies:", movies);
+      const friendsMovies = await getFriendsWatched();
+      const movies=[...friendsMovies];
+      console.log("Friends Movies:", movies);
+      if(friendsMovies.length<=10){
+        const randomMovies=await getRandomMovies(10-friendsMovies.length);
+          randomMovies.map(m=>movies.push(m));
+      }
+            console.log("Friends Movies:", movies);
+
       setFriendsMovies(movies);
     } catch (error) {
       setFriendsMovies(null);

@@ -163,3 +163,51 @@ export const  searchMovies = async(title)=>{
     toast.error("Filmler bulunamadı.");
   }
 }
+export const getFriendsWatched = async () => {
+  try {
+    const token = localStorage.getItem('authToken');
+
+    const response = await axios.get(`${baseURL}/friend/user`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const friendsList = response.data;
+
+    const allWatchedLists = await Promise.all(
+      friendsList.map(async (f) => {
+        const res = await axios.get(`${baseURL}/movieType/${f.id}/counts`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const watchedList = res.data.watchedList || [];
+        return watchedList.map(item => item.movie_id);
+      })
+    );
+
+    const allMovieIds = allWatchedLists.flat();
+    const uniqueMovieIds = [...new Set(allMovieIds)];
+        const shuffled = uniqueMovieIds.sort(() => 0.5 - Math.random());
+    const selectedMovieIds = shuffled.slice(0, 10);
+
+    const allMovies = await Promise.all(
+      selectedMovieIds.map(async (movieId) => {
+        const res = await axios.get(`${baseURL}/movie/${movieId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return res.data;
+      })
+    );
+
+    return allMovies;
+  } catch (error) {
+    console.error('Error in getFriendsWatched:', error);
+    return [];
+  }
+};
+
