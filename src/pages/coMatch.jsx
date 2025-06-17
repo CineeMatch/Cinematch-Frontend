@@ -15,25 +15,12 @@ export default function CoMatch() {
   const [currentIndex, setCurrentIndex] = useState(-1); // Başlangıçta hiç kullanıcı yok
   const [direction, setDirection] = useState(1);
 
-  // Kullanıcı değiştir
-  // const handleNext = () => {
-  //   setDirection(1);
-  //   setCurrentIndex((prevIndex) => (prevIndex + 1) % users.length);
-  // };
-
-  // const handlePrev = () => {
-  //   setDirection(-1);
-  //   setCurrentIndex((prevIndex) =>
-  //     prevIndex === 0 ? users.length - 1 : prevIndex - 1
-  //   );
-  // };
-
-  // const currentUser = users[currentIndex];
   const handleNext = async () => {
     setDirection(1);
     try {
       const matchUser = await createCoMatchSuggestion();;
       const matchId = matchUser.match.id;
+      console.log("Eşleşen kullanıcı:", matchId);
       const movieRes = await getMovieTypeOnProfileByUserId(matchId); 
       console.log("Eşleşen kullanıcının filmleri:", movieRes.data);
       const movies = movieRes.data?.map((m) => m.Movie) || [];
