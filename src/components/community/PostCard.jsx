@@ -21,7 +21,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useState } from "react";
 import CommentModal from "../../modals/community/CommentModal";
 import { getCommentsByPostId } from "../../api/comment/comment.js";
-import { getLikesByPost, createLike, removeLike } from "../../api/like/like.js";
+import { getLikesByPost, createLike, removeLike, getUserLikeonPost } from "../../api/like/like.js";
 import { deletePost } from "../../api/post/post.js";
 import { useEffect } from "react";
 
@@ -93,7 +93,9 @@ function PostCard({ id, nickname, text, selectedMovie ,onDelete }) {
     const fetchLikes = async () => {
       try {
         const data = await getLikesByPost(id);
+        const userLike = await getUserLikeonPost(id);
         setLikeCount(data.likeCount);
+        setLiked(userLike.like && userLike.like.id ? true : false);
       } catch (error) {
         console.error("Like information is not get", error);
       }
