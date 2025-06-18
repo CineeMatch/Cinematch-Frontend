@@ -1,15 +1,38 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef } from 'react';
 import { Box, Typography, IconButton } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { getTop10Movies } from '../../api/movie/movie';
 
-const topMovies = Array.from({ length: 10 }, (_, i) => ({
-  id: i + 1,
-  title: `Movie ${i + 1}`,
-  image: '/images/prestige.png', // Kendi posterlerinle değiştir
-}));
+import { useEffect } from 'react';
 
 export default function Top10Carousel(props) {
+  const [topMovies, setTopMovies] = React.useState([]);
+  const [selecetedMovie, setSelectedMovie] = React.useState(null);
+  const [openMovieModal, setOpenMovieModal] = React.useState(false);
+
+  useEffect(() => {
+    fetchTopMovies();
+  }, []);
+  const fetchTopMovies = async () => {
+    try {
+      const movies = await getTop10Movies();
+      console.log("Top 10 Movies:", movies);
+      setTopMovies(movies);
+      props.onTopMoviesChange?.(movies);
+    } catch (error) {
+      setTopMovies(null);
+      props.onTopMoviesChange?.(null);
+    }
+  };
+  const handleMovieClick = (movie) => {
+    setSelectedMovie(movie);
+    setOpenMovieModal(true);
+    props.openMovieModal?.(true);
+    props.movie?.(movie);
+  };
+
   const scrollRef = useRef(null);
     const scroll = (direction) => {
       if (scrollRef.current) {
@@ -28,7 +51,8 @@ export default function Top10Carousel(props) {
         paddingY: 1,
       }}
     >
-      <Typography sx={{ color: 'white', fontSize: 16, mb: 1 }}>Top 10</Typography>
+           <Typography sx={{ color: "white", marginLeft: "30px", fontSize: "20px", textAlign: "start" }}>
+     Top 10</Typography>
 
       <Box
         ref={scrollRef}
@@ -43,11 +67,11 @@ export default function Top10Carousel(props) {
         {topMovies.map((movie, index) => (
           <Box
             key={movie.id}
-            onClick={props.onClick}
+            onClick={() => handleMovieClick(movie)}
             sx={{
               position: 'relative',
               minWidth: 150,
-              height: 206,
+              height: 225,
               mr: 10,
               display: 'flex',
               justifyContent: 'center',
@@ -71,7 +95,7 @@ export default function Top10Carousel(props) {
             {/* Poster */}
             <Box
               component="img"
-              src={movie.image}
+              src={movie.poster_url}
               alt={movie.title}
               sx={{
                 width: '100%',

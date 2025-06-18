@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getCurrentUserFriendsList } from "../../api/profile/friends.js";
 import {
   Box,
   Typography,
@@ -24,47 +25,57 @@ const style = {
   boxShadow: 24,
   p: 0,
   border: 'none',
+  background: 'linear-gradient(to right, rgb(0,0,0), rgba(0,0,0,0.6))',
+  color: 'white',
+  padding: 2,
+  borderRadius: 2,
 };
 
 export default function ChildModal(props) {
   const [selectedFriend, setSelectedFriend] = useState(null);
   const [openChallengeModal, setOpenChallengeModal] = useState(false);
+  const [friends, setFriends] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const movie=props.movie;
 
-  const friends = [
-    { name: 'Sena Akat' },
-    { name: 'Abdullah Can' },
-    { name: 'Ebrar Taşdemir' },
-  ];
+  useEffect(() => {
+    fetchUserFriendList();
+  }, []);
+
+  const fetchUserFriendList = async () => {
+    try {
+      const friends = await getCurrentUserFriendsList();
+      setFriends(friends);
+    } catch (error) {
+      console.log("friends fetching error");
+    }
+  };
 
   const handleSelectFriend = (friend) => {
-    setSelectedFriend(friend.name);
-    setOpenChallengeModal(true); // 🎯 Challenge modalını aç
+    console.log(friend);
+    setSelectedFriend(friend);
+    console.log(movie);
+    setOpenChallengeModal(true);
   };
 
   const handleCloseChallengeModal = () => {
     setOpenChallengeModal(false);
-    props.onClose(); // Tüm akış tamamlanınca child'ı da kapat
+    props.onClose();
   };
+
+  const filteredFriends = friends.filter((friend) =>
+    friend.nickname.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <>
-      {/* Arkadaş Seçim Modali */}
       <Modal
         open={props.open}
         onClose={props.onClose}
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
       >
-        <Box
-          sx={{
-            width: 200,
-            background: 'linear-gradient(to right, rgb(0,0,0), rgba(0,0,0,0.6))',
-            color: 'white',
-            padding: 2,
-            borderRadius: 2,
-            ...style,
-          }}
-        >
+        <Box sx={{ ...style }}>
           <Stack direction="row" justifyContent="space-between" alignItems="center" mb={1} sx={{ paddingTop: '10px' }}>
             <Typography sx={{ fontWeight: 'bold', fontSize: 18 }}>FRIENDS</Typography>
             <GroupIcon />
@@ -75,6 +86,8 @@ export default function ChildModal(props) {
             variant="outlined"
             fullWidth
             size="small"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             sx={{
               input: { color: 'white' },
               '& .MuiOutlinedInput-root': {
@@ -87,21 +100,50 @@ export default function ChildModal(props) {
             }}
           />
 
-          <List>
-            {friends.map((friend, index) => (
-              <ListItem button key={index} onClick={() => handleSelectFriend(friend)}>
+          {/* Scrollable List */}
+          <List
+             sx={{
+    maxHeight: '160px',
+    overflowY: 'auto',
+    pr: 1,
+    '&::-webkit-scrollbar': {
+      width: '6px',
+    },
+    '&::-webkit-scrollbar-track': {
+      background: 'transparent',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: '#888',
+      borderRadius: '4px',
+    },
+    '&::-webkit-scrollbar-thumb:hover': {
+      backgroundColor: '#555',
+    },
+  }}
+          >
+            {filteredFriends.map((friend, index) => (
+              <ListItem
+                sx={{
+                  backgroundColor: "rgba(146, 23, 23, 0.22)",
+                  marginBottom: "3px",
+                  borderRadius: "5px"
+                }}
+                button
+                key={index}
+                onClick={() => handleSelectFriend(friend)}
+              >
                 <ListItemAvatar>
                   <Avatar />
                 </ListItemAvatar>
-                <ListItemText primary={friend.name} />
+                <ListItemText primary={friend.nickname} />
               </ListItem>
             ))}
           </List>
         </Box>
       </Modal>
 
-      {/* Challenge Başlatma Modali */}
       <ChallengeStarterModal
+      selectedMovie={movie}
         open={openChallengeModal}
         onClose={handleCloseChallengeModal}
         selectedFriend={selectedFriend}

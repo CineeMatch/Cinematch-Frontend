@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useState } from 'react';
 import {
   Box,
@@ -8,8 +7,11 @@ import {
   TextField,
   MenuItem,
   Select,
-  FormControl
+  FormControl,
+  // duration
 } from '@mui/material';
+import { createNewChallenge } from '../../api/challenge/challenge';
+import toast from 'react-hot-toast';
 
 const style = {
   position: 'absolute',
@@ -25,34 +27,49 @@ const style = {
   flexDirection: 'column',
   padding: 4,
 };
+// {/*const getDynamicFontSize = (text) => {
+//   if (!text || typeof text !== 'string') return '20px'; // default font size
+//   if (text.length <= 10) return '50px';
+//   if (text.length <= 20) return '40px';
+//   if (text.length <= 30) return '30px';
+//   return '40px';
+// };*/}
+
 
 export default function ChallengeStarterModal(props) {
   const [selectedTime, setSelectedTime] = useState('1 week');
 
-  const challange = {
-    image: '/images/shrek.png',
-    name: 'Shrek'
-  };
+  const movie =props.selectedMovie;
+  const selectedFriend=props.selectedFriend;
 
   const handleTimeChange = (event) => {
+    console.log(movie);
     setSelectedTime(event.target.value);
   };
 
+  const handleCreateNewChallenge = async () => {
+    try {
+      console.log(movie.id,selectedTime,selectedFriend.id);
+      await createNewChallenge(movie.id,selectedTime,selectedFriend.id);
+      props.onClose();
+      toast.success("Yeni meydan okuma gönderildi.");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+ 
   return (
     <Modal open={props.open} onClose={props.onClose}
     >
       <Box sx={style}>
         {/* Başlık */}
-        <Typography variant="h3" fontWeight="bold" mb={1.1} sx={{textAlign:"center"}}>
-          CREATE CHALLENGE
-        </Typography>
-
+       
         {/* Alt: Poster + Bilgi Alanı */}
         <Box sx={{ display: 'flex', flexDirection: 'row', flex: 1, gap: 3 }}>
           {/* Sol: Poster */}
           <Box
             component="img"
-            src={challange.image}
+            src={movie?.poster_url}
             alt="poster"
             sx={{
               width: '220px',
@@ -64,29 +81,33 @@ export default function ChallengeStarterModal(props) {
 
           {/* Sağ: Form alanı (column) */}
           <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, height:"350px",position: "relative", }}>
-          <Typography
-    variant="h1"
-    sx={{
-      position: 'absolute',
-      top: '10%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      fontSize: '120px',
-      fontWeight: 'bold',
-      color: 'rgba(61, 61, 61, 0.58)',
-      zIndex: 0,
-      pointerEvents: 'none',
-      userSelect: 'none',
-    }}
-  >
-    {challange.name.toUpperCase()}
-  </Typography>   
+          
+{/*<Typography
+  sx={{
+    position: 'absolute',
+    top: '10%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    fontSize: getDynamicFontSize(movie?.title),
+    fontWeight: 'bold',
+    color: 'rgba(61, 61, 61, 0.58)',
+    zIndex: 0,
+    pointerEvents: 'none',
+    userSelect: 'none',
+  }}
+>
+    {movie?.title?.toUpperCase()}
+  </Typography> minimize   */}
+   <Typography variant="h3" fontWeight="bold" mb={1.1} sx={{textAlign:"center"}}>
+          CREATE CHALLENGE
+        </Typography>
+
   <Box sx={{alignContent:"center", height:"400px"}}> 
             <Box sx={{ mb: 2,display:"flex", flexDirection:"row", alignContent:"center" }}>
               <Typography variant="body1" width="150px"  sx={{alignSelf:"center"}}>Movie Name:</Typography>
               <TextField
                 fullWidth
-                value={challange.name}
+                value={movie?.title}
                 InputProps={{ readOnly: true }}
                 sx={{
                   input: { color: 'white' },
@@ -106,7 +127,7 @@ export default function ChallengeStarterModal(props) {
               <Typography variant="body1" width="150px"  sx={{alignSelf:"center"}}>Challenged:</Typography>
               <TextField
                 fullWidth
-                value={props.selectedFriend }
+                value={ selectedFriend?.name +" "+selectedFriend?.surname }
                 InputProps={{ readOnly: true }}
                 sx={{
                   input: { color: 'white' },
@@ -136,10 +157,10 @@ export default function ChallengeStarterModal(props) {
                     },
                   }}
                 >
-                  <MenuItem value="1 day">1 day</MenuItem>
-                  <MenuItem value="3 days">3 days</MenuItem>
-                  <MenuItem value="1 week">1 week</MenuItem>
-                  <MenuItem value="2 weeks">2 weeks</MenuItem>
+                  <MenuItem value="1440">1 day</MenuItem>
+                  <MenuItem value="4320">3 days</MenuItem>
+                  <MenuItem value="10080">1 week</MenuItem>
+                  <MenuItem value="20160">2 weeks</MenuItem>
                 </Select>
               </FormControl>
             
@@ -147,6 +168,7 @@ export default function ChallengeStarterModal(props) {
             {/* Butonlar */}
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 'auto' }}>
               <Button
+              onClick={handleCreateNewChallenge}
                 variant="outlined"
                 sx={{
                   color: 'white',

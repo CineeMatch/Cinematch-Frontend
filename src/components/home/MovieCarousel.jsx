@@ -3,19 +3,6 @@ import { Box, Typography, IconButton } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
-const movies = [
-  { title: "Prestige", image: '/images/prestige.png' },
-  { title: "Prestige", image: '/images/prestige.png' },
-  { title: "Prestige", image: '/images/prestige.png' },
-  { title: "Prestige", image: '/images/prestige.png' },
-  { title: "Prestige", image: '/images/prestige.png' },
-  { title: "Prestige", image: '/images/prestige.png' },
-  { title: "Prestige", image: '/images/prestige.png' },
-  { title: "Prestige", image: '/images/prestige.png' },
-  { title: "Prestige", image: '/images/prestige.png' }, 
-  { title: "Prestige", image: '/images/prestige.png' },
-
-];
 
 const MovieCarousel = (props) => {
   const scrollRef = useRef(null);
@@ -27,6 +14,16 @@ const MovieCarousel = (props) => {
       });
     }
   };
+  const [selectedMovie, setSelectedMovie] = React.useState(null);
+  const [openMovieModal, setOpenMovieModal] = React.useState(false);
+  const movies =props.movies||[];
+
+  const handleMovieClick = (movie) => {
+      setSelectedMovie(movie);
+      setOpenMovieModal(true);
+      props.openMovieModal?.(true);
+      props.movie?.(movie);
+    };
   return (
     <Box sx={{ position: "relative", width: "100%", padding: "20px 0" }}>
       <Typography sx={{ color: "white", marginLeft: "30px", fontSize: "20px", textAlign: "start" }}>
@@ -45,7 +42,7 @@ const MovieCarousel = (props) => {
       >
         {movies.map((movie, index) => (
           <Box
-            onClick={props.onClick}
+            onClick={() => handleMovieClick(movie)}
             key={index}
             sx={{
               minWidth: "150px",
@@ -57,7 +54,8 @@ const MovieCarousel = (props) => {
             }}
           >
             <img
-              src={movie.image}
+              alt={movie.title}
+              src={movie.poster_url}
               style={{
                 width: "100%",
                 borderRadius: "8px",
