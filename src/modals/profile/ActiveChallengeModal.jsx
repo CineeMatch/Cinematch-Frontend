@@ -1,11 +1,10 @@
-import React from "react";
 import { Box } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import ChallangeCard from "./ChallengeCard.jsx";
 
 export default function ActiveChallangeModal() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   return (
     

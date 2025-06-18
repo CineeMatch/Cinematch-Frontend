@@ -74,7 +74,7 @@ function PostCard({ id, nickname, text, selectedMovie }) {
         borderRadius: 2,
         display: "flex",
         flexDirection: "column",
-        gap: 2,
+        gap: 2
       }}
     >
       {/* Üst kısım */}
