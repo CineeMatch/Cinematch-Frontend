@@ -204,10 +204,43 @@ export const getFriendsWatched = async () => {
       })
     );
 
-    return allMovies;
+    const fAllMovies= allMovies.map(movie => {
+    return {
+    ...movie,
+    categories: movie.categories.map(category => category.name).join(", "),
+    platforms: movie.platforms?.map(platform => platform.name).join(", ") || []
+  };
+});
+return fAllMovies;
   } catch (error) {
     console.error('Error in getFriendsWatched:', error);
     return [];
   }
 };
 
+export const getRecommendation = async () => {
+  try {
+    const token = localStorage.getItem("authToken");
+    const preResponse = await axios.get(`${baseURL}/recommendation/recommendForUser`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+        console.log("recommendated Movies", preResponse.data);
+
+    const response= await Promise.all(preResponse.data.map(async(r)=>await getMovie(r.id)));
+    console.log(response);
+const data = response.map(movie => {
+  return {
+    ...movie,
+    categories: movie.categories.map(category => category.name).join(", "),
+    platforms: movie.platforms?.map(platform => platform.name).join(", ") || []
+  };
+});
+console.log("recommendation", data);
+    return data;
+  } catch (error) {
+    console.error("Failed to get movie:", error);
+    toast.error("Filmler bulunamadı.");
+  }
+}

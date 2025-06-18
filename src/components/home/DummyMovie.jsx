@@ -71,7 +71,7 @@ const moviePlatforms = typeof randomMovie?.platforms === 'string'
       sx={{
         position: "relative",
         width: "95%",
-        height: "500px",
+        height: "550px",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundImage: `url(${randomMovie?.background_url})`,
@@ -81,7 +81,7 @@ const moviePlatforms = typeof randomMovie?.platforms === 'string'
         paddingLeft: "5%",
       }}
     >
-      <Box sx={{ color: "white", maxWidth: "40%" }}>
+      <Box sx={{ color: "white", maxWidth: "100%" ,textAlign:"left"}}>
         <Typography variant="h2" fontWeight="bold">
           {randomMovie?.title}
         </Typography>
@@ -92,7 +92,7 @@ const moviePlatforms = typeof randomMovie?.platforms === 'string'
               You can watch on {moviePlatforms[0]}
             </Typography>
           </Button>}
-                  <ListMenu movie={randomMovie} statusOfMovie={statusOfMovie} setClicked={setClicked}/>
+                  <ListMenu movie={randomMovie} statusOfMovie={statusOfMovie} setClicked={setClicked} fontSize={40}/>
           <IconButton
           >
             <InfoIcon onClick={handleClickOnInfo} sx={{ fontSize: "40px", color: "white" }} />
@@ -110,7 +110,7 @@ const moviePlatforms = typeof randomMovie?.platforms === 'string'
       <Box
         sx={{
           position: "absolute",
-          top: 400,
+          top: 450,
           left: 0,
           width: "100%",
           height: "100px", 

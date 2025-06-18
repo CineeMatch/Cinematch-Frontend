@@ -70,7 +70,7 @@ export default function Top10Carousel(props) {
             sx={{
               position: 'relative',
               minWidth: 150,
-              height: 206,
+              height: 225,
               mr: 10,
               display: 'flex',
               justifyContent: 'center',

@@ -27,6 +27,14 @@ const style = {
   flexDirection: 'column',
   padding: 4,
 };
+{/*const getDynamicFontSize = (text) => {
+  if (!text || typeof text !== 'string') return '20px'; // default font size
+  if (text.length <= 10) return '50px';
+  if (text.length <= 20) return '40px';
+  if (text.length <= 30) return '30px';
+  return '40px';
+};*/}
+
 
 export default function ChallengeStarterModal(props) {
   const [selectedTime, setSelectedTime] = useState('1 week');
@@ -73,22 +81,23 @@ export default function ChallengeStarterModal(props) {
 
           {/* Sağ: Form alanı (column) */}
           <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, height:"350px",position: "relative", }}>
-          <Typography
-    sx={{
-      position: 'absolute',
-      top: '10%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      fontSize: '70px',
-      fontWeight: 'bold',
-      color: 'rgba(61, 61, 61, 0.58)',
-      zIndex: 0,
-      pointerEvents: 'none',
-      userSelect: 'none',
-    }}
-  >
+          
+{/*<Typography
+  sx={{
+    position: 'absolute',
+    top: '10%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    fontSize: getDynamicFontSize(movie?.title),
+    fontWeight: 'bold',
+    color: 'rgba(61, 61, 61, 0.58)',
+    zIndex: 0,
+    pointerEvents: 'none',
+    userSelect: 'none',
+  }}
+>
     {movie?.title?.toUpperCase()}
-  </Typography>   
+  </Typography> minimize   */}
    <Typography variant="h3" fontWeight="bold" mb={1.1} sx={{textAlign:"center"}}>
           CREATE CHALLENGE
         </Typography>

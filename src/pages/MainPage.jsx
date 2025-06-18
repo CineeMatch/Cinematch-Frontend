@@ -5,7 +5,7 @@ import DummyMovie from '../components/home/DummyMovie';
 import Top10Carousel from '../components/home/Top10Carousel';
 
 import { useState,useEffect } from 'react';
-import { get10RandomMovie,getFriendsWatched, getRandomMovies } from '../api/movie/movie';
+import { get10RandomMovie,getFriendsWatched, getRandomMovies, getRecommendation } from '../api/movie/movie';
 export default function MainPage()
 {  const [openMovieModal, setOpenMovieModal] = useState(false);
   const [randomMovie, setRandomMovie] = useState(null);
@@ -20,8 +20,7 @@ export default function MainPage()
   }, []);
   const fetchRandom10Movies = async () => {
     try {
-      const movies = await get10RandomMovie();
-      console.log("Random Movies:", movies);
+       const movies=await getRecommendation();
       setRecommendedMovies(movies);
     } catch (error) {
       setRecommendedMovies(null);
@@ -45,7 +44,14 @@ export default function MainPage()
   };
 
     return(
-         <Box sx={{ marginTop:"60px" ,height: '%100', backgroundColor: 'black' }}>
+         <Box sx={{   mt: '69px',
+    height: '100vh', // ✅ ekranın tamamını kapla
+    backgroundColor: 'black',
+    overflowY: 'auto', // ✅ sadece dikey scroll kontrolü
+    scrollbarWidth: 'none', // Firefox
+    '&::-webkit-scrollbar': {
+      display: 'none', // Chrome/Safari
+    }, }}>
         <DummyMovie openMovieModal={setOpenMovieModal} onRandomMovieChange={setRandomMovie} movie={setMovie} />
         <MovieCarousel movies={recommendedMovies} openMovieModal={setOpenMovieModal} title={"Sizin İçin Seçtiklerimiz"} movie={setMovie}/>
         <Top10Carousel openMovieModal={setOpenMovieModal}
