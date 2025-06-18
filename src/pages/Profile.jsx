@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-// src/pages/ProfilePage.jsx
 import { useEffect, useState } from 'react';
-import { Avatar, Box, Grid, Typography } from '@mui/material';
+import { Avatar, Box, Button, Card, Grid, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import Stat from '../components/Profile/Stat.jsx';
 import EditProfileModal from '../modals/profile/EditProfileModal.jsx';
 import { getActiveUser, getUserById } from '../api/profile/user.js';
-import { getPostsByUserId } from '../api/profile/post.js';
-import { getUserMovieTypesCounts } from '../api/profile/movieType.js';
+import { getPostsByUserId } from '../api/post/post.js';
+import { getUserMovieTypesCounts, getMovieTypeOnProfileByUserId } from '../api/movieType/movieType.js';
 import PostCard from '../components/community/PostCard.jsx';
+import { useNavigate } from 'react-router-dom';
 
 const ProfilePage = () => {
   const { userId } = useParams(); // URL'deki userId
@@ -20,11 +20,23 @@ const ProfilePage = () => {
   const [favoritesCount, setFavoritesCount] = useState(0);
   const [watchedCount, setWatchedCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
+  const [movieData, setMovieData] = useState([]);
+
+  const navigate = useNavigate();
+
+  const fetchMovieData = async (userId) => {
+    try {
+      const movies = await getMovieTypeOnProfileByUserId(userId);
+      setMovieData(movies.data);
+      console.log('Movie types:', movies.data);
+    } catch (error) {
+      console.error('Movie types alınamadı:', error);
+    }
+  }
 
   const fetchUserMovieTypesCounts = async (userId) => {
     try {
       const movieTypesCounts = await getUserMovieTypesCounts(userId);
-      console.log("Movie Types Counts:", movieTypesCounts);
       setFavoritesCount(movieTypesCounts.favoriteCount);
       setWatchedCount(movieTypesCounts.watchedCount);
       setWishlistCount(movieTypesCounts.wishlistCount);
@@ -91,6 +103,12 @@ const ProfilePage = () => {
     }
   }, [activeUserId, userId]);
 
+  useEffect(() => {
+    if (activeUserId || userId) {
+      fetchMovieData(userId || activeUserId);
+    }
+  }, [activeUserId, userId]);
+
 
   if (!profileData) return <div>Loading...</div>;
 
@@ -113,17 +131,19 @@ const ProfilePage = () => {
         <Grid item xs={12} md={8}>
           <Box sx={{ textAlign: 'center', p: 2, borderRadius: 2 }}>
             <Avatar src={avatar} sx={{ width: 100, height: 100, mx: 'auto', mb: 2 }} />
-            <Typography variant="h5">{profileData.nickname}</Typography>
-            <Typography variant="subtitle1">{profileData.name}</Typography>
-            <Typography variant="body2" sx={{ mt: 1 }}>{profileData.description}</Typography>
+            <Typography variant="h5" fontWeight="bold">{profileData.nickname}</Typography>
+            <Typography variant="subtitle1" fontWeight="bold">{profileData.name}</Typography>
+            <Typography variant="body2" fontWeight="bold" sx={{ mt: 1, mb: 2 }}>{profileData.description}</Typography>
+            <Card sx={{ width: 720, height: 100, p: 1, bgcolor: "rgba(255, 255, 255, 0.05)", borderRadius: 2, display: "flex", flexDirection: "column",}}>
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 2 }}>
-              {[...Array(5)].map((_, index) => (
-                <Box key={index} sx={{ width: 50, height: 50, backgroundColor: '#999', borderRadius: 1 }}/>
+              {movieData.map((movie) => (
+                <Avatar key={movie.id} sx={{ width: 80, height: 80, backgroundColor: '#999', borderRadius: 1 }} variant='rounded' src={movie.Movie.poster_url} alt={movie.Movie.title}/>
               ))}
             </Box>
+            </Card>
           </Box>
           {/* Posts Section */}
-          { profileData.posts && profileData.posts.length > 0 && (
+          { profileData.posts && profileData.posts.length > 0 ? (
           <Box sx={{ mt: 2 }}>
             {profileData.posts.map((post) => (
               <Box key={post.id} sx={{ mb: 2 }}>
@@ -136,7 +156,35 @@ const ProfilePage = () => {
                 />
               </Box>
             ))}
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+              <Button sx={{ fontWeight: "bold" }} variant="contained" color="error" onClick={() => navigate('/posts')}>
+                show more posts
+              </Button>
+            </Box>
           </Box>
+            
+          ) : (
+            <Card
+            sx={{
+              width: "95%",
+              height: "40%",
+              p: 2,
+              bgcolor: "rgba(255, 255, 255, 0.05)",
+              borderRadius: 2,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center", // Dikey ve yatay ortalama
+            }}
+          >
+            <Typography
+              variant="body1"
+              sx={{ color: "white", textAlign: "center", fontWeight: "bold" }}
+            >
+              Bu kullanıcı henüz bir paylaşım yapmadı.
+            </Typography>
+          </Card>
+    
           )}
         </Grid>
 
@@ -144,8 +192,9 @@ const ProfilePage = () => {
         {watchedCount === undefined || wishlistCount === undefined || favoritesCount === undefined
         ? <Typography>Loading stats...</Typography>
         : <Stat
+            id={userId || activeUserId}
+            friend_id={userId}
             level={profileData.level}
-            lastActivity={profileData.lastActivity}
             badge={profileData.badge}
             friends={profileData.friends}
             watched={watchedCount}
