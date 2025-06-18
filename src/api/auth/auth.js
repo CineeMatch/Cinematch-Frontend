@@ -29,20 +29,22 @@ export const register = async (userData) => {
 
 export const forgetPassword = async (email) => {
     try {
-        const response = await axios.post(`${baseURL}/forget-password`, { email });
+        const response = await axios.post(`${baseURL}/forgetPassword`, 
+            { email });
         return response.data;
     } catch (error) {
-        // console.error("Forget password error:", error);
         throw error;
     }
 }
 
-export const createNewPassword = async (data) => {
+export const resetPassword = async (userId, newPassword) => {
     try {
-        const response = await axios.post(`${baseURL}/new-password`, data);
+        console.log("Resetting password for user:", userId);
+        console.log("New password:", newPassword);
+        const response = await axios.post(`${baseURL}/resetPassword`, 
+            {userId, newPassword });
         return response.data;
     } catch (error) {
-        // console.error("Create new password error:", error);
         throw error;
     }
 }

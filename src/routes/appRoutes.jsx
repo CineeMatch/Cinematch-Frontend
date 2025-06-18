@@ -18,7 +18,7 @@ import Friends from '../pages/Friends.jsx'
 import ForgetPasswordPage from '../pages/ForgetPasswordPage.jsx'
 import LoginPage from '../pages/Login.jsx'
 import Users from '../pages/Users.jsx'
-import NewPasswordPage from '../pages/NewPasswordPage.jsx'
+import ResetPasswordPage from '../pages/ResetPasswordPage.jsx'
 
 export default function appRoutes() {
   return (
@@ -39,7 +39,7 @@ export default function appRoutes() {
        <Route path="/friends" element={<Layout><Friends /></Layout>} />
        <Route path="/users" element={<Users />} />
        <Route path="/profile/:userId?" element={<Layout><ProfilePage /></Layout>} />
-       <Route path="/newPassword" element={<NewPasswordPage />} />
+       <Route path="/reset-password/:id" element={<ResetPasswordPage />} />
         {/* page or modal test routes */}
         <Route path="/forgetPassword" element={<ForgetPasswordPage />} />
     </Routes>
