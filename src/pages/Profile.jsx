@@ -84,6 +84,7 @@ const ProfilePage = () => {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         opacity: 1,
+        marginTop: '64px',
       }}
     >
       <Grid container spacing={2}>

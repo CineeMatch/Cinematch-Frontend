@@ -17,6 +17,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import Notifications from "../home/Notifications.jsx"
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import { useNavigate } from 'react-router-dom';
+import { getActiveUser } from '../../api/profile/user.js';
+import { useEffect, useState } from 'react';
+
+
 
 const settings = ['Profile', 'Logout'];
 const myList = [{ title: 'Favorites', to: "/favorites" },
@@ -27,7 +31,20 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElNavLists, setAnchorElNavLists] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [profileImageUrl, setProfileImageUrl] = useState(''); 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchActiveUser = async () => {
+      try {
+        const activeUser = await getActiveUser();
+        setProfileImageUrl(activeUser.profile_image_url); 
+      } catch (error) {
+        console.error('Aktif kullanıcı alınırken hata oluştu:', error);
+      }
+    };
+    fetchActiveUser();
+  }, []); 
 
   const pages = [
     { title: 'Home', to: "/home" },
@@ -58,6 +75,7 @@ function ResponsiveAppBar() {
     }
     setAnchorElUser(null);
   };
+  
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -206,7 +224,7 @@ function ResponsiveAppBar() {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
+                  <Avatar  src={profileImageUrl || "/static/images/avatar/default.jpg"} />
                 </IconButton>
               </Tooltip>
               <Menu
