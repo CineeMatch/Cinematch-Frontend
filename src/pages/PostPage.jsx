@@ -16,12 +16,10 @@ const PostPage = () => {
       const fetchPosts = async () => {
         try {
           if (selectedCategoryId) {
-            const data = await getPostsUserByCategoryId(selectedCategoryId);
-            console.log("data", data);
+            const data = await getPostsUserByCategoryId(selectedCategoryId, userId);
             setPosts(data);
           } else {
             const data = await getPostsByUserId(userId);
-            console.log("data", data);
             setPosts(data);
           }
         } catch (err) {

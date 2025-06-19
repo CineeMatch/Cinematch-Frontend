@@ -44,7 +44,7 @@ export const getPostByCategoryId = async (categoryId) => {
 }
 
 export const deletePost = async (postId) => {
-  try{
+  try {
     const token = localStorage.getItem("authToken");
     const response = await axios.delete(`${baseURL}/post/delete/${postId}`, {
       headers: {
@@ -58,9 +58,9 @@ export const deletePost = async (postId) => {
   }
 };
 
-export const getPostsUserByCategoryId = async (categoryId) => {
+export const getPostsUserByCategoryId = async (categoryId, userId) => {
   const token = localStorage.getItem("authToken");
-  const response = await axios.get(`${baseURL}/posts/user/category/${categoryId}`, {
+  const response = await axios.post(`${baseURL}/posts/user/category/${categoryId}`, { userId }, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
