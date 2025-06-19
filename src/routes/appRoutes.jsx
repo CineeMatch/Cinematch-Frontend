@@ -27,9 +27,8 @@ export default function appRoutes() {
           <Route path="/modal" element={<ChallengeQuestionModal/>}/>
           <Route path="/modalQ" element={<ChallengeQuestionStarterModal/>}/>
           <Route path="/newUserWatched" element={<Layout ><NewUserWatchedPage /></Layout>}/>
-
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
 
     </Routes>
   )

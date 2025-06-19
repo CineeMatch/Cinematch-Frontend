@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { baseURL } from '../constants';
+import toast from 'react-hot-toast';
 
 export const getCurrentUserFriendsList = async () => {
     try {
@@ -41,9 +42,29 @@ export const deleteFriendById = async (id) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        return response.data;
+        console.log(response);
+         toast.error("İstek reddedildi.")
     } catch (error) {
-        console.error('Error deleting friend:', error);
-        throw error;
+        console.log('Error deleting friend:', error);
     }
 }
+export const addFriendById=async(id)=>{
+     try {
+        console.log("friend:",id);
+        const token = localStorage.getItem('authToken');
+        const response = await axios.put(`${baseURL}/friend/accept`, {
+            friendId:id
+        },{
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+         toast.success("Arkadaşınız eklendi.")
+      
+    } catch (error) {
+        console.log('Error adding friend:', error);
+    }
+}
+
+

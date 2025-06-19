@@ -52,12 +52,12 @@ export default function MainPage()
 
     return(
          <Box sx={{   mt: '69px',
-    height: '100vh', // ✅ ekranın tamamını kapla
+    height: '100vh',
     backgroundColor: 'black',
-    overflowY: 'auto', // ✅ sadece dikey scroll kontrolü
-    scrollbarWidth: 'none', // Firefox
+    overflowY: 'auto', 
+    scrollbarWidth: 'none', 
     '&::-webkit-scrollbar': {
-      display: 'none', // Chrome/Safari
+      display: 'none', 
     }, }}>
         <DummyMovie openMovieModal={setOpenMovieModal} onRandomMovieChange={setRandomMovie} movie={setMovie} />
         <MovieCarousel movies={recommendedMovies} openMovieModal={setOpenMovieModal} title={"Sizin İçin Seçtiklerimiz"} movie={setMovie}/>
