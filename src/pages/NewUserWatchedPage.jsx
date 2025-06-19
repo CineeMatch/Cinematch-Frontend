@@ -39,7 +39,7 @@ export default function NewUserWatchedPage() {
   const fetchSearchResults = async (title) => {
     try {
       const result = await searchMovies(title); 
-      setSearchResults(result);
+    setSearchResults(Array.isArray(result) ? result : []);
     } catch (err) {
       console.error("Arama hatası:", err);
     }
@@ -55,7 +55,8 @@ export default function NewUserWatchedPage() {
   return (
     <Box
       sx={{
-        marginTop: "60px",
+        marginTop: "65px",
+        height:"100vh",
    
         background: "linear-gradient(to bottom right, #0e0e0e, #2d0f0f)",
         display: "flex",
@@ -66,7 +67,7 @@ export default function NewUserWatchedPage() {
         sx={{
           width: "95%",
           backgroundColor: "rgba(66, 62, 64, 0.4)",
-          height: "87%",
+          height: "90%",
           marginTop: "40px",
         }}
       >

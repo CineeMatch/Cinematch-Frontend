@@ -3,6 +3,7 @@ import { Menu, MenuItem, IconButton, Badge, Box, Typography } from "@mui/materia
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
+import { getNotfications } from "../../api/notfications/notification";
 
 
 
@@ -15,17 +16,17 @@ export default function Notifications () {
     setNotifications((prev) => prev.filter((notif) => notif.id !== id));
   };
 
-  const handleClick = (event) => {
+  const handleClick =async (event) => {
     setAnchorEl(event.currentTarget);
+    const notificationsResult=await getNotfications();
+    notificationsResult&&setNotifications(notificationsResult);
+    console.log("notifications:",notificationsResult);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 const [notifications, setNotifications] = useState([
-  { id: 1, text: "Yeni bir mesajın var!" },
-  { id: 2, text: "Ebrar Taşdemir sana Prestij filminde meydan okudu!" },
-  { id: 3, text: "Altan Mesut seninle arkadaş olmak istiyor." },
 ]);
   return (
     <Box
