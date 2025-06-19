@@ -11,7 +11,7 @@ export const getNotfications = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data.notification;
+    return response.data.notifications;
   } catch (error) {
     console.log("Failed to get notfications:", error);
  }
