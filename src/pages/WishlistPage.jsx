@@ -1,64 +1,35 @@
 import { Box, Typography } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
-import MovieGrid from "../components/filmList/MovieGrid.jsx";
-import MovieModal from "../components/home/MovieModal.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import MovieGrid from "../components/filmList/MovieGrid";
+import MovieModal from "../components/home/MovieModal";
+import { getWishlistMovies } from "../api/movieType/movieType";
+import SearchInput from "../components/filmList/SearchInput";
 
 export default function WishlistPage() {
   const [openMovieModal, setOpenMovieModal] = useState(false);
+  const [movies, setMovies] = useState([]);
+  const [movie, setMovie] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    marginLeft: 0,
-    width: "100%",
-    color: "white",
-    transition: theme.transitions.create(["background-color", "width"], {
-      duration: theme.transitions.duration.short,
-    }),
-    backgroundColor: "transparent",
-    "&:focus-within": {
-      backgroundColor: alpha(theme.palette.common.white, 0.15),
-    },
-    [theme.breakpoints.up("sm")]: {
-      width: "auto",
-    },
-  }));
+  useEffect(() => {
+    fetchWishlistMovies();
+  }, []);
 
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
+  const fetchWishlistMovies = async () => {
+    const response = await getWishlistMovies();
+    setMovies(response);
+  };
 
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      backgroundColor: "transparent",
-      [theme.breakpoints.up("sm")]: {
-        width: "0ch",
-        "&:focus": {
-          width: "160vh",
-        },
-      },
-    },
-  }));
+  const filteredMovies = movies.filter((m) =>
+    m.title?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <Box
       sx={{
         marginTop: "60px",
-        height: "91vh",
-        background: "linear-gradient(to bottom right, #0e0e0e, #2d0f0f)",
+        height: '91vh',
+        background: 'linear-gradient(to bottom right, #0e0e0e, #202025)',
         display: "flex",
         justifyContent: "center",
       }}
@@ -69,46 +40,43 @@ export default function WishlistPage() {
           backgroundColor: "rgba(66, 62, 64, 0.4)",
           height: "85%",
           marginTop: "40px",
-          display: "column",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
+            display: 'flex',
+            justifyContent: 'space-between',
             padding: 2,
-            width: "98%",
+            width: '98%',
             height: "35px",
-            alignContent: "center",
+            alignItems: "center"
           }}
         >
-          <Typography variant="h6" sx={{ fontWeight: "bold", color: "white" }}>
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: 'bold', color: 'white' }}
+          >
             WISHLIST
           </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
+          <SearchInput
+            searchTerm={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </Box>
 
         <MovieGrid
-          onClickOpenMovieModal={() => {
-            setOpenMovieModal(true);
-            console.log("clicked");
-          }}
+          movies={filteredMovies}
+          onClickOpenMovieModal={setOpenMovieModal}
+          movie={setMovie}
         />
       </Box>
+
       <MovieModal
         open={openMovieModal}
-        onClose={() => {
-          setOpenMovieModal(false);
-          console.log("close");
-        }}
+        movie={movie}
+        onClose={() => setOpenMovieModal(false)}
       />
     </Box>
   );

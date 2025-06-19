@@ -20,6 +20,7 @@ import Users from '../pages/Users.jsx'
 import ResetPasswordPage from '../pages/ResetPasswordPage.jsx'
 import PostPage from '../pages/PostPage.jsx'
 import CreateBadgeModal from '../modals/badge/CreateBadgeModal.jsx'
+import NewUserWatchedPage from '../pages/NewUserWatchedPage.jsx'
 
 export default function appRoutes() {
   return (
@@ -42,6 +43,7 @@ export default function appRoutes() {
       <Route path="/posts/:userId?" element={<Layout><PostPage /></Layout>} />
       <Route path="/reset-password/:id" element={<ResetPasswordPage />} />
       <Route path="/forgetPassword" element={<ForgetPasswordPage />} />
+      <Route path="/newUserWatched" element={<Layout><NewUserWatchedPage /></Layout>} />
 
        {/* Secret/Admin route*/}
       <Route path="/createBadge" element={<CreateBadgeModal />} />

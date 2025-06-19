@@ -1,15 +1,13 @@
-import { Grid } from "@mui/material"
+import { Grid } from "@mui/joy"
 import { Box } from "@mui/material"
+import { useState } from "react";
 
 export default function MovieGrid(props) {
-  const movies = [
-    { title: "Shrek", image: "/images/shrek.png" },
-    { title: "Shrek", image: "/images/shrek.png" },
-    { title: "Shrek", image: "/images/shrek.png" },
-    { title: "Shrek", image: "/images/shrek.png" },
-    { title: "Shrek", image: "/images/shrek.png" },
-    { title: "Shrek", image: "/images/shrek.png" }
-  ];
+
+   
+   const [selectedMovie, setSelectedMovie] = useState(null);
+     const [openMovieModal, setOpenMovieModal] = useState(false);
+     const movies =props.movies||[];
   return (
     <Grid
       container
@@ -19,7 +17,7 @@ export default function MovieGrid(props) {
         <Grid key={index}>
           <Box
             component="img"
-            src={movie.image}
+            src={movie.poster_url}
             alt={movie.title}
             sx={{
               borderRadius: '2px',
@@ -32,7 +30,10 @@ export default function MovieGrid(props) {
                 transform: 'scale(1.05)',
               },
             }}
-            onClick={props.onClickOpenMovieModal}
+           onClick={() => {
+  props.movie?.(movie);               // Seçilen filmi parent'a gönder
+  props.onClickOpenMovieModal?.(true); // Modal'ı aç
+}}
           />
         </Grid>
       ))}

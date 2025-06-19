@@ -68,7 +68,7 @@ const PostPage = () => {
           id={item.id}
           nickname={item.nickname}
           text={item.contentText}
-          selectedMovie={item.movieName}
+          selectedMovie={item.Movie.title}
         />
       ))}
     </Card>

@@ -39,6 +39,7 @@ export const searchMovie = async (title) => {
 export const getTop10Movies = async () => {
   try {
     const token = localStorage.getItem("authToken");
+    console.log("hata tokenı:", token);
     const response = await axios.post(`${baseURL}/movie/top10`, {}, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -149,7 +150,9 @@ console.log("data", data);
 
 export const searchMovies = async (title) => {
   try {
+    
     const token = localStorage.getItem("authToken");
+    console.log("token",token)
     const response = await axios.post(`${baseURL}/movie/search`, { title: title }, {
       headers: {
         Authorization: `Bearer ${token}`,
