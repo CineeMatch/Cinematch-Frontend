@@ -10,7 +10,6 @@ export default function MovieGrid(props) {
     { title: "Shrek", image: "/images/shrek.png" },
     { title: "Shrek", image: "/images/shrek.png" }
   ];
-
   return (
     <Grid
       container

@@ -219,7 +219,7 @@ function ResponsiveAppBar() {
             </Search>
 
             <Notifications />
-            <ChatBubbleIcon sx={{ paddingRight: "10px" }} />
+            <ChatBubbleIcon sx={{ paddingRight: "10px" }} onClick={() => {navigate("/chat")}} />
 
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">

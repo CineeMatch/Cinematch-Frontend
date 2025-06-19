@@ -6,7 +6,7 @@ import { useState } from "react";
 import { IconButton } from "@mui/material";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { AnimatePresence, motion } from "framer-motion";
-import { getMovieTypeOnProfileByUserId } from "../api/movie/movieType.js";
+import { getMovieTypeOnProfileByUserId } from "../api/movieType/movieType.js";
 import { createCoMatchSuggestion } from "../api/coMatch/coMatch.js";
 import { useEffect } from "react";
 

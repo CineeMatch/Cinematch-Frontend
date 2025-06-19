@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Box, Typography, TextField, Avatar, Grid, Card, CardContent,
-  InputAdornment, FormControl, InputLabel, Select, MenuItem, 
+  InputAdornment, FormControl, InputLabel, Select, MenuItem,
+  Button, 
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { getAllUsers } from '../api/profile/user';
@@ -62,8 +63,15 @@ const Users = () => {
 
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
           <Typography variant="h6">
-            YOUR FRIENDS <strong>{users.length}</strong>
+            Users <strong>{users.length}</strong>
           </Typography>
+          <Button
+            variant="contained"
+            sx={{ bgcolor: '#e11f0d', color: 'white', fontWeight: "bold" }}
+            onClick={() => navigate('/friends')}
+          >
+            Show Your Friends
+          </Button>
 
         </Box>
 
@@ -141,7 +149,7 @@ const Users = () => {
                 <CardContent sx={{ p: type ? 1 : 2, mt: 1 }}>
                   <Box display="flex" justifyContent="space-between" alignItems="center">
                     <Box display="flex" alignItems="center">
-                      <Avatar src={user.avatar} alt={user.name} sx={{ width: 48, height: 48, mr: 2 }} />
+                      <Avatar src={user.profile_image_url} alt={user.name} sx={{ width: 48, height: 48, mr: 2 }} />
                       <Box textAlign="left">
                         <Typography sx={{ fontSize: '1rem', fontWeight: 'bold' }}>{user.name}</Typography>
                         <Typography variant="body2" sx={{ color: 'gray' }}>

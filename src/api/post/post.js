@@ -57,3 +57,29 @@ export const deletePost = async (postId) => {
     throw new Error("While Post is deleted, create error ");
   }
 };
+
+export const getPostsUserByCategoryId = async (categoryId) => {
+  const token = localStorage.getItem("authToken");
+  const response = await axios.get(`${baseURL}/posts/user/category/${categoryId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+}
+
+export const getPostsByUserId = async (userId) => {
+  try {
+    const token = localStorage.getItem('authToken');
+    const response = await axios.get(`${baseURL}/posts/user/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching posts for user with ID ${userId}:`, error);
+    throw error;
+  }
+}
+

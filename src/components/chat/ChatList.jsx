@@ -51,7 +51,7 @@ const ChatList = ({ onSelectUser, selectedUser }) => {
                   }
                 }}
               >
-                <ListItemAvatar><Avatar src={user.avatar} /></ListItemAvatar>
+                <ListItemAvatar><Avatar src={user.profile_image_url} /></ListItemAvatar>
                 <ListItemText primaryTypographyProps={{ color: 'white' }}>{user.name}</ListItemText>
               </ListItem>
             )

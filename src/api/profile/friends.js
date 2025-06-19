@@ -18,6 +18,21 @@ export const getCurrentUserFriendsList = async () => {
     }
 }
 
+export const addFriendByUserId = async (friendId) => {
+    try {
+        const token = localStorage.getItem('authToken');
+        const response = await axios.post(`${baseURL}/friend/create/${friendId}`, {}, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error adding friend:', error);
+        throw error;
+    }
+}
+
 export const addFriendByNickname = async (nickname) => {
     try {
         const token = localStorage.getItem('authToken');

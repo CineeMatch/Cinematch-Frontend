@@ -11,7 +11,7 @@ import {
   getChallengeByUser,
   deleteChallenge,
   updateChallengeStatusAccepted,
-} from "../../api/challange/ActiveChallange";
+} from "../../api/challenge/ActiveChallenge";
 import { getUserById } from "../../api/profile/user";
 import { useState } from "react";
 

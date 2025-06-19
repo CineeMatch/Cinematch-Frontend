@@ -52,8 +52,8 @@ const LoginPage = () => {
     const fetchData = async (data) => {
       try {
         const response = await login(data);
-        console.log("Login successful:", response);
         navigate('/home');
+        console.log("Login successful:", response); // ✅ Giriş başarılıysa konsola yazdır
       } catch (error) {
         console.error("Login error:", error); // console.error yerine bir natification kütüphanesi kullanılanılıcak
       }
@@ -155,7 +155,7 @@ const LoginPage = () => {
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <FormControlLabel
-            control={<Checkbox sx={{ color: 'white' }} />}
+            control={<Checkbox sx={{ color: 'white' }} checked={rememberMe} onChange={(e) => setRememberMe(e.target.value)} />}
             label={<Typography color="white" sx={{ fontSize: "1rem", fontWeight: "bold"}}>Remember Me</Typography>}
           />
           <Link href="/forgetPassword" underline="hover" color="white" fontSize="1rem" fontWeight="bold">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import {
-  Box, Typography, Button, TextField, Avatar, Grid, Card, CardContent,
+  Box, Typography, Button, TextField, Avatar, Grid, Card, CardContent, 
   InputAdornment, FormControl, InputLabel, Select, MenuItem, IconButton
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -36,7 +36,6 @@ const Friends = () => {
     const deleteFriend = async (id) => {
       try {
         await deleteFriendById(id);
-        console.log(`Friend with ID ${id} deleted`);
         fetchFriends(); // Silinince güncelle
       } catch (error) {
         console.error('Error deleting friend:', error);
@@ -64,6 +63,7 @@ const Friends = () => {
         backgroundColor: 'rgba(0,0,0,0.2)',
         backgroundBlendMode: 'overlay',
         p: 4,
+        marginTop: '64px',
       }}
     >
       <Box
@@ -85,7 +85,7 @@ const Friends = () => {
             <Button
               variant="contained"
               sx={{ bgcolor: '#e11f0f', color: 'white', fontWeight: "bold" }}
-              startIcon={<PersonAddIcon />}
+              startIcon={<SearchIcon />}
               onClick={() => navigate('/users')}
             >
               Search For Users
@@ -175,7 +175,7 @@ const Friends = () => {
                 <CardContent sx={{ p: type ? 1 : 2, mt: 1 }}>
                   <Box display="flex" justifyContent="space-between" alignItems="center">
                     <Box display="flex" alignItems="center">
-                      <Avatar src={friend.avatar} alt={friend.name} sx={{ width: 48, height: 48, mr: 2 }} />
+                      <Avatar src={friend.profile_image_url} alt={friend.name} sx={{ width: 48, height: 48, mr: 2 }} />
                       <Box textAlign="left">
                         <Typography sx={{ fontSize: '1rem', fontWeight: 'bold' }}>{friend.name}</Typography>
                         <Typography variant="body2" sx={{ color: 'gray' }}>
