@@ -11,12 +11,12 @@ export const addMovieToFavoritesForNewUser = async (movieId) => {
   try {
     const token = localStorage.getItem("authToken");
 
-    const response=await axios.post(
+    const response = await axios.post(
       `${baseURL}/movieType/create`,
       {
         movie_id: movieId,
         favoriteMovies: true,
-        watchedMovies:true
+        watchedMovies: true
       },
       {
         headers: {
@@ -24,7 +24,7 @@ export const addMovieToFavoritesForNewUser = async (movieId) => {
         },
       }
     );
-    console.log("response:",response);
+    console.log("response:", response);
     const response2 = await axios.put(
       `${baseURL}/movieType/create/isOnProfile`,
       {
@@ -36,31 +36,31 @@ export const addMovieToFavoritesForNewUser = async (movieId) => {
         },
       }
     );
-    
-console.log("response2:",response2);
+
+    console.log("response2:", response2);
 
   } catch (error) {
     throw error;
   }
 };
 
-const addOrDeleteMovieList = async (favoriteMovies,wishlistMovies,watchedMovies,movieId) => {
+const addOrDeleteMovieList = async (favoriteMovies, wishlistMovies, watchedMovies, movieId) => {
   try {
     const token = localStorage.getItem("authToken");
     console.log("ı here");
-    console.log( {
-        movie_id: movieId,
-        favoriteMovies:favoriteMovies,
-        wishlistMovies:wishlistMovies,
-        watchedMovies:watchedMovies
-      });
-    const response=await axios.post(
+    console.log({
+      movie_id: movieId,
+      favoriteMovies: favoriteMovies,
+      wishlistMovies: wishlistMovies,
+      watchedMovies: watchedMovies
+    });
+    const response = await axios.post(
       `${baseURL}/movieType/create`,
       {
         movie_id: movieId,
-        favoriteMovies:favoriteMovies,
-        wishlistMovies:wishlistMovies,
-        watchedMovies:watchedMovies
+        favoriteMovies: favoriteMovies,
+        wishlistMovies: wishlistMovies,
+        watchedMovies: watchedMovies
       },
       {
         headers: {
@@ -68,21 +68,21 @@ const addOrDeleteMovieList = async (favoriteMovies,wishlistMovies,watchedMovies,
         },
       }
     );
-    console.log("response:",response);
-  
+    console.log("response:", response);
+
   } catch (error) {
     throw error;
   }
 };
-export const addtoFavoriteMovies= async(movieId)=>{await addOrDeleteMovieList(true,false,true,movieId);}
-export const addtoWishlistMovies= async(movieId)=>{await addOrDeleteMovieList(false,true,false,movieId);}
-export const addtoWatchedMovies=async(movieId)=>{await addOrDeleteMovieList(false,false,true,movieId);}
-export const removefromFavorites=async(movieId)=>{await addOrDeleteMovieList(false,false,true,movieId);}
-export const removefromMylist=async(movieId)=>{await addOrDeleteMovieList(false,false,false,movieId);}
+export const addtoFavoriteMovies = async (movieId) => { await addOrDeleteMovieList(true, false, true, movieId); }
+export const addtoWishlistMovies = async (movieId) => { await addOrDeleteMovieList(false, true, false, movieId); }
+export const addtoWatchedMovies = async (movieId) => { await addOrDeleteMovieList(false, false, true, movieId); }
+export const removefromFavorites = async (movieId) => { await addOrDeleteMovieList(false, false, true, movieId); }
+export const removefromMylist = async (movieId) => { await addOrDeleteMovieList(false, false, false, movieId); }
 
 
 // FAVORITE
- const getMyListMovies = async (type) => {
+const getMyListMovies = async (type) => {
   try {
     const token = localStorage.getItem("authToken");
     console.log(`${baseURL}/movieType/user-by-type?type=${type}`);
@@ -106,9 +106,9 @@ export const removefromMylist=async(movieId)=>{await addOrDeleteMovieList(false,
     return [];
   }
 };
-export const getFavoriteMovies=async()=>await getMyListMovies("favorite");
-export const getWishlistMovies=async()=>await getMyListMovies("wishlist");
-export const getWatchedMovies=async()=>await getMyListMovies("watched");
+export const getFavoriteMovies = async () => await getMyListMovies("favorite");
+export const getWishlistMovies = async () => await getMyListMovies("wishlist");
+export const getWatchedMovies = async () => await getMyListMovies("watched");
 
 
 export const getMyListMovie = async (movie_id) => {
@@ -119,12 +119,13 @@ export const getMyListMovie = async (movie_id) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     console.log(response);
-    let movieType = response?response.data.find(d => d.movie_id===movie_id):null;
-    if(!movieType){
-      const response = await axios.get(`${baseURL}/movieTypes?type=wishlist`, {
-      headers: { Authorization: `Bearer ${token}` },});
+    let movieType = response ? response.data.find(d => d.movie_id === movie_id) : null;
+    if (!movieType) {
+      const response = await axios.get(`${baseURL}/movieTypes?type=watched`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       console.log(response);
-      movieType = response?response.data.find(d => d.movie_id===movie_id):null;
+      movieType = response ? response.data.find(d => d.movie_id === movie_id) : null;
     }
     console.log(movieType);
     return movieType;
@@ -135,18 +136,35 @@ export const getMyListMovie = async (movie_id) => {
 };
 
 export const getUserMovieTypesCounts = async (userId) => {
+  try {
+    const token = localStorage.getItem('authToken');
+    const response = await axios.get(`${baseURL}/movieType/${userId}/counts`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching movie types for user with ID ${userId}:`, error.message);
+    throw error;
+  }
+}
+
+export const getMovieTypeOnProfileByUserId = async (userId) => {
     try {
-        const token = localStorage.getItem('authToken');
-        const response = await axios.get(`${baseURL}/movieType/${userId}/counts`, {
+        const token = localStorage.getItem("authToken");
+        console.log("Fetching movie types for user ID:", userId);
+        const response = await axios.get(`${baseURL}/movieType/on-profile/${userId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         });
+        console.log("Movie types fetched:", response.data);
         return response.data;
-    } catch (error) {
-        console.error(`Error fetching movie types for user with ID ${userId}:`, error.message);
+    }
+    catch (error) {
+        console.error(`Error fetching movie types for user with ID ${userId}:`, error);
         throw error;
     }
-}
-
+};
 

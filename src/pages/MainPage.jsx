@@ -5,7 +5,9 @@ import DummyMovie from '../components/home/DummyMovie';
 import Top10Carousel from '../components/home/Top10Carousel';
 
 import { useState,useEffect } from 'react';
-import { get10RandomMovie,getFriendsWatched, getRandomMovies, getRecommendation } from '../api/movie/movie';
+import { getFriendsWatched, getRandomMovies, getRecommendation } from '../api/movie/movie';
+import { getWatchedMovies } from '../api/movieType/movieType';
+import { useNavigate } from 'react-router-dom';
 export default function MainPage()
 {  const [openMovieModal, setOpenMovieModal] = useState(false);
   const [randomMovie, setRandomMovie] = useState(null);
@@ -14,7 +16,9 @@ export default function MainPage()
   const [friendsMovies, setFriendsMovies] = useState(null);
   const [movie, setMovie] = useState({});
   
+    const navigate = useNavigate();
  useEffect(() => {
+  fetchIsNewUser();
     fetchRandom10Movies();
     fetchFriendsMovies();
   }, []);
@@ -26,6 +30,10 @@ export default function MainPage()
       setRecommendedMovies(null);
     }
   };
+  const fetchIsNewUser=async()=>{
+      const isUserNew=await getWatchedMovies();
+      isUserNew.length===0&& navigate('/newUserWatched');
+  }
   const fetchFriendsMovies = async () => {
     try {
       const friendsMovies = await getFriendsWatched();
@@ -36,7 +44,6 @@ export default function MainPage()
           randomMovies.map(m=>movies.push(m));
       }
             console.log("Friends Movies:", movies);
-
       setFriendsMovies(movies);
     } catch (error) {
       setFriendsMovies(null);
