@@ -238,7 +238,7 @@ const RegisterPage = () => {
         <Box sx={{ textAlign: 'center' }}>
           <Typography variant="body2" color="grey" sx={{ mt: 4, fontSize: '1.1rem' }}>
             Have account?{' '}
-            <Link href="/login" underline="hover" color="white" fontWeight="bold">
+            <Link href="/" underline="hover" color="white" fontWeight="bold">
               Sign in now
             </Link>
           </Typography>
