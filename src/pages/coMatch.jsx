@@ -74,9 +74,10 @@ export default function CoMatch() {
         alignItems: "center",
         width: "100vw",
         minHeight: "100vh",
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.5)), url(/images/main-Photoroom.png)`,
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.79), rgba(0, 0, 0, 0.5)),
+    url(/images/main-Photoroom.png)`,
         backgroundSize: "cover",
-        backgroundRepeat: "no - repeat",
+        backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
       }}
     >

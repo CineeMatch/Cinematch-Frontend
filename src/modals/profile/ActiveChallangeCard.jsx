@@ -14,11 +14,32 @@ import {
 } from "../../api/challenge/ActiveChallenge";
 import { getUserById } from "../../api/profile/user";
 import { useState } from "react";
+import ChallengeQuestionStarterModal from "../challenge/ChallengeQuestionStarterModal";
+import ChallengeQuestionModal from "../challenge/ChallengeQuestionModal";
+import { getActiveUser } from "../../api/profile/user";
 
 export default function ActiveChallangeCard() {
   const [confirmedCards, setConfirmedCards] = useState({});
   const [challenges, setChallenges] = useState([]);
   const [timers, setTimers] = useState({});
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [writeModalOpen, setWriteModalOpen] = useState(false);
+  const [selectedChallenge, setSelectedChallenge] = useState(null);
+  const [currentUserId, setCurrentUserId] = useState(null);
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await getActiveUser(); // backend'den aktif kullanıcı bilgisi
+        setCurrentUserId(response.id); // id ya da response.data.id olabilir
+      } catch (error) {
+        console.error("Aktif kullanıcı alınamadı:", error);
+      }
+    };
+
+    fetchCurrentUser();
+    fetchChallenges(); // buraya da çağrıyı bıraktın
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -26,15 +47,15 @@ export default function ActiveChallangeCard() {
 
       challenges.forEach((card) => {
         if (card.status === "accepted" && card.endTime) {
-        const now = new Date();
-        const diffMs = new Date(card.endTime) - now;
+          const now = new Date();
+          const diffMs = new Date(card.endTime) - now;
 
-        if (diffMs <= 0) {
-          handleDelete(card.challenge_Id);
-        } else {
-          updatedTimers[card.challenge_Id] = diffMs;
+          if (diffMs <= 0) {
+            handleDelete(card.challenge_Id);
+          } else {
+            updatedTimers[card.challenge_Id] = diffMs;
+          }
         }
-      }
       });
 
       setTimers(updatedTimers);
@@ -53,8 +74,7 @@ export default function ActiveChallangeCard() {
     )}`;
   };
 
-  useEffect(() => {
-    const fetchChallenges = async () => {
+  const fetchChallenges = async () => {
       try {
         const response = await getChallengeByUser();
 
@@ -76,14 +96,21 @@ export default function ActiveChallangeCard() {
         );
 
         const confirmed = {};
+        const initialTimers = {}; 
+        const now = new Date();  
         enrichedChallenges.forEach((ch) => {
           if (ch.status === "accepted") {
             confirmed[ch.challenge_Id] = true;
-          }
-        });
+           const diff = new Date(ch.endTime) - now; 
+        if (diff > 0) {
+          initialTimers[ch.challenge_Id] = diff; 
+        }
+      }
+    });
 
         setChallenges(enrichedChallenges);
         setConfirmedCards(confirmed);
+         setTimers(initialTimers);
         console.log(
           "Fetched challenges with user details:",
           enrichedChallenges
@@ -93,6 +120,7 @@ export default function ActiveChallangeCard() {
       }
     };
 
+  useEffect(() => { 
     fetchChallenges();
   }, []);
 
@@ -108,9 +136,8 @@ export default function ActiveChallangeCard() {
 
   const handleAccept = async (id) => {
     try {
-      console.log("Accepting challenge with ID:", id);
       await updateChallengeStatusAccepted(id);
-      setConfirmedCards((prev) => ({ ...prev, [id]: true }));
+      await fetchChallenges();
     } catch (error) {
       console.error("Accept error:", error);
     }
@@ -191,7 +218,8 @@ export default function ActiveChallangeCard() {
                 gap: 10,
               }}
             >
-              {!confirmedCards[card.challenge_Id] ? (
+              {currentUserId !== null && !confirmedCards[card.challenge_Id] ?(
+                 String(currentUserId) !== String(card.creator_id) ? (
                 <>
                   <IconButton
                     onClick={() => handleDelete(card.challenge_Id)}
@@ -217,6 +245,9 @@ export default function ActiveChallangeCard() {
                     <CheckIcon />
                   </IconButton>
                 </>
+              ) : (
+                <Typography sx={{ color: "#bbb" }}>Bekliyor...</Typography> 
+                )
               ) : (
                 <Box
                   sx={{
@@ -258,7 +289,10 @@ export default function ActiveChallangeCard() {
                         color: "white",
                         "&:hover": { color: "#ffd700" },
                       }}
-                      onClick={() => console.log("Edit clicked")}
+                      onClick={() => {
+                        setSelectedChallenge(card);
+                        setEditModalOpen(true);
+                      }}
                     >
                       <EditNoteIcon sx={{ fontSize: "35px" }} />
                     </IconButton>
@@ -267,7 +301,10 @@ export default function ActiveChallangeCard() {
                         color: "green",
                         "&:hover": { color: "#ffd700" },
                       }}
-                      onClick={() => console.log("Write clicked")}
+                      onClick={() => {
+                        setSelectedChallenge(card);
+                        setWriteModalOpen(true);
+                      }}
                     >
                       <BorderColorIcon />
                     </IconButton>
@@ -276,8 +313,19 @@ export default function ActiveChallangeCard() {
               )}
             </Box>
           </Card>
+          
         </Grid>
       ))}
+      <ChallengeQuestionModal
+            open={editModalOpen}
+            onClose={() => setEditModalOpen(false)}
+            challenge={selectedChallenge}
+          />
+      <ChallengeQuestionStarterModal
+            open={writeModalOpen}
+            onClose={() => setWriteModalOpen(false)}
+            challenge={selectedChallenge}
+          />
     </Grid>
   );
 }

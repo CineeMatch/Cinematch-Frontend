@@ -59,7 +59,7 @@ const Stat = ({ id, friend_id, level, badge, friends, favorites, watched, wishli
   }
 
   const navigateToActiveChallenges = () => {
-    navigate('/activeChallange');
+    navigate('/activeChallenge');
   }
 
   useEffect(() => {
@@ -70,7 +70,7 @@ const Stat = ({ id, friend_id, level, badge, friends, favorites, watched, wishli
 
   return (
     <Grid item xs={12} md={4}>
-      <Box sx={{ p: 3, backgroundColor: 'rgba(128,0,0,0.7)', borderRadius: 2, height: '96%', textAlign: 'center' }}>
+      <Box sx={{ p: 3, backgroundColor: 'rgba(76, 2, 2, 0.7)', borderRadius: 2, height: '96%', textAlign: 'center' }}>
           <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, mt: 5 }}>
             LEVEL <Box sx={{ backgroundColor: 'white', color: 'black', borderRadius: '50%', width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', ml: 1 }}>{level}</Box>
           </Typography>

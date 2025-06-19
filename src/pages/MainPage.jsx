@@ -52,12 +52,16 @@ export default function MainPage()
 
     return(
          <Box sx={{   mt: '69px',
-    height: '100vh', // ✅ ekranın tamamını kapla
-    backgroundColor: 'black',
-    overflowY: 'auto', // ✅ sadece dikey scroll kontrolü
-    scrollbarWidth: 'none', // Firefox
+    height: '100vh', 
+    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.83)),
+    url(/images/main-Photoroom.png)`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+    overflowY: 'auto', 
+    scrollbarWidth: 'none', 
     '&::-webkit-scrollbar': {
-      display: 'none', // Chrome/Safari
+      display: 'none', 
     }, }}>
         <DummyMovie openMovieModal={setOpenMovieModal} onRandomMovieChange={setRandomMovie} movie={setMovie} />
         <MovieCarousel movies={recommendedMovies} openMovieModal={setOpenMovieModal} title={"Sizin İçin Seçtiklerimiz"} movie={setMovie}/>

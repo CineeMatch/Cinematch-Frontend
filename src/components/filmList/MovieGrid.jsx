@@ -1,12 +1,9 @@
 import { Grid } from "@mui/joy"
 import { Box } from "@mui/material"
-import { useState } from "react";
 
 export default function MovieGrid(props) {
 
-   
-   const [selectedMovie, setSelectedMovie] = useState(null);
-     const [openMovieModal, setOpenMovieModal] = useState(false);
+  
      const movies =props.movies||[];
   return (
     <Grid

@@ -13,7 +13,7 @@ import {
   Modal,
 } from '@mui/material';
 import GroupIcon from '@mui/icons-material/Group';
-import ChallengeStarterModal from '../../modals/challenge/ChallangeStarterModal.jsx';
+import ChallengeStarterModal from '../../modals/challenge/ChallengeStarterModal.jsx';
 
 const style = {
   position: 'absolute',

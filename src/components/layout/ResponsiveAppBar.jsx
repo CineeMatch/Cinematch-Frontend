@@ -19,7 +19,7 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import { useNavigate } from 'react-router-dom';
 import { getActiveUser } from '../../api/profile/user.js';
 import { useEffect, useState } from 'react';
-
+import SearchModal from '../../modals/layout/searchModal.jsx';
 
 
 const settings = ['Profile', 'Logout'];
@@ -32,6 +32,8 @@ function ResponsiveAppBar() {
   const [anchorElNavLists, setAnchorElNavLists] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [profileImageUrl, setProfileImageUrl] = useState(''); 
+  const [searchValue, setSearchValue] = React.useState('');
+  const [searchModalOpen, setSearchModalOpen] = React.useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -127,7 +129,7 @@ function ResponsiveAppBar() {
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/home")}
               variant="h6"
               noWrap
               component="a"
@@ -299,6 +301,17 @@ function ResponsiveAppBar() {
           pointerEvents: "none",
         }}
       />
+       {searchModalOpen && (
+        <SearchModal
+          open={searchModalOpen}
+          searchInput={searchValue}
+          close={() => {
+            setSearchModalOpen(false);
+            setSearchValue('');
+          }}
+        />
+      )}
+
     </>
   );
 }

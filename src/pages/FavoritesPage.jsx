@@ -32,7 +32,11 @@ export default function FavoritesPage() {
       sx={{
         marginTop: "60px",
         height: '91vh',
-        background: 'linear-gradient(to bottom right, #0e0e0e, #2d0f0f)',
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.79), rgba(0, 0, 0, 0.5)),
+    url(/images/main-Photoroom.png)`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
         display: "flex",
         justifyContent: "center",
       }}
