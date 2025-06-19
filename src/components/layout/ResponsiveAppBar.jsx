@@ -17,6 +17,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Notifications from "../home/Notifications.jsx"
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import { useNavigate } from 'react-router-dom';
+import SearchModal from '../../modals/layout/searchModal.jsx';
 
 const settings = ['Profile', 'Logout'];
 const myList = [{ title: 'Favorites', to: "/favorites" },
@@ -27,6 +28,9 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElNavLists, setAnchorElNavLists] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [searchValue, setSearchValue] = React.useState('');
+const [searchModalOpen, setSearchModalOpen] = React.useState(false);
+
   const navigate = useNavigate();
 
   const pages = [
@@ -189,7 +193,16 @@ function ResponsiveAppBar() {
 
             <Search>
               <SearchIconWrapper><SearchIcon /></SearchIconWrapper>
-              <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
+<StyledInputBase
+  placeholder="Search…"
+  inputProps={{ 'aria-label': 'search' }}
+  value={searchValue}
+  onChange={(e) => {
+    const text = e.target.value;
+    setSearchValue(text);
+    setSearchModalOpen(text.length > 0); // yazı varsa modal açılır
+  }}
+/>
             </Search>
 
             <Notifications />
@@ -273,7 +286,19 @@ function ResponsiveAppBar() {
           pointerEvents: "none",
         }}
       />
+      {searchModalOpen && (
+  <SearchModal
+    open={searchModalOpen}
+    searchInput={searchValue}
+    close={() => {
+      setSearchModalOpen(false);
+      setSearchValue('');
+    }}
+  />
+)}
+
     </>
+    
   );
 }
 

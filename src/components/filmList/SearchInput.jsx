@@ -1,11 +1,12 @@
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Box } from '@mui/material';
 
-// Tek styled bileşen
-const SearchBox = styled('div')(({ theme, expand }) => ({
+const SearchBox = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'expand' && prop !== 'expandWidth',
+})(({ theme, expand, expandWidth }) => ({
   position: 'relative',
   display: 'flex',
   alignItems: 'center',
@@ -14,7 +15,7 @@ const SearchBox = styled('div')(({ theme, expand }) => ({
     ? alpha(theme.palette.common.white, 0.1)
     : 'transparent',
   color: 'white',
-  width: expand ? '160vh' : '48px',
+  width: expand ? expandWidth || '160px' : '48px',
   maxWidth: '100%',
   transition: 'all 0.4s ease',
   overflow: 'hidden',
@@ -42,16 +43,36 @@ const SearchBox = styled('div')(({ theme, expand }) => ({
   },
 }));
 
-export default function SearchInput({ searchTerm, onChange }) {
-  const [expand, setExpand] = useState(false);
+export default function SearchInput({
+  searchTerm,
+  onChange,
+  autoFocus,
+  expandWidth, 
+}) {
+  const [expand, setExpand] = useState(autoFocus || false);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (autoFocus) {
+      setExpand(true);
+    }
+  }, [autoFocus]);
+
+  useEffect(() => {
+    if (expand) {
+      requestAnimationFrame(() => {
+        inputRef.current?.focus();
+      });
+    }
+  }, [expand]);
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
       <SearchBox
         expand={expand}
-        onClick={() => setExpand(true)} // click anywhere to expand
-        onBlur={(e) => {
-          // e.relatedTarget kontrolü istersen yapılabilir
+        expandWidth={expandWidth}
+        onClick={() => setExpand(true)}
+        onBlur={() => {
           if (searchTerm === '') setExpand(false);
         }}
       >
@@ -59,6 +80,7 @@ export default function SearchInput({ searchTerm, onChange }) {
           <SearchIcon />
         </div>
         <InputBase
+          inputRef={inputRef}
           placeholder="Search…"
           value={searchTerm}
           onChange={onChange}
