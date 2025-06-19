@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, Paper, InputAdornment, IconButton } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { createNewPassword } from '../api/auth/auth';
+import { resetPassword } from '../api/auth/auth.js';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 
-const NewPasswordPage = () => {
+const ResetPasswordPage = () => {
 
   const [password, setPassword] = useState('');
   const [passwordCorrect, setPasswordCorrect] = useState('');
@@ -14,33 +14,34 @@ const NewPasswordPage = () => {
   const [isPasswordSaved, setIsPasswordSaved] = useState(false);
 
   const navigate = useNavigate();
-
+  const userId = useParams().id;
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (password !== passwordCorrect) {
-      alert("Passwords do not match!"); // alert yerine bir natification kütüphanesi kullanılanılıcak
-      return;
-    }
-
-    const userData = {
-      passwordCorrect
-    };
-
-    const fetchData = async (data) => {
-      try {
-        const response = await createNewPassword(data);
-        console.log("Registration successful:", response);
-        navigate('/');
-      } catch (error) {
-        console.error("Registration error:", error); // console.error yerine bir natification kütüphanesi kullanılanılıcak
-      }
-    };
-
-    // fetchData(userData);
-    setIsPasswordSaved(true);
-
+   if (password !== passwordCorrect) {
+    alert("Passwords do not match!"); // alert yerine bir notification kullanılacak
+    return;
   }
+  const userData = {
+    userId,
+    password: passwordCorrect 
+  };
+
+  const fetchData = async (data) => {
+    try {
+      console.log("Fetching data for user:", data);
+      console.log("Resetting password for user:", data.userId);
+      const response = await resetPassword(data.userId, data.password);
+      console.log("Password reset successful:", response);
+      navigate('/');
+    } catch (error) {
+      console.error("Password reset error:", error);
+    }
+  };
+
+  fetchData(userData);
+  setIsPasswordSaved(true);
+};
 
   return (
     <Box
@@ -66,7 +67,7 @@ const NewPasswordPage = () => {
         }}
       >
         <Typography variant="h5" fontWeight="bold" gutterBottom>
-          update Password
+          Reset Password
         </Typography>
 
         <TextField
@@ -164,4 +165,4 @@ const NewPasswordPage = () => {
   );
 };
 
-export default NewPasswordPage;
+export default ResetPasswordPage;

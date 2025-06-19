@@ -10,7 +10,7 @@ import {
   FormControl,
   // duration
 } from '@mui/material';
-import { createNewChallenge } from '../../api/challenge/challenge';
+import { createNewChallenge } from '../../api/challenge/challenge.js';
 import toast from 'react-hot-toast';
 
 const style = {

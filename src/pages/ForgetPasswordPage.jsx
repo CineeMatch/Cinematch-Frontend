@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, Paper } from '@mui/material';
+import { forgetPassword } from '../api/auth/auth.js';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 
 const ForgetPasswordPage = () => {
@@ -12,19 +13,23 @@ const ForgetPasswordPage = () => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!isValidEmail(email)) {
-      setEmailError(true); // ❌ Geçersizse hata göster
-      return;
-    }
+  if (!isValidEmail(email)) {
+    setEmailError(true);
+    return;
+  }
 
-    setEmailError(false);  // ✅ Geçerli e-mail
+  setEmailError(false);
+
+  try {
+    await forgetPassword(email); 
     setIsEmailSentCorrectly(true);
-
-    // 🔐 Email sent logic will come here
-  };
+  } catch (error) {
+    console.error("Şifre sıfırlama hatası:", error.message);
+  }
+};
 
   return (
     <Box

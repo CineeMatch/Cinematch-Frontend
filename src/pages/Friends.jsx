@@ -63,6 +63,7 @@ const Friends = () => {
         backgroundColor: 'rgba(0,0,0,0.2)',
         backgroundBlendMode: 'overlay',
         p: 4,
+        marginTop: '64px',
       }}
     >
       <Box

@@ -22,7 +22,7 @@ export const getMovie = async (movieId) => {
 export const searchMovie = async (title) => {
   try {
     const token = localStorage.getItem("authToken");
-    const response = await axios.post(`${baseURL}/movie/search`, { title }, {
+    const response = await axios.post(`${baseURL}/movie/search`,{ title }, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -45,13 +45,13 @@ export const getTop10Movies = async () => {
       },
     });
     console.log("TTop 10 movies:", response.data);
-    const data = response.data.movies.map(movie => {
-      return {
-        ...movie,
-        categories: movie.categories.map(category => category.name).join(", "),
-        platforms: movie.platforms?.map(platform => platform.name).join(", ") || []
-      };
-    });
+   const data = response.data.movies.map(movie => {
+  return {
+    ...movie,
+    categories: movie.categories.map(category => category.name).join(", "),
+    platforms: movie.platforms?.map(platform => platform.name).join(", ") || []
+  };
+});
     console.log("ttop 10 movies:", data);
     return data;
   } catch (error) {
@@ -65,19 +65,19 @@ export const getTop10Movies = async () => {
 export const getRandomMovie = async () => {
   try {
     const token = localStorage.getItem("authToken");
-    const response = await axios.post(`${baseURL}/movie/random`, { limit: 1 }, {
+    const response = await axios.post(`${baseURL}/movie/random`,{limit: 1}, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    const data = response.data.map(movie => {
-      return {
-        ...movie,
-        categories: movie.categories.map(category => category.name).join(", "),
-        platforms: movie.platforms?.map(platform => platform.name).join(", ") || []
-      };
-    });
-    console.log("data", data);
+   const data = response.data.map(movie => {
+  return {
+    ...movie,
+    categories: movie.categories.map(category => category.name).join(", "),
+    platforms: movie.platforms?.map(platform => platform.name).join(", ") || []
+  };
+});
+console.log("data", data);
     return data;
   } catch (error) {
     console.error("Failed to get movie:", error);
@@ -87,20 +87,20 @@ export const getRandomMovie = async () => {
 export const get10RandomMovie = async () => {
   try {
     const token = localStorage.getItem("authToken");
-    const response = await axios.post(`${baseURL}/movie/random`, { limit: 10 }, {
+    const response = await axios.post(`${baseURL}/movie/random`,{limit: 10}, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
     console.log("response", response.data);
-    const data = response.data.map(movie => {
-      return {
-        ...movie,
-        categories: movie.categories.map(category => category.name).join(", "),
-        platforms: movie.platforms?.map(platform => platform.name).join(", ") || []
-      };
-    });
-    console.log("data", data);
+const data = response.data.map(movie => {
+  return {
+    ...movie,
+    categories: movie.categories.map(category => category.name).join(", "),
+    platforms: movie.platforms?.map(platform => platform.name).join(", ") || []
+  };
+});
+console.log("data", data);
     return data;
   } catch (error) {
     console.error("Failed to get movie:", error);
@@ -126,20 +126,20 @@ export const getAllMovies = async () => {
 export const getRandomMovies = async (limit) => {
   try {
     const token = localStorage.getItem("authToken");
-    const response = await axios.post(`${baseURL}/movie/random`, { limit: limit }, {
+    const response = await axios.post(`${baseURL}/movie/random`,{limit: limit}, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
     console.log("response", response.data);
-    const data = response.data.map(movie => {
-      return {
-        ...movie,
-        categories: movie.categories.map(category => category.name).join(", "),
-        platforms: movie.platforms?.map(platform => platform.name).join(", ") || []
-      };
-    });
-    console.log("data", data);
+const data = response.data.map(movie => {
+  return {
+    ...movie,
+    categories: movie.categories.map(category => category.name).join(", "),
+    platforms: movie.platforms?.map(platform => platform.name).join(", ") || []
+  };
+});
+console.log("data", data);
     return data;
   } catch (error) {
     console.error("Failed to get movie:", error);

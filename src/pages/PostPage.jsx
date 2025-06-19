@@ -17,9 +17,11 @@ const PostPage = () => {
         try {
           if (selectedCategoryId) {
             const data = await getPostsUserByCategoryId(selectedCategoryId);
+            console.log("data", data);
             setPosts(data);
           } else {
             const data = await getPostsByUserId(userId);
+            console.log("data", data);
             setPosts(data);
           }
         } catch (err) {
@@ -68,7 +70,7 @@ const PostPage = () => {
           id={item.id}
           nickname={item.nickname}
           text={item.contentText}
-          selectedMovie={item.movieName}
+          selectedMovie={item.Movie.title}
         />
       ))}
     </Card>

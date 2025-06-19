@@ -31,7 +31,8 @@ const Stat = ({ id, friend_id, level, badge, friends, favorites, watched, wishli
   const fetchUserBadges = async (userId) => {
     try {
       const response = await getBadgesByUserId(userId);
-      setBadges(response);
+      console.log("Badges fetched:", response.userBadges);
+      setBadges(response.userBadges || []);
     } catch (error) {
       console.error("Error fetching badges:", error);
     }
@@ -95,11 +96,27 @@ const Stat = ({ id, friend_id, level, badge, friends, favorites, watched, wishli
           </Box>
         <Typography variant="h6" sx={{ mt: 3 }}>Badges {badge}</Typography>
         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 1 }}>
-          { badges.length > 0 ? badges.slice(0,5).map((badge) => (
-            <Avatar key={badge.id} sx={{ width: 70, height: 70, backgroundColor: '#999', borderRadius: 1 }} variant="rounded" src={badge.badge.image_url}/>
-          )) : [...Array(5)].map((_, index) => (
-            <Avatar key={index} sx={{ width: 70, height: 70, backgroundColor: '#999', borderRadius: 1 }} variant="rounded" src='/images/badge-default.png' />
-          ))}
+          {/* Eğer badges verisi varsa */}
+          {badges.length > 0 ? (
+            badges.slice(0, 5).map((badge, index) => (
+              <Avatar
+                key={badge.id || index}
+                sx={{ width: 70, height: 70, backgroundColor: '#999', borderRadius: 1 }}
+                variant="rounded"
+                src={badge.badge ? badge.badge.image_url : '/images/badge-default.png'}
+              />
+            ))
+          ) : (
+            // Eğer badges verisi yoksa veya 0 ise 5 tane default badge gösterelim
+            [...Array(5)].map((_, index) => (
+              <Avatar
+                key={index}
+                sx={{ width: 70, height: 70, backgroundColor: '#999', borderRadius: 1 }}
+                variant="rounded"
+                src="/images/badge-default.png"
+              />
+            ))
+          )}
         </Box>
         <Box sx={{ mt: 3, textAlign: 'left', pl: 2 }}>
           <Typography onClick={navigateToFriends} variant="body1" fontWeight="bold" sx={{ cursor: 'pointer', mb:1 }}>Friends<span style={{ float: 'right', marginRight: '10px' }}>{friends}</span></Typography>

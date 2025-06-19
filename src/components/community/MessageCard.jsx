@@ -10,6 +10,10 @@ import { getPostByCategoryId } from "../../api/post/post.js";
 export default function MessageCard({ isSidebarOpen,selectedCategoryId }) {
   const [posts, setPosts] = useState([]);
 
+  const handleDeletePost = (postId) => {
+  setPosts((prev) => prev.filter((post) => post.id !== postId));
+};
+
    const handleNewPost = (newPost) => {
     setPosts((prev) => [newPost, ...prev]);
   };
@@ -70,6 +74,7 @@ useEffect(() => {
           nickname={item.nickname}
           text={item.contentText}
           selectedMovie={item.movieName}
+          onDelete={handleDeletePost}
         />
       ))}
     </Card>

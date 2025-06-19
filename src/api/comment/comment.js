@@ -35,3 +35,19 @@ export const createComment = async (postId, commentText) => {
     throw error;
   }
 };
+
+export const deleteComment = async (commentId) => {
+  try {
+    console.log("Deleting comment with ID:", commentId);
+    const token = localStorage.getItem("authToken");
+    const response = await axios.delete(`${baseURL}/comment/delete/${commentId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting comment:", error);
+    throw error;
+  }
+};

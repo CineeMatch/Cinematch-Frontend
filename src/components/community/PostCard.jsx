@@ -1,21 +1,37 @@
-import { Box, Card, Avatar, Typography } from "@mui/material";
+import React from "react";
+import {
+  Box,
+  Card,
+  Avatar,
+  Typography,
+  IconButton,
+  Menu,
+  MenuItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import CommentIcon from "@mui/icons-material/Comment";
-import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useState } from "react";
 import CommentModal from "../../modals/community/CommentModal";
-import { getCommentsByPostId } from "../../api/comment.js/comment";
-import { getLikesByPost, createLike, removeLike } from "../../api/like/like.js";
+import { getCommentsByPostId } from "../../api/comment/comment.js";
+import { getLikesByPost, createLike, removeLike, getUserLikeonPost } from "../../api/like/like.js";
+import { deletePost } from "../../api/post/post.js";
 import { useEffect } from "react";
 
-function PostCard({ id, nickname, text, selectedMovie }) {
+function PostCard({ id, nickname, text, selectedMovie ,onDelete }) {
   const [openModal, setOpenModal] = useState(false);
-
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [comments, setComments] = useState([]);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 
   const firstComment = comments[0];
 
@@ -37,7 +53,28 @@ function PostCard({ id, nickname, text, selectedMovie }) {
       );
     }
   };
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDeleteClick = () => {
+    setConfirmDialogOpen(true);
+    setAnchorEl(null);
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      await deletePost(id);
+      setConfirmDialogOpen(false);
+      onDelete(id); 
+    } catch (error) {
+      console.error("Silme hatası:", error.message);
+    }
+  };
   useEffect(() => {
     const fetchComments = async () => {
       try {
@@ -55,7 +92,9 @@ function PostCard({ id, nickname, text, selectedMovie }) {
     const fetchLikes = async () => {
       try {
         const data = await getLikesByPost(id);
+        const userLike = await getUserLikeonPost(id);
         setLikeCount(data.likeCount);
+        setLiked(userLike.like && userLike.like.id ? true : false);
       } catch (error) {
         console.error("Like information is not get", error);
       }
@@ -74,22 +113,54 @@ function PostCard({ id, nickname, text, selectedMovie }) {
         borderRadius: 2,
         display: "flex",
         flexDirection: "column",
-        gap: 2
+        gap: 2,
       }}
     >
       {/* Üst kısım */}
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <Avatar sx={{ bgcolor: "#555" }}>
-          <PersonIcon />
-        </Avatar>
-        <Typography
-          variant="subtitle1"
-          sx={{ fontWeight: "bold", color: "white" }}
-        >
-          {nickname}
-        </Typography>
-      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Avatar sx={{ bgcolor: "#555" }}>
+            <PersonIcon />
+          </Avatar>
+          <Typography
+            variant="subtitle1"
+            sx={{ fontWeight: "bold", color: "white" }}
+          >
+            {nickname}
+          </Typography>
+        </Box>
+        <IconButton onClick={handleMenuOpen} sx={{ color: "white" }}>
+          <MoreHorizIcon />
+        </IconButton>
 
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+        >
+          <MenuItem onClick={handleDeleteClick}>Delete</MenuItem>
+        </Menu>
+
+        <Dialog
+          open={confirmDialogOpen}
+          onClose={() => setConfirmDialogOpen(false)}
+        >
+          <DialogTitle>Silmek istediğine emin misin?</DialogTitle>
+          <DialogContent>Bu işlem geri alınamaz.</DialogContent>
+          <DialogActions>
+            <Button onClick={() => setConfirmDialogOpen(false)}>Vazgeç</Button>
+            <Button color="error" onClick={handleDeleteConfirm}>
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
       {/* Mesaj */}
       <Typography
         variant="body1"

@@ -62,4 +62,3 @@ export const deleteFriendById = async (id) => {
         throw error;
     }
 }
-

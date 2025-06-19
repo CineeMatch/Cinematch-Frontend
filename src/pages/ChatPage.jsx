@@ -142,7 +142,8 @@ const ChatPage = () => {
         backgroundImage: "url('/images/movie-background.jpeg')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        color: 'white'
+        color: 'white',
+        marginTop: '64px',
       }}
     >
       {/* SOL PANEL */}

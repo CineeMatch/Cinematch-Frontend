@@ -28,7 +28,6 @@ const ProfilePage = () => {
     try {
       const movies = await getMovieTypeOnProfileByUserId(userId);
       setMovieData(movies.data);
-      console.log('Movie types:', movies.data);
     } catch (error) {
       console.error('Movie types alınamadı:', error);
     }
@@ -124,24 +123,25 @@ const ProfilePage = () => {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         opacity: 1,
+        marginTop: '64px',
       }}
     >
       <Grid container spacing={2}>
         {/* Profile Info */}
         <Grid item xs={12} md={8}>
-          <Box sx={{ textAlign: 'center', p: 2, borderRadius: 2 }}>
-            <Avatar src={avatar} sx={{ width: 100, height: 100, mx: 'auto', mb: 2 }} />
-            <Typography variant="h5" fontWeight="bold">{profileData.nickname}</Typography>
-            <Typography variant="subtitle1" fontWeight="bold">{profileData.name}</Typography>
-            <Typography variant="body2" fontWeight="bold" sx={{ mt: 1, mb: 2 }}>{profileData.description}</Typography>
-            <Card sx={{ width: 720, height: 100, p: 1, bgcolor: "rgba(255, 255, 255, 0.05)", borderRadius: 2, display: "flex", flexDirection: "column",}}>
+          <Box sx={{ textAlign: 'center', p: 2, borderRadius: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Avatar src={avatar} sx={{ width: 100, height: 100, mx: 'auto', mb: 2 }} />
+          <Typography variant="h5" fontWeight="bold">{profileData.nickname}</Typography>
+          <Typography variant="subtitle1" fontWeight="bold">{profileData.name}</Typography>
+          <Typography variant="body2" fontWeight="bold" sx={{ mt: 1, mb: 2 }}>{profileData.description}</Typography>
+          <Card sx={{ width: 550, height: 100, pb: 2, bgcolor: "rgba(255, 255, 255, 0.05)", borderRadius: 2, display: "flex", flexDirection: "column", justifyContent: 'center', alignItems: 'center' }}>
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 2 }}>
               {movieData.map((movie) => (
                 <Avatar key={movie.id} sx={{ width: 80, height: 80, backgroundColor: '#999', borderRadius: 1 }} variant='rounded' src={movie.Movie.poster_url} alt={movie.Movie.title}/>
               ))}
             </Box>
-            </Card>
-          </Box>
+          </Card>
+        </Box>
           {/* Posts Section */}
           { profileData.posts && profileData.posts.length > 0 ? (
           <Box sx={{ mt: 2 }}>
@@ -157,7 +157,8 @@ const ProfilePage = () => {
               </Box>
             ))}
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-              <Button sx={{ fontWeight: "bold" }} variant="contained" color="error" onClick={() => navigate('/posts')}>
+            <Button sx={{ fontWeight: "bold" }} variant="contained" color="error" onClick={() => navigate(`/posts/${userId || activeUserId}`)}>
+
                 show more posts
               </Button>
             </Box>

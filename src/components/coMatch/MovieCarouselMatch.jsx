@@ -2,13 +2,6 @@ import React from "react";
 import { Card, CardMedia, Stack, Typography,Box } from "@mui/material";
 
 export default function movieCarousel({ movies }) {
-  // const movies = [
-  //   { title: "Doğaüstü", poster: "chronicle.jpg" },
-  //   { title: "Ready Player One", poster: "ready.png" },
-  //   { title: "Now You See Me", poster: "nowyousee.png" },
-  //   { title: "Lucy", poster: "lucy.png" },
-  //   { title: "Başlangıç", poster: "inception.png" },
-  // ];
 
   return (
     <Box sx={{ textAlign: "center", mb: 2 }}>
@@ -22,7 +15,7 @@ export default function movieCarousel({ movies }) {
         mb: 2,
       }}
     >
-      ORTAK FİLMLER
+      FAVORİ FİLMLERİ
     </Typography>
 
     <Card
@@ -59,7 +52,7 @@ export default function movieCarousel({ movies }) {
             <CardMedia
               component="img"
               height="200"
-              image={`/images/${movie.poster}`}
+              image={movie.poster_url}
               alt={movie.title}
               sx={{
                 width: "100%", // Kart genişliği kadar genişlet
