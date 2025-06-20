@@ -65,7 +65,7 @@ export default function FavoritesPage() {
             variant="h6"
             sx={{ fontWeight: 'bold', color: 'white' }}
           >
-            FAVORITES
+            FAVORİLER
           </Typography>
           <SearchInput
             searchTerm={searchTerm}

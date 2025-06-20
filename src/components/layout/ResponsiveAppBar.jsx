@@ -22,10 +22,10 @@ import { useEffect, useState } from 'react';
 import SearchModal from '../../modals/layout/searchModal.jsx';
 
 
-const settings = ['Profile', 'Logout'];
-const myList = [{ title: 'Favorites', to: "/favorites" },
-  { title: 'Wishlist', to: "/wishlist" },
-  { title: 'Watched', to: "/watched" },]
+const settings = ['Profil', 'Çıkış Yap'];
+const myList = [{ title: 'Favorilerim', to: "/favorites" },
+  { title: 'İstek Listem', to: "/wishlist" },
+  { title: 'İzlediklerim', to: "/watched" },]
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -49,9 +49,9 @@ function ResponsiveAppBar() {
   }, []); 
 
   const pages = [
-    { title: 'Home', to: "/home" },
-    { title: 'Community', to: "/community" },
-    { title: 'My List', to: "/favorites" },
+    { title: 'Ana Sayfa', to: "/home" },
+    { title: 'Topluluk', to: "/community" },
+    { title: 'Listelerim', to: "/favorites" },
     { title: 'Comatch', to: "/comatch" },
   ];
 
@@ -69,10 +69,10 @@ function ResponsiveAppBar() {
     setAnchorElNav(null);
   };
   const handleCloseUserMenu = (setting) => {
-    if (setting === "Profile") {
+    if (setting === "Profil") {
       navigate("/profile");
     }
-    if (setting === "Logout") {
+    if (setting === "Çıkış Yap") {
       navigate("/");
     }
     setAnchorElUser(null);
@@ -191,7 +191,7 @@ function ResponsiveAppBar() {
 
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {pages.map((page) => (
-                page.title === 'My List' ? (
+                page.title === 'Listelerim' ? (
                   <Button
                     id="mylist-button"
                     key={page.title}

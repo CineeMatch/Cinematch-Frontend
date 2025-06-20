@@ -81,7 +81,7 @@ const Stat = ({ id, friend_id, level, badge, friends, favorites, watched, wishli
               sx={{ backgroundColor: '#800000', width: "100%", color: 'white', fontWeight: "bold" }}
               onClick={handleEditProfile}
             >
-              Edit Profile
+              Profil Güncelle
             </Button>
           ) : (
             <Button
@@ -90,7 +90,7 @@ const Stat = ({ id, friend_id, level, badge, friends, favorites, watched, wishli
               startIcon={<PersonAddIcon />}
               onClick={handleAddFriend}
             >
-              Add a Friend
+              Arkadaş Ekle
             </Button>
           )}
           </Box>
@@ -119,11 +119,11 @@ const Stat = ({ id, friend_id, level, badge, friends, favorites, watched, wishli
           )}
         </Box>
         <Box sx={{ mt: 3, textAlign: 'left', pl: 2 }}>
-          <Typography onClick={navigateToFriends} variant="body1" fontWeight="bold" sx={{ cursor: 'pointer', mb:1 }}>Friends<span style={{ float: 'right', marginRight: '10px' }}>{friends}</span></Typography>
-          <Typography onClick={navigateToFavorites} variant="body1" fontWeight="bold" sx={{ cursor: 'pointer', mb:1 }}>Favorites<span style={{ float: 'right', marginRight: '10px' }}>{favorites}</span></Typography>
-          <Typography onClick={navigateToWatched} variant="body1" fontWeight="bold" sx={{ cursor: 'pointer', mb:1  }}>Watched<span style={{ float: 'right', marginRight: '10px' }}>{watched}</span></Typography>
-          <Typography onClick={navigateToWishlist} variant="body1" fontWeight="bold" sx={{ cursor: 'pointer', mb:1  }}>Wishlist<span style={{ float: 'right', marginRight: '10px' }}>{wishlist}</span></Typography>
-          <Typography onClick={navigateToActiveChallenges} variant="body1" fontWeight="bold" sx={{ cursor: 'pointer', mb:1  }}>Active Challenges<span style={{ float: 'right', marginRight: '10px' }}>{activeChallenges}</span></Typography>
+          <Typography onClick={navigateToFriends} variant="body1" fontWeight="bold" sx={{ cursor: 'pointer', mb:1 }}>Arkadaşlarım<span style={{ float: 'right', marginRight: '10px' }}>{friends}</span></Typography>
+          <Typography onClick={navigateToFavorites} variant="body1" fontWeight="bold" sx={{ cursor: 'pointer', mb:1 }}>Favorilerim<span style={{ float: 'right', marginRight: '10px' }}>{favorites}</span></Typography>
+          <Typography onClick={navigateToWatched} variant="body1" fontWeight="bold" sx={{ cursor: 'pointer', mb:1  }}>İzlediklerim<span style={{ float: 'right', marginRight: '10px' }}>{watched}</span></Typography>
+          <Typography onClick={navigateToWishlist} variant="body1" fontWeight="bold" sx={{ cursor: 'pointer', mb:1  }}>İstek Listem<span style={{ float: 'right', marginRight: '10px' }}>{wishlist}</span></Typography>
+          <Typography onClick={navigateToActiveChallenges} variant="body1" fontWeight="bold" sx={{ cursor: 'pointer', mb:1  }}>Meydan Okuma<span style={{ float: 'right', marginRight: '10px' }}>{activeChallenges}</span></Typography>
         </Box>
       </Box>
     </Grid>

@@ -77,12 +77,12 @@ export default function ChildModal(props) {
       >
         <Box sx={{ ...style }}>
           <Stack direction="row" justifyContent="space-between" alignItems="center" mb={1} sx={{ paddingTop: '10px' }}>
-            <Typography sx={{ fontWeight: 'bold', fontSize: 18 }}>FRIENDS</Typography>
+            <Typography sx={{ fontWeight: 'bold', fontSize: 18 }}>Arkadaşlarım</Typography>
             <GroupIcon />
           </Stack>
 
           <TextField
-            placeholder="Search for your friend"
+            placeholder="Arkadaşını seç"
             variant="outlined"
             fullWidth
             size="small"

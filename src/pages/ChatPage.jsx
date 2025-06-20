@@ -214,7 +214,7 @@ const ChatPage = () => {
             }}
           >
             <TextField
-              placeholder="Write a message"
+              placeholder="Mesaj yaz..."
               variant="standard"
               fullWidth
               InputProps={{

@@ -88,7 +88,7 @@ const AddFriendModal = ({ setIsShowAddFriendModal }) => {
 
       <DialogActions>
         <Button onClick={handleClose} sx={{ color: '#ccc' }}>
-          Cancel
+          iptal
         </Button>
         <Button
           onClick={handleAdd}
@@ -100,7 +100,7 @@ const AddFriendModal = ({ setIsShowAddFriendModal }) => {
             },
           }}
         >
-          Add Friend
+          Arkadaş Ekle
         </Button>
       </DialogActions>
     </Dialog>

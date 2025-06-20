@@ -60,9 +60,9 @@ export default function WishlistPage() {
         >
           <Typography
             variant="h6"
-            sx={{ fontWeight: 'bold', color: 'white' }}
+            sx={{ fontWeight: 'bold', color: 'white',whiteSpace: 'nowrap' }}
           >
-            WISHLIST
+            İSTEK LİSTESİ
           </Typography>
           <SearchInput
             searchTerm={searchTerm}

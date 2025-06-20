@@ -60,9 +60,9 @@ export default function WatchedPage() {
         >
           <Typography
             variant="h6"
-            sx={{ fontWeight: 'bold', color: 'white' }}
+            sx={{fontWeight: 'bold', color: 'white',whiteSpace: 'nowrap', }}
           >
-            WATCHED
+            İZLENEN FİLMLER
           </Typography>
           <SearchInput
             searchTerm={searchTerm}

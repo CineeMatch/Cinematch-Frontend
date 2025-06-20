@@ -80,9 +80,9 @@ export default function ListMenu(props) {
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         sx={{ color: "black" }}
       >
-        {renderMenuItem("Favorite", "favorite", statusOfMovie?.favoriteMovies)}
-        {renderMenuItem("WishList", "wishlist", statusOfMovie?.wishlistMovies)}
-        {renderMenuItem("Watched", "watched", statusOfMovie?.watchedMovies)}
+        {renderMenuItem("Favori", "favorite", statusOfMovie?.favoriteMovies)}
+        {renderMenuItem("İstek Listesi", "wishlist", statusOfMovie?.wishlistMovies)}
+        {renderMenuItem("İzleneler", "watched", statusOfMovie?.watchedMovies)}
       </Menu>
     </div>
   );

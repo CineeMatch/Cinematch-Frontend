@@ -30,7 +30,7 @@ const ChatList = ({ onSelectUser, selectedUser }) => {
         }}
       >
         <Typography variant="h6" fontWeight="bold" gutterBottom>
-          Messages
+          Mesajlar
         </Typography>
         <List>
           {friends.map((user, index) => {

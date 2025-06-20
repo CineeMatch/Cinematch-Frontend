@@ -159,7 +159,7 @@ const ProfilePage = () => {
             ))}
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
               <Button sx={{ fontWeight: "bold" }} variant="contained" color="error" onClick={() => navigate(`/posts/${userId || activeUserId}`)}>
-                show more posts
+                Daha Fazla Göster
               </Button>
             </Box>
           </Box>

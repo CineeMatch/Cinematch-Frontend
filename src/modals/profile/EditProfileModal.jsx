@@ -14,7 +14,7 @@ const modalStyle = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 450,
-  background: 'rgba(59, 7, 7, 0.9)',
+  backgroundColor: 'rgba(76, 2, 2, 0.7)',
   color: '#fff',
   border: '2px solid rgba(255, 0, 0, 0.5)',
   borderRadius: '12px',
@@ -115,7 +115,7 @@ const EditProfileModal = ({
   return (
     <Modal open={true} onClose={handleClose}>
       <Box sx={modalStyle}>
-        <Typography variant="h6" mb={2} fontWeight="bold">Edit Profile</Typography>
+        <Typography variant="h6" mb={2} fontWeight="bold">Profil Güncelle</Typography>
 
         <TextField
           label="Name"
@@ -137,7 +137,7 @@ const EditProfileModal = ({
 
         <Box sx={{ mb: 2 }}>
           <Typography variant="body2" mb={1} sx={{ color: 'white' }}>
-            Upload Avatar
+            Avatar Yükle
           </Typography>
           <input
             type="file"

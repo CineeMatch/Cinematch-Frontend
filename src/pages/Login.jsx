@@ -89,7 +89,7 @@ const LoginPage = () => {
         }}
       >
         <Typography variant="h5" fontWeight="bold" gutterBottom>
-          Sign In
+          Giriş Yap
         </Typography>
 
         <TextField
@@ -150,24 +150,24 @@ const LoginPage = () => {
           type="submit"
           sx={{ mt: 4, mb: 1, bgcolor: '#C43D37', '&:hover': { bgcolor: '#a8322d' }, borderRadius: 3, height: 50, fontSize: '1.1rem', fontWeight: 'bold' }}
         >
-          Sign In
+          Giriş Yap
         </Button>
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <FormControlLabel
             control={<Checkbox sx={{ color: 'white' }} checked={rememberMe} onChange={(e) => setRememberMe(e.target.value)} />}
-            label={<Typography color="white" sx={{ fontSize: "1rem", fontWeight: "bold"}}>Remember Me</Typography>}
+            label={<Typography color="white" sx={{ fontSize: "1rem", fontWeight: "bold"}}>Hatırla</Typography>}
           />
           <Link href="/forgetPassword" underline="hover" color="white" fontSize="1rem" fontWeight="bold">
-            You Forget your password?
+           Şifremi Unuttum?
           </Link>
         </Box>
 
         <Box sx={{ textAlign: 'center' }}>
           <Typography variant="body2" color="grey" gutterBottom sx={{ mt: 5, fontSize: '1.1rem' }}>
-            New to CineMatch?{' '}
+            Hesabın Yok mu?{' '}
             <Link href="/register" underline="hover" color="white" fontWeight="bold">
-              Sign up now
+              Şimdi Kayıt Ol
             </Link>
           </Typography>
         </Box>

@@ -43,11 +43,11 @@ const Users = () => {
       sx={{
         marginTop: '64px',
         minHeight: '100vh',
-        backgroundImage: `url('/images/movie-background.jpeg')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundColor: 'rgba(0,0,0,0.2)',
-        backgroundBlendMode: 'overlay',
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.79), rgba(0, 0, 0, 0.5)),
+    url(/images/main-Photoroom.png)`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
         p: 4,
       }}
     >
@@ -64,14 +64,14 @@ const Users = () => {
 
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
           <Typography variant="h6">
-            Users <strong>{users.length}</strong>
+            Kullanıcılar <strong>{users.length}</strong>
           </Typography>
           <Button
             variant="contained"
             sx={{ bgcolor: '#e11f0d', color: 'white', fontWeight: "bold" }}
             onClick={() => navigate('/friends')}
           >
-            Show Your Friends
+            Arkdaşlarını Görüntüle
           </Button>
 
         </Box>
@@ -102,7 +102,7 @@ const Users = () => {
         />
 
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-          <Typography variant="h6" gutterBottom>Friends</Typography>
+          <Typography variant="h6" gutterBottom>Kullanıcılar</Typography>
           <FormControl
             sx={{
               m: 1,
@@ -119,7 +119,7 @@ const Users = () => {
             }}
             size="small"
           >
-            <InputLabel id="demo-select-small-label">Type</InputLabel>
+            <InputLabel id="demo-select-small-label">Tür</InputLabel>
             <Select
               labelId="demo-select-small-label"
               id="demo-select-small"
@@ -137,8 +137,8 @@ const Users = () => {
                 },
               }}
             >
-              <MenuItem value={0}>Mixed</MenuItem>
-              <MenuItem value={1}>Serial</MenuItem>
+              <MenuItem value={0}>Karşık</MenuItem>
+              <MenuItem value={1}>Sıralı</MenuItem>
             </Select>
           </FormControl>
         </Box>

@@ -132,7 +132,7 @@ export default function UserCard({ user }) {
                 },
               }}
             >
-              {isDisabled ? "Request Sent" : "Add Friend"}
+              {isDisabled ? "İstek Gönderildi" : "Arkdaş Ekle"}
             </Button>
           </Box>
         </Box>

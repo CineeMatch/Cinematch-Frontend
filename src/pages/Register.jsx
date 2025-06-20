@@ -63,7 +63,7 @@ const RegisterPage = () => {
   return (
     <Box
       sx={{
-        height: '100vh',
+        height: '100%',
         backgroundImage: "url('/images/movie-background.jpeg')", // arka plan görseli
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -83,7 +83,7 @@ const RegisterPage = () => {
         }}
       >
         <Typography variant="h5" fontWeight="bold" gutterBottom>
-          Sign Up
+          Kayıt Ol
         </Typography>
 
         <TextField
@@ -161,7 +161,7 @@ const RegisterPage = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           error={emailError} // 🔴 hata kontrolü
-          helperText={emailError ? 'Please enter a valid email address.' : ''}
+          helperText={emailError ? 'Lütfen geçerli email adresinizi giriniz' : ''}
         />
 
         <TextField
@@ -232,14 +232,14 @@ const RegisterPage = () => {
           type="submit"
           sx={{ mt: 4, mb: 1, bgcolor: '#C43D37', '&:hover': { bgcolor: '#a8322d' }, borderRadius: 3, height: 50, fontSize: '1.1rem', fontWeight: 'bold' }}
         >
-          Sign Up
+          Kayıt Ol
         </Button>
 
         <Box sx={{ textAlign: 'center' }}>
           <Typography variant="body2" color="grey" sx={{ mt: 4, fontSize: '1.1rem' }}>
-            Have account?{' '}
+            Hesabın Yok mu?{' '}
             <Link href="/login" underline="hover" color="white" fontWeight="bold">
-              Sign in now
+              Şimdi Kayıt ol
             </Link>
           </Typography>
         </Box>

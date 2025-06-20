@@ -57,11 +57,11 @@ const Friends = () => {
     <Box
       sx={{
         minHeight: '100vh',
-        backgroundImage: `url('/images/movie-background.jpeg')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundColor: 'rgba(0,0,0,0.2)',
-        backgroundBlendMode: 'overlay',
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.79), rgba(0, 0, 0, 0.5)),
+    url(/images/main-Photoroom.png)`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
         p: 4,
         marginTop: '64px',
       }}
@@ -79,7 +79,7 @@ const Friends = () => {
 
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
           <Typography variant="h6">
-            YOUR FRIENDS <strong>{friends.length}</strong> / 500
+            Senin Arkadaşların <strong>{friends.length}</strong> / 500
           </Typography>
           <Box display="flex" gap={1}>
             <Button
@@ -88,7 +88,7 @@ const Friends = () => {
               startIcon={<SearchIcon />}
               onClick={() => navigate('/users')}
             >
-              Search For Users
+              Kullanıcı Ara
             </Button>
             <Button
               variant="contained"
@@ -96,7 +96,7 @@ const Friends = () => {
               startIcon={<PersonAddIcon />}
               onClick={() => setIsShowAddFriendModal(true)}
             >
-              Add a Friend
+              Arkadaş Ekle
             </Button>
           </Box>
         </Box>
@@ -127,7 +127,7 @@ const Friends = () => {
         />
 
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-          <Typography variant="h6" gutterBottom>Friends</Typography>
+          <Typography variant="h6" gutterBottom>Arkadaşlarım</Typography>
           <FormControl
             sx={{
               m: 1,
@@ -144,7 +144,7 @@ const Friends = () => {
             }}
             size="small"
           >
-            <InputLabel id="demo-select-small-label">Type</InputLabel>
+            <InputLabel id="demo-select-small-label">Tür</InputLabel>
             <Select
               labelId="demo-select-small-label"
               id="demo-select-small"
@@ -162,8 +162,8 @@ const Friends = () => {
                 },
               }}
             >
-              <MenuItem value={0}>Mixed</MenuItem>
-              <MenuItem value={1}>Serial</MenuItem>
+              <MenuItem value={0}>Karışık</MenuItem>
+              <MenuItem value={1}>Sıralı</MenuItem>
             </Select>
           </FormControl>
         </Box>
