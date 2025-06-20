@@ -24,6 +24,7 @@ import { getCommentsByPostId } from "../../api/comment/comment.js";
 import { getLikesByPost, createLike, removeLike, getUserLikeonPost } from "../../api/like/like.js";
 import { deletePost } from "../../api/post/post.js";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 function PostCard({ id, nickname, text, selectedMovie ,onDelete }) {
   const [openModal, setOpenModal] = useState(false);
@@ -50,6 +51,8 @@ function PostCard({ id, nickname, text, selectedMovie ,onDelete }) {
       console.error(
         "Like operation failed",
         error.response?.data?.message || error.message
+      );
+      toast.error("Like işlemi başarısız oldu. Lütfen tekrar deneyiniz."
       );
     }
   };

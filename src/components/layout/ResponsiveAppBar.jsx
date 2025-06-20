@@ -20,6 +20,7 @@ import { useNavigate } from 'react-router-dom';
 import { getActiveUser } from '../../api/profile/user.js';
 import { useEffect, useState } from 'react';
 import SearchModal from '../../modals/layout/searchModal.jsx';
+import { toast } from 'react-toastify';
 
 
 const settings = ['Profil', 'Çıkış Yap'];
@@ -43,6 +44,7 @@ function ResponsiveAppBar() {
         setProfileImageUrl(activeUser.profile_image_url); 
       } catch (error) {
         console.error('Aktif kullanıcı alınırken hata oluştu:', error);
+        toast.error('Kullanıcı bilgileri alınamadı. Lütfen tekrar deneyiniz.');
       }
     };
     fetchActiveUser();

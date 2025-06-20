@@ -6,6 +6,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { getTop10Movies } from '../../api/movie/movie';
 
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 export default function Top10Carousel(props) {
   const [topMovies, setTopMovies] = React.useState([]);
@@ -24,6 +25,7 @@ export default function Top10Carousel(props) {
     } catch (error) {
       setTopMovies(null);
       props.onTopMoviesChange?.(null);
+      toast.error("Top 10 filmler alınamadı. Bağlantınızı kontrol ediniz.");
     }
   };
   const handleMovieClick = (movie) => {

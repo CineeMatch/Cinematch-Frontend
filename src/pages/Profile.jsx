@@ -9,6 +9,7 @@ import { getPostsByUserId } from '../api/post/post.js';
 import { getUserMovieTypesCounts, getMovieTypeOnProfileByUserId } from '../api/movieType/movieType.js';
 import PostCard from '../components/community/PostCard.jsx';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const ProfilePage = () => {
   const { userId } = useParams(); // URL'deki userId
@@ -30,6 +31,7 @@ const ProfilePage = () => {
       setMovieData(movies.data);
     } catch (error) {
       console.error('Movie types alınamadı:', error);
+      toast.error("Movie types alınamadı. Lütfen daha sonra tekrar deneyiniz.");
     }
   }
 
@@ -41,6 +43,7 @@ const ProfilePage = () => {
       setWishlistCount(movieTypesCounts.wishlistCount);
     } catch (error) {
       console.error('Movie types counts alınamadı:', error);
+      toast.error("Movie types counts alınamadı. Lütfen daha sonra tekrar deneyiniz.");
     }
   };
 
@@ -56,6 +59,7 @@ const ProfilePage = () => {
       setProfileData(profileToLoad);
     } catch (error) {
       console.error('Profil verisi alınamadı:', error);
+      toast.error("Profil verisi alınamadı. Lütfen daha sonra tekrar deneyiniz.");
     }
   };
 
@@ -68,6 +72,7 @@ const ProfilePage = () => {
       }));
     } catch (error) {
       console.error('Posts alınamadı:', error);
+      toast.error("Posts alınamadı. Lütfen daha sonra tekrar deneyiniz.");
     }
   };
   

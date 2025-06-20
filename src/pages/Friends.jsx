@@ -9,6 +9,7 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { deleteFriendById, getCurrentUserFriendsList } from '../api/profile/friends';
 import AddFriendModal from '../modals/profile/AddFriendModal';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Friends = () => {
 
@@ -39,6 +40,7 @@ const Friends = () => {
         fetchFriends(); // Silinince güncelle
       } catch (error) {
         console.error('Error deleting friend:', error);
+        toast.error("Arkadaş silinemedi. Lütfen tekrar deneyiniz.");
       }
     };
     deleteFriend(id);

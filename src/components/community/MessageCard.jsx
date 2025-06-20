@@ -6,6 +6,7 @@ import Divider from "@mui/material/Divider";
 import { useEffect } from "react";
 import { getAllPosts } from "../../api/post/post.js";
 import { getPostByCategoryId } from "../../api/post/post.js";
+import { toast } from "react-toastify";
 
 export default function MessageCard({ isSidebarOpen,selectedCategoryId }) {
   const [posts, setPosts] = useState([]);
@@ -31,6 +32,7 @@ useEffect(() => {
       }
     } catch (err) {
       console.error("Postlar alınamadı:", err.message);
+      toast.error("Post verileri alınamadı. Lütfen tekrar deneyiniz.");
     }
   };
   fetchPosts();

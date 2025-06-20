@@ -3,6 +3,7 @@ import { Box, TextField, Button, Checkbox, FormControlLabel, Typography, Link, P
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../api/auth/auth';
+import { toast } from 'react-toastify';
 
 const LoginPage = () => {
 
@@ -56,6 +57,7 @@ const LoginPage = () => {
         console.log("Login successful:", response); // ✅ Giriş başarılıysa konsola yazdır
       } catch (error) {
         console.error("Login error:", error); // console.error yerine bir natification kütüphanesi kullanılanılıcak
+        toast.error("Giriş başarısız. Lütfen tekrar deneyiniz."); // ❌ Giriş başarısızsa hata mesajı göster
       }
     }
     

@@ -43,7 +43,6 @@ export default function ChallengeStarterModal(props) {
   const selectedFriend=props.selectedFriend;
 
   const handleTimeChange = (event) => {
-    console.log(movie);
     setSelectedTime(event.target.value);
   };
 
@@ -55,6 +54,7 @@ export default function ChallengeStarterModal(props) {
       toast.success("Yeni meydan okuma gönderildi.");
     } catch (error) {
       console.log(error);
+      toast.error("Meydan okuma gönderilirken bir hata oluştu. Lütfen tekrar deneyiniz.");
     }
   };
  

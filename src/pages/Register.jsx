@@ -3,6 +3,7 @@ import { Box, TextField, Button, Typography, Link, Paper, InputAdornment, IconBu
 import { useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { register } from '../api/auth/auth';
+import { toast } from 'react-toastify';
 
 const RegisterPage = () => {
 
@@ -53,7 +54,8 @@ const RegisterPage = () => {
         console.log("Registration successful:", response);
         navigate('/');
       } catch (error) {
-        console.error("Registration error:", error); // console.error yerine bir natification kütüphanesi kullanılanılıcak
+        console.error("Registration error:", error); 
+        toast.error("Kayıt başarısız. Lütfen tekrar deneyiniz."); 
       }
     };
 

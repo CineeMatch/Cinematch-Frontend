@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import PostCard from "../components/community/PostCard.jsx"
 import { getPostsByUserId, getPostsUserByCategoryId } from "../api/post/post.js"
 import { useParams } from "react-router-dom"
+import { toast } from "react-toastify"
 
 
 const PostPage = () => {
@@ -24,6 +25,7 @@ const PostPage = () => {
           }
         } catch (err) {
           console.error("Postlar alınamadı:", err.message);
+          toast.error("Postlar alınamadı. Lütfen daha sonra tekrar deneyiniz.");
         }
       };
       fetchPosts();

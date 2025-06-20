@@ -4,6 +4,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { addFriendByUserId } from '../../api/profile/friends';
 import { getBadgesByUserId } from '../../api/badge/user-badge';
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 const Stat = ({ id, friend_id, level, badge, friends, favorites, watched, wishlist, activeChallenges, setIsShowEditProfileModal, isOwnProfile }) => {
 
@@ -23,6 +24,7 @@ const Stat = ({ id, friend_id, level, badge, friends, favorites, watched, wishli
         }
       } catch (error) {
         console.error("Error adding friend:", error);
+        toast.error("Arkadaş eklenemedi. Lütfen tekrar deneyiniz.");
       }
     };
     addFriend(friend_id);
@@ -35,6 +37,7 @@ const Stat = ({ id, friend_id, level, badge, friends, favorites, watched, wishli
       setBadges(response.userBadges || []);
     } catch (error) {
       console.error("Error fetching badges:", error);
+      toast.error("Badges alınamadı. Lütfen tekrar deneyiniz.");
     }
   };
 

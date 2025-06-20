@@ -9,6 +9,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { getMovieTypeOnProfileByUserId } from "../api/movieType/movieType.js";
 import { createCoMatchSuggestion } from "../api/coMatch/coMatch.js";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 export default function CoMatch() {
   const [userList, setUserList] = useState([]); // Önceki kullanıcılar
@@ -34,6 +35,7 @@ export default function CoMatch() {
       setCurrentIndex((prev) => prev + 1);
     } catch (error) {
       console.error("Eşleşme oluşturulurken hata:", error);
+      toast.error("Eşleşme oluşturulamadı. Lütfen tekrar deneyiniz.");
     }
   };
 

@@ -8,6 +8,7 @@ import { useSocket } from '../components/hooks/useSocket.js';
 import { useEffect, useRef, useState } from 'react';
 import { getActiveUser } from '../api/profile/user.js';
 import { getChatMessages } from '../api/chat/chat.js';
+import { toast } from 'react-toastify';
 
 const ChatPage = () => {
   const { socket } = useSocket();
@@ -58,6 +59,7 @@ const ChatPage = () => {
         setOffset(newOffset);
       } catch (err) {
         console.error('Eski mesajlar alınamadı:', err);
+        toast.error('Eski mesajlar alınamadı. Lütfen tekrar deneyiniz.');
       }
     }
   };
@@ -71,6 +73,7 @@ const ChatPage = () => {
         setActiveUserId(response.id);
       } catch (error) {
         console.error('Error fetching active user:', error);
+        toast.error('Kullanıcı bilgileri alınamadı. Lütfen tekrar deneyiniz.');
       }
     };
     fetchActiveUser();
@@ -113,6 +116,7 @@ const ChatPage = () => {
         setOffset(0);
       } catch (err) {
         console.error('Mesajlar alınamadı:', err);
+        toast.error('Mesajlar alınamadı. Lütfen tekrar deneyiniz.');
       }
     };
 

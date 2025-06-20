@@ -5,6 +5,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useEffect, useState } from "react";
 import { getAllCategories } from "../../api/categories/category.js";
+import { toast } from "react-toastify";
 
 export default function CategoriesCard({ isOpen, setIsOpen, onCategorySelect  }) {
   const [categories, setCategories] = useState([]);
@@ -16,6 +17,7 @@ export default function CategoriesCard({ isOpen, setIsOpen, onCategorySelect  })
         setCategories(data);
       } catch (err) {
         console.error("Kategori alınamadı", err);
+        toast.error("Kategori verileri alınamadı. Lütfen tekrar deneyiniz.");
       }
     };
 

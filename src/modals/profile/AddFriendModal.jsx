@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Typography } from '@mui/material';
 import { addFriendByNickname } from '../../api/profile/friends';
+import { toast } from 'react-toastify';
 
 const AddFriendModal = ({ setIsShowAddFriendModal }) => {
   const [nickname, setNickname] = useState('');
@@ -18,7 +19,7 @@ const AddFriendModal = ({ setIsShowAddFriendModal }) => {
             console.log('Friend added:', response.message);
         } catch (error) {
             console.error('Error adding friend:', error.response.data.message);
-            alert('Failed to add friend. Please try again.');
+            toast.error("Arkadaş eklenemedi. Lütfen tekrar deneyiniz.");
         }
     }
     fetchData(nickname);

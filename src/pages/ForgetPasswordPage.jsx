@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, Paper } from '@mui/material';
 import { forgetPassword } from '../api/auth/auth.js';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import { toast } from 'react-toastify';
 
 const ForgetPasswordPage = () => {
   const [email, setEmail] = useState('');
@@ -28,6 +29,7 @@ const ForgetPasswordPage = () => {
     setIsEmailSentCorrectly(true);
   } catch (error) {
     console.error("Şifre sıfırlama hatası:", error.message);
+    toast.error("Şifre sıfırlama işlemi başarısız. Lütfen tekrar deneyiniz.");
   }
 };
 

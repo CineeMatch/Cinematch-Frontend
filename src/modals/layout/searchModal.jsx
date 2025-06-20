@@ -5,6 +5,7 @@ import MovieModal from "../../components/home/MovieModal";
 import { getRandomMovies } from "../../api/movie/movie";
 import SearchInput from "../../components/filmList/SearchInput";
 import { searchMovies } from "../../api/movie/movie";
+import { toast } from "react-toastify";
 export default function SearchModal({ open, close,searchInput }) {
   const [movies, setMovies] = useState([]);
   const [movie, setMovie] = useState(null);
@@ -41,6 +42,7 @@ const fetch20Movies = async () => {
     setSearchResults(Array.isArray(result) ? result : []);
     } catch (err) {
       console.error("Arama hatası:", err);
+      toast.error("Film arama sırasında bir hata oluştu. Lütfen tekrar deneyiniz.");
     }
   };
 

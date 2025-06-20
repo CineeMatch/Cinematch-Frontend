@@ -9,6 +9,7 @@ import CommentModal from "../../modals/community/CommentModal";
 import { getCommentsByPostId } from "../../api/comment.js/comment";
 import { getLikesByPost, createLike, removeLike } from "../../api/like/like.js";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 function Post({ id, nickname, text, selectedMovie }) {
   const [openModal, setOpenModal] = useState(false);
@@ -35,6 +36,9 @@ function Post({ id, nickname, text, selectedMovie }) {
         "Like operation failed",
         error.response?.data?.message || error.message
       );
+      toast.error(
+        "Like işlemi başarısız oldu. Lütfen tekrar deneyiniz."
+      );
     }
   };
 
@@ -45,6 +49,7 @@ function Post({ id, nickname, text, selectedMovie }) {
         setComments(data);
       } catch (error) {
         console.error("Comment didn't fetch:", error.message);
+        toast.error("Yorumlar alınamadı. Lütfen tekrar deneyiniz.");
       }
     };
 
@@ -58,6 +63,7 @@ function Post({ id, nickname, text, selectedMovie }) {
         setLikeCount(data.likeCount);
       } catch (error) {
         console.error("Like information is not get", error);
+        toast.error("Beğeni bilgileri alınamadı. Lütfen tekrar deneyiniz.");
       }
     };
 

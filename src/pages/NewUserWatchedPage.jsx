@@ -5,6 +5,7 @@ import { getRandomMovies,  searchMovies } from "../api/movie/movie.js";
 import { Button } from "@mui/material"; 
 import { useNavigate } from 'react-router-dom';
 import { addMovieToFavoritesForNewUser } from "../api/movieType/movieType.js";
+import { toast } from "react-toastify";
 
 export default function NewUserWatchedPage() {
   const [movies, setMovies] = useState([]); // Başlangıç 20 film
@@ -42,6 +43,7 @@ export default function NewUserWatchedPage() {
     setSearchResults(Array.isArray(result) ? result : []);
     } catch (err) {
       console.error("Arama hatası:", err);
+      toast.error("Film arama sırasında bir hata oluştu. Lütfen tekrar deneyiniz.");
     }
   };
 

@@ -9,6 +9,7 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { createChallengeQuestion } from '../../api/challenge/challengeQuestion';
+import { toast } from 'react-toastify';
 
 export default function ChallengeQuestionStarterModal({ open, onClose, challenge }) {
 
@@ -48,6 +49,7 @@ export default function ChallengeQuestionStarterModal({ open, onClose, challenge
       setCurrentIndex(0);
     } catch (error) {
       console.error("Error submitting challenge questions:", error);
+      toast.error("Sorular gönderilirken bir hata oluştu. Lütfen tekrar deneyiniz.");
     }
   };
 

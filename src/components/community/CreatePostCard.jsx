@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { createPost } from "../../api/post/post.js";
 import { getActiveUser } from "../../api/profile/user.js";
 import { getAllMovies } from "../../api/movie/movie.js";
+import { toast } from "react-toastify";
 
 function CreatePostCard({ onSend }) {
   const [movies, setMovies] = useState([]);
@@ -35,7 +36,7 @@ function CreatePostCard({ onSend }) {
     setSelectedMovie(null);
   } catch (err) {
     console.error("Posted Error:", err.message);
-    alert( " Send is faild" + err.message);
+    toast.error("Post oluşturulamadı. Lütfen tekrar deneyiniz.");
   }
 };
 
@@ -46,6 +47,7 @@ function CreatePostCard({ onSend }) {
         setNickname(user.nickname);
       } catch (error) {
         console.error("User information didn't get:", error);
+        toast.error("Kullanıcı bilgileri alınamadı. Lütfen tekrar deneyiniz.");
       }
     };
 

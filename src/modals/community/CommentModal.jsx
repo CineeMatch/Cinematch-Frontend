@@ -26,6 +26,7 @@ import {
   getUserCommentLikeOnComment,
 } from "../../api/like/commentLike.js";
 import { deleteComment, createComment } from "../../api/comment/comment.js";
+import { toast } from "react-toastify";
 
 function CommentModal({ open, handleClose, post, comments, setComments }) {
   const [newComment, setNewComment] = useState("");
@@ -63,6 +64,7 @@ function CommentModal({ open, handleClose, post, comments, setComments }) {
       setConfirmDialogOpen(false);
     } catch (error) {
       console.error("Delete Error", error.message);
+      toast.error("Yorum silinemedi. Lütfen tekrar deneyiniz.");
     }
   };
 
@@ -75,6 +77,7 @@ function CommentModal({ open, handleClose, post, comments, setComments }) {
         setNewComment("");
       } catch (err) {
         console.error("Comment uplod failed:", err);
+        toast.error("Yorum eklenemedi. Lütfen tekrar deneyiniz.");
       }
     }
   };
@@ -99,6 +102,7 @@ function CommentModal({ open, handleClose, post, comments, setComments }) {
         } catch (err) {
           console.error("Beğeni verisi alınamadı", err);
           updatedLikes[comment.id] = { count: 0, liked: false };
+          toast.error("Beğeni bilgileri alınamadı. Lütfen tekrar deneyiniz.");
         }
       }
 
@@ -127,6 +131,7 @@ function CommentModal({ open, handleClose, post, comments, setComments }) {
       }));
     } catch (err) {
       console.error("Beğeni işlemi başarısız", err);
+      toast.error("Beğeni işlemi başarısız oldu. Lütfen tekrar deneyiniz.");
     }
   };
 

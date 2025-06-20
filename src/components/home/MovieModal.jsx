@@ -13,6 +13,7 @@ import {
   getMyListMovie,
   removefromFavorites
 } from '../../api/movieType/movieType';
+import { toast } from 'react-toastify';
 
 const style = {
   position: 'absolute',
@@ -46,6 +47,7 @@ export default function MovieModal(props) {
     } catch (error) {
       console.log(movie);
       console.log("Problem in fetching movieType");
+      toast.error("Film türleri alınamadı. Lütfen tekrar deneyiniz.");
     }
   };
 

@@ -6,6 +6,7 @@ import { Box, Typography, TextField, Avatar, Grid, Card, CardContent,
 import SearchIcon from '@mui/icons-material/Search';
 import { getAllUsers } from '../api/profile/user';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Users = () => {
 
@@ -21,6 +22,7 @@ const Users = () => {
       setUsers(response);
     } catch (error) {
       console.error('Error fetching friends:', error);
+      toast.error("Kullanıcılar alınamadı. Lütfen daha sonra tekrar deneyiniz.");
     }
   };
 

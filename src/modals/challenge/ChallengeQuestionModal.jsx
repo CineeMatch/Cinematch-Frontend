@@ -6,6 +6,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import {getChallengeQuestionsCurrentUserByChallengeId, answerChallengeQuestion} from '../../api/challenge/challengeQuestion';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 export default function ChallengeQuestionModal({ open, onClose, challenge }) {
   const [questions, setQuestions] = useState([]);
@@ -20,6 +21,7 @@ useEffect(() => {
           setAnswers(data.map(q => ({ id: q.id, selected_answer: null })));
         })
         .catch(err => console.error(err));
+        toast.info("Karşı Tarafın Soruları yüklenmesi bekleniyor...");
     }
   }, [open, challenge]);
 

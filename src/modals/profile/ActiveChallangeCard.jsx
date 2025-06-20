@@ -17,6 +17,7 @@ import { useState } from "react";
 import ChallengeQuestionStarterModal from "../challenge/ChallengeQuestionStarterModal";
 import ChallengeQuestionModal from "../challenge/ChallengeQuestionModal";
 import { getActiveUser } from "../../api/profile/user";
+import { toast } from "react-toastify";
 
 export default function ActiveChallangeCard() {
   const [confirmedCards, setConfirmedCards] = useState({});
@@ -34,6 +35,7 @@ export default function ActiveChallangeCard() {
         setCurrentUserId(response.id); // id ya da response.data.id olabilir
       } catch (error) {
         console.error("Aktif kullanıcı alınamadı:", error);
+        toast.error("Kullanıcı bilgileri alınamadı. Lütfen tekrar deneyiniz.");
       }
     };
 
@@ -117,6 +119,7 @@ export default function ActiveChallangeCard() {
         );
       } catch (error) {
         console.error("Error fetching challenges:", error);
+        toast.error("Aktif meydan okumalar alınamadı. Lütfen tekrar deneyiniz.");
       }
     };
 

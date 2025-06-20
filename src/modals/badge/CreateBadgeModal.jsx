@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Modal, Box, Typography, TextField, Button,} from '@mui/material';
 import { createBadge } from '../../api/badge/badge';
+import { toast } from 'react-toastify';
 
 const modalStyle = {
   position: 'absolute',
@@ -63,6 +64,7 @@ const CreateBadgeModal = () => {
         setAvatarBase64(base64Image);
       } catch (error) {
         console.error("Error converting image to Base64:", error);
+        toast.error("Avatar yüklenirken bir hata oluştu. Lütfen tekrar deneyin.");
       }
     }
   };

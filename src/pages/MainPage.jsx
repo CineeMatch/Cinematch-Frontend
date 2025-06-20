@@ -8,6 +8,7 @@ import { useState,useEffect } from 'react';
 import { getFriendsWatched, getRandomMovies, getRecommendation } from '../api/movie/movie';
 import { getWatchedMovies } from '../api/movieType/movieType';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 export default function MainPage()
 {  const [openMovieModal, setOpenMovieModal] = useState(false);
   const [randomMovie, setRandomMovie] = useState(null);
@@ -28,6 +29,7 @@ export default function MainPage()
       setRecommendedMovies(movies);
     } catch (error) {
       setRecommendedMovies(null);
+      toast.error("Öneri filmleri alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.");
     }
   };
   const fetchIsNewUser=async()=>{
@@ -47,6 +49,7 @@ export default function MainPage()
       setFriendsMovies(movies);
     } catch (error) {
       setFriendsMovies(null);
+      toast.error("Arkadaşlarınızın izlediği filmler alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.");
     }
   };
 

@@ -1,6 +1,7 @@
 import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { getCurrentUserFriendsList } from '../../api/profile/friends'
+import { toast } from 'react-toastify'
 
 const ChatList = ({ onSelectUser, selectedUser }) => {
 
@@ -14,6 +15,7 @@ const ChatList = ({ onSelectUser, selectedUser }) => {
           setFriends(response);
         } catch (error) {
           console.error('Error fetching friends:', error);
+          toast.error('Arkadaş listesi bulunamadı. Lütfen daha sonra tekrar deneyin.',);
         }
       };
       fetchFriends();

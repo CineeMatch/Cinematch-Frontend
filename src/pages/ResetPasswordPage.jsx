@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { resetPassword } from '../api/auth/auth.js';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import { toast } from 'react-toastify';
 
 const ResetPasswordPage = () => {
 
@@ -36,6 +37,7 @@ const ResetPasswordPage = () => {
       navigate('/');
     } catch (error) {
       console.error("Password reset error:", error);
+      toast.error("Şifre sıfırlama başarısız. Lütfen tekrar deneyiniz."); // ❌ Şifre sıfırlama başarısızsa hata mesajı göster
     }
   };
 
@@ -67,7 +69,7 @@ const ResetPasswordPage = () => {
         }}
       >
         <Typography variant="h5" fontWeight="bold" gutterBottom>
-          Reset Password
+          Şifre Sıfırlama
         </Typography>
 
         <TextField
@@ -138,7 +140,7 @@ const ResetPasswordPage = () => {
           type="submit"
           sx={{ mt: 4, mb: 1, bgcolor: '#C43D37', '&:hover': { bgcolor: '#a8322d' }, borderRadius: 3, height: 50, fontSize: '1.1rem', fontWeight: 'bold' }}
         >
-          Save New Password
+          Yeni Şifreni Kaydet
         </Button>
       </Paper>
       )}
@@ -156,7 +158,7 @@ const ResetPasswordPage = () => {
           }}
         >
           <Typography variant="h5" fontWeight="bold" gutterBottom>
-            Password Updated Successfully
+            Şifre Başarıyla Değiştirildi!
           </Typography>
           <CheckCircleRoundedIcon sx={{ fontSize: 40, color: '#357a38' }} />
         </Paper>

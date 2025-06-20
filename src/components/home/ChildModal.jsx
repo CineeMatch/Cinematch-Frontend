@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import GroupIcon from '@mui/icons-material/Group';
 import ChallengeStarterModal from '../../modals/challenge/ChallengeStarterModal.jsx';
+import { toast } from 'react-toastify';
 
 const style = {
   position: 'absolute',
@@ -48,6 +49,7 @@ export default function ChildModal(props) {
       setFriends(friends);
     } catch (error) {
       console.log("friends fetching error");
+      toast.error("Arkadaş listesi alınamadı. Lütfen tekrar deneyiniz.");
     }
   };
 

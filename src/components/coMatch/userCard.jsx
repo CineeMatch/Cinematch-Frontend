@@ -19,6 +19,7 @@ export default function UserCard({ user }) {
       setIsDisabled(true);
     } catch (error) {
       const message = error?.response?.data?.message;
+      toast.error("User eklenemedi. Lütfen tekrar deneyiniz.");
 
       if (
         message === "Friendship already exists." ||
@@ -29,7 +30,7 @@ export default function UserCard({ user }) {
         setIsDisabled(true);
       } else {
         console.error("Error adding friend:", message);
-        toast.error("Failed to add friend. Please try again.");
+        toast.error("User eklenemedi. Lütfen tekrar deneyiniz.");
       }
     }
   };
