@@ -216,9 +216,21 @@ function ResponsiveAppBar() {
             </Box>
 
             <Search>
-              <SearchIconWrapper><SearchIcon /></SearchIconWrapper>
-              <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
-            </Search>
+  <SearchIconWrapper>
+    <SearchIcon />
+  </SearchIconWrapper>
+  <StyledInputBase
+    placeholder="Search…"
+    inputProps={{ 'aria-label': 'search' }}
+    value={searchValue}
+    onChange={(e) => {
+      const text = e.target.value;
+      setSearchValue(text);
+      setSearchModalOpen(text.length > 0); // input doluysa modal aç
+    }}
+  />
+</Search>
+
 
             <Notifications />
             <ChatBubbleIcon sx={{ paddingRight: "10px" }} onClick={() => {navigate("/chat")}} />

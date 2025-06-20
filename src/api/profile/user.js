@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { baseURL } from '../constants';
 
-export const getActiveUser = async (userId) => {
+export const getActiveUser = async () => {
     try {
         const token = localStorage.getItem('authToken');
         const response = await axios.get(`${baseURL}/user`, {

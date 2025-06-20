@@ -10,7 +10,9 @@ export const getNotfications = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data.notifications;
+    console.log("Notifications fetched:", response);
+    console.log("Notifications data:", response.data.notifications);
+    return response.data;
   } catch (error) {
     console.log("Failed to get notfications:", error);
  }
@@ -26,7 +28,7 @@ export const deleteNotification= async(id)=>{
     });
     console.log(response);
   } catch (error) {
-    console.log("Failed to get notfications:", error);
+    console.log("Failed to delete notfications:", error);
  }
 }
 export const updatetoRead=async(id)=>{

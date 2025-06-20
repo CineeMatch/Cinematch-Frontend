@@ -39,7 +39,7 @@ export default function appRoutes() {
       <Route path="/profile/:userId?" element={<Layout><ProfilePage /></Layout>} />
       <Route path="/chat" element={<Layout><ChatPage /></Layout>} />
       <Route path="/friends" element={<Layout><Friends /></Layout>} />
-      <Route path="/users" element={<Users />} />
+      <Route path="/users" element={<Layout><Users /></Layout>} />
       <Route path="/posts/:userId?" element={<Layout><PostPage /></Layout>} />
       <Route path="/reset-password/:id" element={<ResetPasswordPage />} />
       <Route path="/forgetPassword" element={<ForgetPasswordPage />} />

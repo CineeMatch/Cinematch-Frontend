@@ -17,7 +17,7 @@ import CommentRoundedIcon from "@mui/icons-material/CommentRounded";
 import EmojiEventsRoundedIcon from "@mui/icons-material/EmojiEventsRounded";
 import SentimentVeryDissatisfiedRoundedIcon from "@mui/icons-material/SentimentVeryDissatisfiedRounded";
 import { deleteNotification, getNotfications, updatetoRead } from "../../api/notifications/notification.js";
-import { addFriendByUserId, deleteFriendById } from "../../api/profile/friends.js";
+import { acceptFriendRequest, deleteFriendById } from "../../api/profile/friends.js";
 import { useNavigate } from "react-router-dom";
 
 export default function Notifications() {
@@ -73,7 +73,8 @@ fetchNotifications();
       return a.isRead === b.isRead ? 0 : a.isRead ? 1 : -1;
     });
     setNotifications(sortedNotifications);
-    console.log(sortedNotifications);
+    console.log("Sorted Notifications:", notifications);
+    console.log("sorted:",sortedNotifications);
   }
 };
 
@@ -92,7 +93,7 @@ fetchNotifications();
   };
   const addFriend=async (notificationId,friendId)=>{
     console.log("frinedId",friendId);
-    await addFriendByUserId(friendId);
+    await acceptFriendRequest(friendId);
     await deleteNotification(notificationId);
     handleClose();
   }

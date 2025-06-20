@@ -16,7 +16,7 @@ const PostPage = () => {
       const fetchPosts = async () => {
         try {
           if (selectedCategoryId) {
-            const data = await getPostsUserByCategoryId(selectedCategoryId);
+            const data = await getPostsUserByCategoryId(selectedCategoryId, userId);
             setPosts(data);
           } else {
             const data = await getPostsByUserId(userId);
@@ -66,7 +66,7 @@ const PostPage = () => {
         <PostCard
           key={item.id}
           id={item.id}
-          nickname={item.nickname}
+          nickname={item.User.nickname}
           text={item.contentText}
           selectedMovie={item.Movie.title}
         />

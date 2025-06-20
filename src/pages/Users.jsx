@@ -41,6 +41,7 @@ const Users = () => {
   return (
     <Box
       sx={{
+        marginTop: '64px',
         minHeight: '100vh',
         backgroundImage: `url('/images/movie-background.jpeg')`,
         backgroundSize: 'cover',

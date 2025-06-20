@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { baseURL } from '../constants';
+import { toast } from 'react-toastify';
 
 export const getCurrentUserFriendsList = async () => {
     try {
@@ -21,6 +22,7 @@ export const getCurrentUserFriendsList = async () => {
 export const addFriendByUserId = async (friendId) => {
     try {
         const token = localStorage.getItem('authToken');
+        console.log('Adding friend with ID:', friendId);
         const response = await axios.post(`${baseURL}/friend/create/${friendId}`, {}, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -60,5 +62,24 @@ export const deleteFriendById = async (id) => {
     } catch (error) {
         console.error('Error deleting friend:', error);
         throw error;
+    }
+}
+
+export const  acceptFriendRequest =async(id)=>{
+     try {
+        console.log("friend:",id);
+        const token = localStorage.getItem('authToken');
+        const response = await axios.put(`${baseURL}/friend/accept`, {
+            friendId:id
+        },{
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+         toast.success("Arkadaşınız eklendi.")
+      
+    } catch (error) {
+        console.log('Error adding friend:', error);
     }
 }
