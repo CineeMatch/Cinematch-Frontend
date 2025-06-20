@@ -60,6 +60,11 @@ fetchNotifications();
       icon: <SentimentVeryDissatisfiedRoundedIcon />,
       route:"/activeChallenge"
     },
+    {
+      id: 7,
+      icon: <ThumbUpAltRoundedIcon />,
+      route:"/community"
+    },
   ];
 
   const getType = (typeId) => {
