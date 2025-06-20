@@ -93,11 +93,12 @@ function CommentModal({ open, handleClose, post, comments, setComments }) {
           console.log("Gelen like verisi:", res);
 
           updatedLikes[comment.id] = {
-            count: likeData.likeCount,
-            liked: userLike.liked, // örn: { liked: true }
-          };
+          count: likeData.likeCount,
+          liked: !!(userLike && userLike.liked),
+        };
         } catch (err) {
           console.error("Beğeni verisi alınamadı", err);
+          updatedLikes[comment.id] = { count: 0, liked: false };
         }
       }
 
