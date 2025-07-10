@@ -1,12 +1,18 @@
 import React from 'react'
 import './App.css'
-import { Toaster } from 'react-hot-toast'
+import { ToastContainer } from 'react-toastify'
 import AppRoutes from './routes/AppRoutes.jsx'
 
 function App() {
   return (
     <div className="App">
-      <Toaster position="top-center" />
+      <ToastContainer position="top-center" 
+      toastStyle={{
+      marginTop: "30%",
+      marginLeft: "50%",
+    }}
+    bodyStyle={{
+    textAlign: "center" }} />
       <AppRoutes />
     </div>
   )

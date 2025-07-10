@@ -19,6 +19,21 @@ export const getCurrentUserFriendsList = async () => {
     }
 }
 
+export const getFriendshipStatus = async (friendId) => {
+    try {
+        const token = localStorage.getItem('authToken');
+        const response = await axios.get(`${baseURL}/friend/status/${friendId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching friendship status:', error);
+        throw error;
+    }
+}
+
 export const addFriendByUserId = async (friendId) => {
     try {
         const token = localStorage.getItem('authToken');

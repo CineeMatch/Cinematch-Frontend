@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import ChallangeCard from "./ActiveChallangeCard.jsx";
+import ChallangeCard from "../modals/profile/ActiveChallangeCard.jsx";
 
 export default function ActiveChallangeModal() {
 

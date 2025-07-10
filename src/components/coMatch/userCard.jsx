@@ -4,37 +4,55 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Avatar from "@mui/material/Avatar";
-import { addFriendByNickname } from "../../api/profile/friends";
+import { addFriendByNickname, getFriendshipStatus } from "../../api/profile/friends";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function UserCard({ user }) {
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [status, setStatus] = useState(""); 
 
-  const handleAddFriend = async () => {
-    try {
-      const response = await addFriendByNickname(user.nickname);
-      console.log("Friend added:", response.message);
-      toast.success("Friend added successfully!");
-      setIsDisabled(true);
-    } catch (error) {
-      const message = error?.response?.data?.message;
-      toast.error("User eklenemedi. Lütfen tekrar deneyiniz.");
-
-      if (
-        message === "Friendship already exists." ||
-        message === "Friend request already sent" ||
-        message === "Already friends"
-      ) {
-        toast.info("You have already sent a request to this user.");
-        setIsDisabled(true);
-      } else {
-        console.error("Error adding friend:", message);
-        toast.error("User eklenemedi. Lütfen tekrar deneyiniz.");
+useEffect(() => {
+    const fetchFriendshipStatus = async () => {
+      try {
+        const response = await getFriendshipStatus(user.id);
+        const _status= response.status; 
+        console.log('Friendship status:', _status);
+        setStatus(_status);
+      } catch (error) {
+        console.error('Error fetching friendship status:', error);
+        setStatus("");
+        toast.error('Arkadaşlık durumu alınamadı. Lütfen daha sonra tekrar deneyin.');
       }
-    }
-  };
+    };
+    fetchFriendshipStatus();
+  }, [user]);
 
+
+    const handleAddFriend = () => {
+  
+      if (!user.nickname) {
+          alert('Please enter a nickname.');
+          return;
+      }
+  
+      const fetchData = async (data) => {
+          try {
+              const response = await addFriendByNickname(data);
+             console.log('Friend request sent:', user);
+              setStatus("pending");
+              console.log('Friend added:', response.message);
+          } catch (error) {
+              console.error('Error adding friend:', error.response.data.message);
+              toast.error(error.response.data.message);
+          }
+      }
+      fetchData(user.nickname);
+    };
+
+let buttonLabel = "Arkadaş Ekle";
+if (status === "accepted") buttonLabel = "Arkadaş Ekli";
+else if (status === "pending") buttonLabel = "Beklemede";
+  
   return (
     <Card
       sx={{
@@ -114,26 +132,33 @@ export default function UserCard({ user }) {
               Level : {user.level}
             </Typography>
             <Button
-              onClick={!isDisabled ? handleAddFriend : undefined}
+              onClick={status === "accepted" || status === "pending" ? undefined : handleAddFriend}
               variant="contained"
               color="primary"
-              startIcon={<PersonAddIcon />} // Butona ikon ekleme
+              startIcon={<PersonAddIcon />} 
               sx={{
                 mt: 2,
                 textAlign: "center",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: isDisabled ? "gray" : "rgb(74, 133, 140)", // Buton rengi
-                pointerEvents: isDisabled ? "none" : "auto",
-                color: "white",
-                cursor: isDisabled ? "default" : "pointer",
+                 backgroundColor:
+                  status === "pending" || status === "accepted"
+                    ? "gray"
+                    : "rgb(33, 80, 146)",
+                pointerEvents:
+                  status === "accepted" || status === "pending" ? "none" : "auto",
+                cursor:
+                  status === "accepted" || status === "pending" ? "default" : "pointer",
                 "&:hover": {
-                  backgroundColor: isDisabled ? "gray" : "rgb(23, 40, 43)",
+                  backgroundColor:
+                    status === "accepted" || status === "pending"
+                      ? "gray"
+                      : "rgb(23,40,43)",
                 },
               }}
             >
-              {isDisabled ? "İstek Gönderildi" : "Arkdaş Ekle"}
+              {buttonLabel}
             </Button>
           </Box>
         </Box>

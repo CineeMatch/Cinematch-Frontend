@@ -109,20 +109,6 @@ export default function ChallengeQuestionStarterModal({ open, onClose, challenge
             flexDirection: "column"
           }}
         >
-          <Typography
-            variant="h1"
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: '50%',
-              transform: 'translateX(-50%)',
-              fontSize: '70px',
-              fontWeight: 'bold',
-              color: 'rgba(255, 255, 255, 0.05)',
-            }}
-          >
-            {movieName}
-          </Typography>
 
           <Box
             sx={{

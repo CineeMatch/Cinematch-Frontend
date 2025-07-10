@@ -66,15 +66,29 @@ export default function ActiveChallangeCard() {
     return () => clearInterval(interval);
   }, [challenges]);
 
-  const formatDuration = (ms) => {
-    const totalSeconds = Math.floor(ms / 1000);
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
-      2,
-      "0"
-    )}`;
-  };
+const formatDuration = (ms) => {
+  if (ms <= 0) return "Süre doldu";
+  const totalSeconds = Math.floor(ms / 1000);
+  const days = Math.floor(totalSeconds / (3600 * 24));
+  const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  const d = String(days).padStart(2, "0");
+  const h = String(hours).padStart(2, "0");
+  const m = String(minutes).padStart(2, "0");
+  const s = String(seconds).padStart(2, "0");
+
+  if (days > 0) {
+    return `${d} : ${h} : ${m} : ${s}`;
+  } else if (hours > 0) {
+     return `${h} : ${m} : ${s}`;
+  } else if (minutes > 0) {
+     return `${m} : ${s}`;
+  } else {
+     return `${s}`;
+  }
+};
 
   const fetchChallenges = async () => {
       try {
@@ -255,12 +269,12 @@ export default function ActiveChallangeCard() {
                 <Box
                   sx={{
                     display: "flex",
-                    justifyContent: "space-between",
                     alignItems: "center",
                     width: "100%",
-                    px: 3,
+                    
                   }}
                 >
+                <Box>
                   <IconButton
                     onClick={() => handleDelete(card.challenge_Id)}
                     sx={{
@@ -270,48 +284,51 @@ export default function ActiveChallangeCard() {
                   >
                     <CancelIcon />
                   </IconButton>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      color: "#ffdf2b",
-                      textShadow: `
+                </Box>
+                <Box sx={{ flex: 1, display: "flex", justifyContent: "center" }}>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: "#ffdf2b",
+                    textShadow: `
                       0 0 6px rgba(255, 215, 0, 0.8),
                       0 0 10px rgba(255, 215, 0, 0.6)
                     `,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    ⏱{" "}
-                    {timers[card.challenge_Id]
-                      ? formatDuration(timers[card.challenge_Id])
-                      : "00:00"}
-                  </Typography>
-                  <Box sx={{ padding: 1 }}>
-                    <IconButton
-                      sx={{
-                        color: "white",
-                        "&:hover": { color: "#ffd700" },
-                      }}
-                      onClick={() => {
-                        setSelectedChallenge(card);
-                        setEditModalOpen(true);
-                      }}
-                    >
-                      <EditNoteIcon sx={{ fontSize: "35px" }} />
-                    </IconButton>
-                    <IconButton
-                      sx={{
-                        color: "green",
-                        "&:hover": { color: "#ffd700" },
-                      }}
-                      onClick={() => {
-                        setSelectedChallenge(card);
-                        setWriteModalOpen(true);
-                      }}
-                    >
-                      <BorderColorIcon />
-                    </IconButton>
-                  </Box>
+                    fontWeight: "bold",
+                  }}
+                >
+                  ⏱{" "}
+                  {timers[card.challenge_Id] !== undefined
+                    ? formatDuration(timers[card.challenge_Id])
+                    : "Süre doldu"}
+                </Typography>
+              </Box>
+              <Box sx={{ display: "flex", gap: 1 }}>
+                <IconButton
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "#ffd700" },
+                  }}
+                  onClick={() => {
+                    setSelectedChallenge(card);
+                    setEditModalOpen(true);
+                  }}
+                >
+                  <EditNoteIcon sx={{ fontSize: "35px" }} />
+                </IconButton>
+                <IconButton
+                  sx={{
+                    color: "green",
+                    "&:hover": { color: "#ffd700" },
+                  }}
+                  onClick={() => {
+                    setSelectedChallenge(card);
+                    setWriteModalOpen(true);
+                  }}
+                >
+                  <BorderColorIcon />
+                </IconButton>
+              </Box>
                 </Box>
               )}
             </Box>
@@ -332,3 +349,6 @@ export default function ActiveChallangeCard() {
     </Grid>
   );
 }
+
+
+

@@ -4,7 +4,7 @@ import MainPage from '../pages/MainPage.jsx'
 import FavoritesPage from '../pages/FavoritesPage.jsx'
 import WishlistPage from '../pages/WishlistPage.jsx'
 import WatchedPage from '../pages/WatchedPage.jsx'
-import ActiveChallengeModal from '../modals/profile/ActiveChallengeModal.jsx'
+import ActiveChallengePage from '../pages/ActiveChallengePage.jsx'
 import Community from '../pages/Community.jsx'
 import CoMatch from '../pages/CoMatch.jsx'
 import Layout from '../components/layout/Layout.jsx'
@@ -27,7 +27,7 @@ export default function appRoutes() {
     <Routes>
       <Route index element={<LoginPage />} />
       <Route path="/home" element={<Layout><MainPage /></Layout>} />
-      <Route path="/activeChallenge" element={<Layout><ActiveChallengeModal /></Layout>} />
+      <Route path="/activeChallenge" element={<Layout><ActiveChallengePage /></Layout>} />
       <Route path="/community" element={<Layout><Community /></Layout>} /> 
       <Route path="/comatch" element={<Layout><CoMatch/></Layout>} />
       <Route path="/favorites" element={<Layout><FavoritesPage/></Layout>} />
