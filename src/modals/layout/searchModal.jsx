@@ -6,6 +6,7 @@ import { getRandomMovies } from "../../api/movie/movie";
 import SearchInput from "../../components/filmList/SearchInput";
 import { searchMovies } from "../../api/movie/movie";
 import { toast } from "react-toastify";
+
 export default function SearchModal({ open, close,searchInput }) {
   const [movies, setMovies] = useState([]);
   const [movie, setMovie] = useState(null);
@@ -68,11 +69,11 @@ const fetch20Movies = async () => {
           FILM ARA
           </Typography>
           <SearchInput
-  searchTerm={searchTerm}
-  onChange={(e) => setSearchTerm(e.target.value)}
-  autoFocus
-  expandWidth="200vh"
-/>
+          searchTerm={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          autoFocus
+          expandWidth="250vh"
+        />
 
         <MovieGrid
           movies={searchTerm.trim() !== "" ? searchResults : movies}

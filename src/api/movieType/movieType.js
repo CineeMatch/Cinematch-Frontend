@@ -118,16 +118,15 @@ export const getMyListMovie = async (movie_id) => {
     const response = await axios.get(`${baseURL}/movieTypes?type=watched`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log(response);
     let movieType = response ? response.data.find(d => d.movie_id === movie_id) : null;
+    console.log("movieType2:", movieType);
     if (!movieType) {
       const response = await axios.get(`${baseURL}/movieTypes?type=watched`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(response);
       movieType = response ? response.data.find(d => d.movie_id === movie_id) : null;
+      console.log("movieType3:", movieType);
     }
-    console.log(movieType);
     return movieType;
   } catch (error) {
     console.error("getFavoriteMovies error:", error);

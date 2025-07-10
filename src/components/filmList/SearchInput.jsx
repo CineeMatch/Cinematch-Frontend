@@ -67,7 +67,7 @@ export default function SearchInput({
   }, [expand]);
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
       <SearchBox
         expand={expand}
         expandWidth={expandWidth}

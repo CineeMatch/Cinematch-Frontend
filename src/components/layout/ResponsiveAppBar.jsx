@@ -54,7 +54,8 @@ function ResponsiveAppBar() {
     { title: 'Ana Sayfa', to: "/home" },
     { title: 'Topluluk', to: "/community" },
     { title: 'Listelerim', to: "/favorites" },
-    { title: 'Comatch', to: "/comatch" },
+    { title: 'Eşleşmelerim', to: "/comatch" },
+    { title: 'Meydan Okumalarım', to: "/activeChallenge" },
   ];
 
   const handleOpenNavMenu = (event) => {

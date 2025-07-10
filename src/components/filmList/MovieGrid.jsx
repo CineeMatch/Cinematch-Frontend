@@ -8,7 +8,7 @@ export default function MovieGrid(props) {
   return (
     <Grid
       container
-      sx={{ padding: "0px 20px", rowGap: "10px", columnGap: "10px" }}
+      sx={{ margin:"20px 10px 20px 10px", rowGap: "10px", columnGap: "10px" }}
     >
       {movies.map((movie, index) => (
         <Grid key={index}>

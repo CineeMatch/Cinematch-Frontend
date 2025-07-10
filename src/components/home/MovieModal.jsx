@@ -40,14 +40,11 @@ export default function MovieModal(props) {
 
   const fetchMovieTypes = async () => {
     try {
+      console.log("props",props);
       const movieType = await getMyListMovie(movie.id);
       setStatusOfMovie(movieType);
-      props.movieType = movieType;
-      console.log(movieType);
     } catch (error) {
-      console.log(movie);
-      console.log("Problem in fetching movieType");
-      toast.error("Film türleri alınamadı. Lütfen tekrar deneyiniz.");
+      toast.error("Film türleri alınırken bir hata oluştu.");
     }
   };
 
@@ -230,7 +227,11 @@ export default function MovieModal(props) {
 
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
                   <Typography sx={{ fontStyle: 'italic', fontSize: "15px", color: "rgba(255,255,255,0.9)" }}>
-                    <strong>Tür:</strong> {movie.categories}
+                    <strong>Tür:</strong> {
+                      Array.isArray(movie.categories)
+                        ? movie.categories.map((cat) => cat.name).join(', ')
+                        : movie.categories
+                    }
                   </Typography>
                   <Typography sx={{ mt: 1, fontSize: "15px", color: "rgba(255,255,255,0.9)" }}>
                     <strong>Oyuncular:</strong> {movie.actor}
